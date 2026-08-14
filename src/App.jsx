@@ -1239,7 +1239,6 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
 }
 
 function StatisticheTab({ workouts, exercises, setWorkouts }) {
-  const [mode, setMode] = useState("settimana");
   const [weekStart, setWeekStart] = useState(getMonday(todayISO()));
   const [month, setMonth] = useState(todayISO().slice(0, 7));
   const [year, setYear] = useState(todayISO().slice(0, 4));
@@ -1261,9 +1260,6 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   const weekStats = useMemo(() => weeklyMuscleStats(workouts, exercises, weekStartISO, weekEndISO), [workouts, exercises, weekStartISO, weekEndISO]);
   const monthStats = useMemo(() => weeklyMuscleStats(workouts, exercises, month + "-01", month + "-31"), [workouts, exercises, month]);
   const yearStats = useMemo(() => weeklyMuscleStats(workouts, exercises, year + "-01-01", year + "-12-31"), [workouts, exercises, year]);
-
-  const activeStats = mode === "settimana" ? weekStats : mode === "mese" ? monthStats : yearStats;
-  const activeRows = Object.entries(activeStats).filter(([, v]) => v.sets > 0);
 
   const muscleDayEntries = useMemo(() => {
     const map = {};
@@ -1366,46 +1362,28 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <Section title="Statistiche" right={
-        <div style={{ display: "flex", gap: 6 }}>
-          {["settimana", "mese", "anno"].map((m) => (
-            <button key={m} className={"btn " + (mode === m ? "btn-primary" : "btn-ghost")} onClick={() => setMode(m)}>
-              {m.charAt(0).toUpperCase() + m.slice(1)}
-            </button>
-          ))}
-        </div>
-      }>
-        {mode === "settimana" && (
-          <div className="week-nav">
-            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={26} /></button>
-            <span className="font-display">{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
-            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={26} /></button>
-          </div>
-        )}
-        {mode === "mese" && (
-          <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
-        )}
-        {mode === "anno" && (
-          <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
-        )}
-
-        <div className="stats-table" style={{ marginTop: 14 }}>
-          <div className="stats-row stats-row-head">
-            <span>Gruppo muscolare</span><span>Serie</span><span>Ripetizioni</span><span>Volume (kg)</span>
-          </div>
-          {activeRows.length === 0 && <p className="muted" style={{ padding: "10px 0" }}>Nessun dato per questo periodo.</p>}
-          {activeRows.map(([m, v]) => (
-            <div className="stats-row" key={m}>
-              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span>{round1(v.volume)}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-
       <Section title="Esporta su Excel">
         <p className="hint" style={{ marginBottom: 12 }}>
           Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, Recupero, TONN.
         </p>
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginBottom: 14 }}>
+          <div>
+            <label className="label">Settimana</label>
+            <div className="week-nav">
+              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={22} /></button>
+              <span className="font-display" style={{ fontSize: 20 }}>{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
+              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={22} /></button>
+            </div>
+          </div>
+          <div>
+            <label className="label">Mese</label>
+            <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
+          </div>
+          <div>
+            <label className="label">Anno</label>
+            <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
+          </div>
+        </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <button className="btn btn-primary" onClick={() => downloadExcel(
             buildExportRows(workouts, exercises, weekStartISO, weekEndISO),
@@ -1561,6 +1539,63 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   );
 }
 
+function StatisticheRiepilogo({ workouts, exercises }) {
+  const [mode, setMode] = useState("settimana");
+  const [weekStart, setWeekStart] = useState(getMonday(todayISO()));
+  const [month, setMonth] = useState(todayISO().slice(0, 7));
+  const [year, setYear] = useState(todayISO().slice(0, 4));
+
+  const weekEnd = addDays(weekStart, 6);
+  const weekStartISO = isoOf(weekStart), weekEndISO = isoOf(weekEnd);
+
+  const weekStats = useMemo(() => weeklyMuscleStats(workouts, exercises, weekStartISO, weekEndISO), [workouts, exercises, weekStartISO, weekEndISO]);
+  const monthStats = useMemo(() => weeklyMuscleStats(workouts, exercises, month + "-01", month + "-31"), [workouts, exercises, month]);
+  const yearStats = useMemo(() => weeklyMuscleStats(workouts, exercises, year + "-01-01", year + "-12-31"), [workouts, exercises, year]);
+
+  const activeStats = mode === "settimana" ? weekStats : mode === "mese" ? monthStats : yearStats;
+  const activeRows = Object.entries(activeStats).filter(([, v]) => v.sets > 0);
+
+  return (
+    <div className="statistiche-nera">
+      <Section title="Statistiche" right={
+        <div style={{ display: "flex", gap: 6 }}>
+          {["settimana", "mese", "anno"].map((m) => (
+            <button key={m} className={"btn " + (mode === m ? "btn-primary" : "btn-ghost")} onClick={() => setMode(m)}>
+              {m.charAt(0).toUpperCase() + m.slice(1)}
+            </button>
+          ))}
+        </div>
+      }>
+        {mode === "settimana" && (
+          <div className="week-nav">
+            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={26} /></button>
+            <span className="font-display">{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
+            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={26} /></button>
+          </div>
+        )}
+        {mode === "mese" && (
+          <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
+        )}
+        {mode === "anno" && (
+          <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
+        )}
+
+        <div className="stats-table" style={{ marginTop: 14 }}>
+          <div className="stats-row stats-row-head">
+            <span>Gruppo muscolare</span><span>Serie</span><span>Ripetizioni</span><span>Volume (kg)</span>
+          </div>
+          {activeRows.length === 0 && <p className="muted" style={{ padding: "10px 0" }}>Nessun dato per questo periodo.</p>}
+          {activeRows.map(([m, v]) => (
+            <div className="stats-row" key={m}>
+              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span>{round1(v.volume)}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </div>
+  );
+}
+
 function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const usedExerciseIds = [...new Set(workouts.flatMap((w) => w.exercises.map((it) => it.exerciseId)))];
   const usableExercises = exercises.filter((e) => usedExerciseIds.includes(e.id));
@@ -1641,6 +1676,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
 
   return (
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <StatisticheRiepilogo workouts={workouts} exercises={exercises} />
+
       <Section title="Progressione forza per anno e gruppo" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
@@ -1941,7 +1978,7 @@ export default function App() {
     { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
-    { key: "statistiche", label: "Statistiche", icon: BarChart2 },
+    { key: "statistiche", label: "Cronologia", icon: BarChart2 },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
@@ -2162,6 +2199,13 @@ export default function App() {
           background:var(--bg); border-radius:12px; padding:16px;
         }
         .progressi-dark .btn-primary{ color:#0f1310; }
+
+        .statistiche-nera{
+          --bg:#000000; --surface:#000000; --surface-2:#111111; --border-c:#333333;
+          --text:#ffffff; --text-dim:#ffffff; --accent:#7be08a; --accent-dim:#1a1a1a; --accent2:#7be08a; --good:#7be08a;
+          background:#000000; border-radius:12px; padding:16px;
+        }
+        .statistiche-nera .btn-primary{ color:#0f1310; }
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; }
