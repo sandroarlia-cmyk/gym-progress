@@ -2210,18 +2210,23 @@ export default function App() {
         .nuovo-allenamento-dark .log-set-box,
         .nuovo-allenamento-dark .log-rip-box,
         .nuovo-allenamento-dark .log-note-box,
-        .nuovo-allenamento-dark .log-total-box,
-        .nuovo-allenamento-dark .log-kg-box{
+        .nuovo-allenamento-dark .log-total-box{
           background:#FFFFFF; color:#1a1a1a; border-color:#dddddd;
         }
-        .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
           background:#FFFFFF; color:#1a1a1a;
         }
-        .nuovo-allenamento-dark .exercise-log-row-head .log-date-box,
-        .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box{
+        .nuovo-allenamento-dark .log-volume-box,
+        .nuovo-allenamento-dark .log-kg-box{
+          background:#1f6b3a; color:#ffffff; font-weight:700; border-color:#1f6b3a;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box{
+          background:#1f6b3a; color:#ffffff; font-weight:700;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-date-box{
           color:#ffffff;
         }
 
