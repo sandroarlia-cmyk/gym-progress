@@ -1975,7 +1975,7 @@ export default function App() {
           background:var(--bg); color:var(--text); font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif;
           min-height:100vh; display:flex; flex-direction:column; font-size:32px; text-transform:uppercase;
         }
-        .font-display{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; }
+        .font-display{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; color:var(--text); }
         .gt-header{ display:flex; align-items:center; gap:12px; padding:18px 20px; border-bottom:1px solid var(--border-c); }
         .gt-logo{ width:40px; height:40px; border-radius:50%; border:5px solid var(--accent); display:flex; align-items:center; justify-content:center; background:var(--surface); }
         .gt-title{ font-size:48px; }
