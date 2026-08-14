@@ -2129,24 +2129,24 @@ export default function App() {
         .exercise-log-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
         .exercise-log-table{ display:flex; flex-direction:column; gap:8px; width:max-content; }
         .exercise-log-row{ display:flex; gap:8px; align-items:stretch; }
-        .exercise-log-row-head{ color:var(--text-dim); font-size:14px; text-transform:uppercase; }
+        .exercise-log-row-head{ color:var(--text-dim); font-size:16px; text-transform:uppercase; }
         .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box{
           flex-shrink:0; display:flex; align-items:center; justify-content:center;
-          padding:10px 8px; border-radius:6px; font-weight:700; white-space:nowrap;
-          font-size:14px; overflow:hidden;
+          padding:14px 10px; border-radius:6px; font-weight:700; white-space:nowrap;
+          font-size:20px; overflow:hidden;
         }
         .exercise-log-row-head .log-date-box, .exercise-log-row-head .log-set-box,
         .exercise-log-row-head .log-kg-box, .exercise-log-row-head .log-rip-box,
         .exercise-log-row-head .log-note-box, .exercise-log-row-head .log-volume-box,
-        .exercise-log-row-head .log-total-box{ background:transparent; font-weight:600; padding:2px 8px; font-size:13px; }
-        .log-date-box{ width:130px; background:var(--surface-2); color:var(--text); font-size:18px; }
-        .log-set-box{ width:120px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:18px; }
-        .log-kg-box{ width:110px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:20px; }
-        .log-rip-box{ width:70px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:18px; }
-        .log-note-box{ width:170px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; }
+        .exercise-log-row-head .log-total-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:20px; }
+        .log-date-box{ width:150px; background:var(--surface-2); color:var(--text); font-size:20px; }
+        .log-set-box{ width:140px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
+        .log-kg-box{ width:130px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:20px; }
+        .log-rip-box{ width:90px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
+        .log-note-box{ width:190px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; font-size:20px; }
         .log-note-box span{ white-space:nowrap; }
-        .log-volume-box{ width:120px; background:var(--accent-dim); color:#000000; font-size:20px; }
-        .log-total-box{ width:64px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
+        .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:20px; }
+        .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
@@ -2220,13 +2220,17 @@ export default function App() {
         .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
           background:#FFFFFF; color:#1a1a1a;
         }
-        .nuovo-allenamento-dark .log-volume-box,
-        .nuovo-allenamento-dark .log-kg-box{
-          background:#1f6b3a; color:#ffffff; font-weight:700; border-color:#1f6b3a;
+        .nuovo-allenamento-dark .log-volume-box{
+          background:#c0392b; color:#ffffff; font-weight:700; border-color:#c0392b;
         }
-        .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box,
+        .nuovo-allenamento-dark .log-kg-box{
+          background:#a8e6a1; color:#0f3d1e; font-weight:700; border-color:#a8e6a1;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box{
+          background:#c0392b; color:#ffffff; font-weight:700;
+        }
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box{
-          background:#1f6b3a; color:#ffffff; font-weight:700;
+          background:#a8e6a1; color:#0f3d1e; font-weight:700;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-date-box{
           color:#ffffff;
@@ -2263,13 +2267,13 @@ export default function App() {
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
-          .log-date-box{ width:110px; font-size:14px; padding:8px 6px; }
-          .log-set-box{ width:104px; font-size:14px; padding:8px 6px; }
-          .log-kg-box{ width:90px; font-size:16px; padding:8px 6px; background:var(--accent-dim); border-color:#E8C2BA; }
-          .log-rip-box{ width:60px; font-size:14px; padding:8px 6px; }
-          .log-note-box{ width:130px; font-size:11.5px; padding:8px 6px; }
-          .log-volume-box{ width:96px; font-size:16px; padding:8px 6px; }
-          .log-total-box{ width:56px; font-size:16px; padding:8px 4px; }
+          .log-date-box{ width:130px; font-size:16px; padding:10px 8px; }
+          .log-set-box{ width:124px; font-size:16px; padding:10px 8px; }
+          .log-kg-box{ width:110px; font-size:16px; padding:10px 8px; background:var(--accent-dim); border-color:#E8C2BA; }
+          .log-rip-box{ width:80px; font-size:16px; padding:10px 8px; }
+          .log-note-box{ width:150px; font-size:14px; padding:10px 8px; }
+          .log-volume-box{ width:116px; font-size:16px; padding:10px 8px; }
+          .log-total-box{ width:76px; font-size:16px; padding:10px 6px; }
           .gt-root{ font-size:17px; }
           .gt-header{ padding:12px 14px; gap:10px; }
           .gt-logo{ width:32px; height:32px; border-width:4px; }
