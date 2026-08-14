@@ -1970,7 +1970,6 @@ export default function App() {
 
   const tabs = [
     { key: "progressi", label: "Progressi", icon: TrendingUp },
-    { key: "statistiche", label: "Statistiche", icon: BarChart2 },
     { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
@@ -2361,7 +2360,6 @@ export default function App() {
               <MuscleEntryPanel muscle={tab.slice(2)} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
             </div>
           )}
-          {tab === "statistiche" && <StatisticheTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "cronologia" && <CronologiaTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "progressi" && <ProgressiTab workouts={workouts} exercises={exercises} bodyLogs={bodyLogs} />}
           {tab === "impostazioni" && <ImpostazioniTab bodyLogs={bodyLogs} setBodyLogs={setBodyLogs} />}
