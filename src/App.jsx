@@ -1365,7 +1365,7 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="statistiche-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <Section title="Statistiche" right={
         <div style={{ display: "flex", gap: 6 }}>
           {["settimana", "mese", "anno"].map((m) => (
@@ -1396,7 +1396,7 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
           {activeRows.length === 0 && <p className="muted" style={{ padding: "10px 0" }}>Nessun dato per questo periodo.</p>}
           {activeRows.map(([m, v]) => (
             <div className="stats-row" key={m}>
-              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span>{round1(v.volume)}</span>
+              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span className="volume-badge">{round1(v.volume)}</span>
             </div>
           ))}
         </div>
@@ -2156,6 +2156,17 @@ export default function App() {
           background:var(--bg); border-radius:12px; padding:16px;
         }
         .progressi-dark .btn-primary{ color:#0f1310; }
+
+        .statistiche-dark{
+          --bg:#161915; --surface:#1c1f1a; --surface-2:#242821; --border-c:#38402f;
+          --text:#ffffff; --text-dim:#ffffff; --accent:#7be08a; --accent-dim:#2c3126; --accent2:#5aa668; --good:#7be08a;
+          background:var(--bg); border-radius:12px; padding:16px;
+        }
+        .statistiche-dark .btn-primary{ color:#0f1310; }
+        .volume-badge{
+          display:inline-block; background:#1f6b3a; color:#ffffff; font-weight:700;
+          padding:3px 10px; border-radius:6px;
+        }
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; }
