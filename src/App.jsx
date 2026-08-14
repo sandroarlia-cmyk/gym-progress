@@ -1548,6 +1548,55 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [exId, setExId] = useState(usableExercises[0] ? usableExercises[0].id : "");
   const [muscle, setMuscle] = useState(MUSCLE_GROUPS[0]);
 
+  const now = new Date();
+  const [forzaAnno, setForzaAnno] = useState(now.getFullYear());
+  const [forzaMese, setForzaMese] = useState(now.getMonth() + 1);
+  const [forzaGruppo, setForzaGruppo] = useState(MUSCLE_GROUPS[0]);
+
+  const [volAnno, setVolAnno] = useState(now.getFullYear());
+  const [volMese, setVolMese] = useState(now.getMonth() + 1);
+  const [volGruppo, setVolGruppo] = useState(MUSCLE_GROUPS[0]);
+
+  const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
+  const LINE_COLORS = ["#7be08a", "#5aa668", "#a8d5ba", "#3E7191", "#D9412E", "#FBE3DE", "#2E8B57", "#639922"];
+
+  const monthlyStrengthData = useMemo(() => {
+    const rowsMap = {};
+    const exNamesSet = new Set();
+    const monthKey = `${forzaAnno}-${String(forzaMese).padStart(2, "0")}`;
+    workouts.forEach((w) => {
+      if (!w.date.startsWith(monthKey)) return;
+      w.exercises.forEach((it) => {
+        const ex = exercises.find((e) => e.id === it.exerciseId);
+        if (!ex || ex.muscle !== forzaGruppo) return;
+        const weights = it.sets.map((s) => Number(s.weight) || 0);
+        if (!weights.length) return;
+        const top = Math.max(...weights);
+        if (!rowsMap[w.date]) rowsMap[w.date] = { data: formatDateShort(w.date), dataIso: w.date };
+        rowsMap[w.date][ex.name] = Math.max(rowsMap[w.date][ex.name] || 0, top);
+        exNamesSet.add(ex.name);
+      });
+    });
+    const rows = Object.values(rowsMap).sort((a, b) => (a.dataIso < b.dataIso ? -1 : 1));
+    return { rows, exNames: Array.from(exNamesSet) };
+  }, [workouts, exercises, forzaAnno, forzaMese, forzaGruppo]);
+
+  const monthlyVolumeData = useMemo(() => {
+    const map = {};
+    const monthKey = `${volAnno}-${String(volMese).padStart(2, "0")}`;
+    workouts.forEach((w) => {
+      if (!w.date.startsWith(monthKey)) return;
+      w.exercises.forEach((it) => {
+        const ex = exercises.find((e) => e.id === it.exerciseId);
+        if (!ex || ex.muscle !== volGruppo) return;
+        map[w.date] = (map[w.date] || 0) + itemVolume(it);
+      });
+    });
+    return Object.entries(map)
+      .sort(([a], [b]) => (a < b ? -1 : 1))
+      .map(([date, vol]) => ({ data: formatDateShort(date), volume: round1(vol) }));
+  }, [workouts, exercises, volAnno, volMese, volGruppo]);
+
   const strengthData = useMemo(() => {
     return [...workouts]
       .sort((a, b) => (a.date > b.date ? 1 : -1))
@@ -1573,7 +1622,66 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const bodyData = [...bodyLogs].sort((a, b) => (a.date > b.date ? 1 : -1)).map((b) => ({ data: formatDateShort(b.date), peso: Number(b.weight) || 0 }));
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Section title="Progressione forza per mese e gruppo" right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
+            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={forzaMese} onChange={(e) => setForzaMese(Number(e.target.value))}>
+            {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={forzaAnno} onChange={(e) => setForzaAnno(Number(e.target.value))}>
+            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+      }>
+        {monthlyStrengthData.rows.length === 0 ? <p className="muted">Nessun dato per {forzaGruppo} in questo mese.</p> : (
+          <div style={{ height: 260 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={monthlyStrengthData.rows}>
+                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
+                <YAxis stroke="var(--text-dim)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                {monthlyStrengthData.exNames.map((name, i) => (
+                  <Line key={name} type="monotone" dataKey={name} stroke={LINE_COLORS[i % LINE_COLORS.length]} strokeWidth={2} dot={{ r: 3 }} connectNulls />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </Section>
+
+      <Section title="Volume per mese e gruppo" right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
+            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={volMese} onChange={(e) => setVolMese(Number(e.target.value))}>
+            {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={volAnno} onChange={(e) => setVolAnno(Number(e.target.value))}>
+            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+      }>
+        {monthlyVolumeData.length === 0 ? <p className="muted">Nessun dato per {volGruppo} in questo mese.</p> : (
+          <div style={{ height: 240 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={monthlyVolumeData}>
+                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
+                <YAxis stroke="var(--text-dim)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+                <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </Section>
+
       <Section title="Progressione forza" right={
         <select className="input input-sm-w" value={exId} onChange={(e) => setExId(e.target.value)}>
           {usableExercises.length === 0 && <option value="">Nessun dato</option>}
@@ -2037,7 +2145,15 @@ export default function App() {
         .recall-ex{ display:flex; justify-content:space-between; gap:10px; font-size:28px; flex-wrap:wrap; }
         .tonn-cell{ text-align:center; font-size:28px; color:var(--accent2); font-weight:700; }
 
+        .progressi-dark{
+          --bg:#161915; --surface:#1c1f1a; --surface-2:#242821; --border-c:#38402f;
+          --text:#e8ece5; --text-dim:#9fb89a; --accent:#7be08a; --accent-dim:#2c3126; --accent2:#5aa668; --good:#7be08a;
+          background:var(--bg); border-radius:12px; padding:16px;
+        }
+        .progressi-dark .btn-primary{ color:#0f1310; }
+
         @media (max-width: 640px) {
+          .progressi-dark{ padding:10px; border-radius:8px; }
           .dropdown-item{ font-size:15px; padding:9px 12px; }
           .date-it-picker .input{ font-size:14px; padding:8px 4px; }
           .date-it-day{ flex:0 0 54px; }
