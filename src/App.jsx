@@ -904,6 +904,7 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
     .filter((ex) => !q || ex.name.toLowerCase().includes(q));
 
   return (
+    <div className="nuovo-allenamento-dark">
     <Section title={`Nuovo allenamento — ${muscle.toUpperCase()}`}>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div>
@@ -967,6 +968,7 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
         </div>
       </div>
     </Section>
+    </div>
   );
 }
 
@@ -2200,6 +2202,12 @@ export default function App() {
         .volume-badge{
           display:inline-block; background:#1f6b3a; color:#ffffff; font-weight:700;
           padding:3px 10px; border-radius:6px;
+        }
+
+        .nuovo-allenamento-dark{
+          --bg:#000000; --surface:#000000; --surface-2:#141414; --border-c:#333333;
+          --text:#ffffff; --text-dim:#ffffff;
+          background:#000000; border-radius:12px; padding:16px;
         }
 
         @media (max-width: 640px) {
