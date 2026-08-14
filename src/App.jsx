@@ -1293,37 +1293,17 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
         </div>
       </Section>
       </div>
-
-      <Section title="Esporta su Excel">
-        <p className="hint" style={{ marginBottom: 12 }}>
-          Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, Recupero, TONN.
-        </p>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button className="btn btn-primary" onClick={() => downloadExcel(
-            buildExportRows(workouts, exercises, weekStartISO, weekEndISO),
-            `allenamenti_settimana_${weekStartISO}.xlsx`
-          )}>
-            <Download size={22} /> Settimana ({formatDateShort(weekStartISO)}–{formatDateShort(weekEndISO)})
-          </button>
-          <button className="btn btn-primary" onClick={() => downloadExcel(
-            buildExportRows(workouts, exercises, month + "-01", month + "-31"),
-            `allenamenti_mese_${month}.xlsx`
-          )}>
-            <Download size={22} /> Mese ({month})
-          </button>
-          <button className="btn btn-primary" onClick={() => downloadExcel(
-            buildExportRows(workouts, exercises, year + "-01-01", year + "-12-31"),
-            `allenamenti_anno_${year}.xlsx`
-          )}>
-            <Download size={22} /> Anno ({year})
-          </button>
-        </div>
-      </Section>
     </div>
   );
 }
 
 function CronologiaTab({ workouts, exercises, setWorkouts }) {
+  const [weekStart, setWeekStart] = useState(getMonday(todayISO()));
+  const [month, setMonth] = useState(todayISO().slice(0, 7));
+  const [year, setYear] = useState(todayISO().slice(0, 4));
+  const weekEnd = addDays(weekStart, 6);
+  const weekStartISO = isoOf(weekStart), weekEndISO = isoOf(weekEnd);
+
   const [expanded, setExpanded] = useState({});
   const [historyQuery, setHistoryQuery] = useState("");
   const [historyFilters, setHistoryFilters] = useState({});
@@ -1437,6 +1417,50 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Section title="Esporta su Excel">
+        <p className="hint" style={{ marginBottom: 12 }}>
+          Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, Recupero, TONN.
+        </p>
+        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginBottom: 14 }}>
+          <div>
+            <label className="label">Settimana</label>
+            <div className="week-nav">
+              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={22} /></button>
+              <span className="font-display" style={{ fontSize: 20 }}>{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
+              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={22} /></button>
+            </div>
+          </div>
+          <div>
+            <label className="label">Mese</label>
+            <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
+          </div>
+          <div>
+            <label className="label">Anno</label>
+            <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button className="btn btn-primary" onClick={() => downloadExcel(
+            buildExportRows(workouts, exercises, weekStartISO, weekEndISO),
+            `allenamenti_settimana_${weekStartISO}.xlsx`
+          )}>
+            <Download size={22} /> Settimana ({formatDateShort(weekStartISO)}–{formatDateShort(weekEndISO)})
+          </button>
+          <button className="btn btn-primary" onClick={() => downloadExcel(
+            buildExportRows(workouts, exercises, month + "-01", month + "-31"),
+            `allenamenti_mese_${month}.xlsx`
+          )}>
+            <Download size={22} /> Mese ({month})
+          </button>
+          <button className="btn btn-primary" onClick={() => downloadExcel(
+            buildExportRows(workouts, exercises, year + "-01-01", year + "-12-31"),
+            `allenamenti_anno_${year}.xlsx`
+          )}>
+            <Download size={22} /> Anno ({year})
+          </button>
+        </div>
+      </Section>
+
       <Section title="Cronologia allenamenti" right={
         <div className="search-wrap">
           <Search size={22} className="search-icon" />
