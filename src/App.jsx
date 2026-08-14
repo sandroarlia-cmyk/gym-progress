@@ -1778,7 +1778,7 @@ function NavIcon({ t, size }) {
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
-  const [tab, setTab] = useState("m-Petto");
+  const [tab, setTab] = useState("progressi");
   const [exercises, setExercises] = useState(DEFAULT_EXERCISES);
   const [splits, setSplits] = useState([]);
   const [workouts, setWorkouts] = useState([]);
