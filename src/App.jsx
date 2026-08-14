@@ -1239,6 +1239,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
 }
 
 function StatisticheTab({ workouts, exercises, setWorkouts }) {
+  const [mode, setMode] = useState("settimana");
   const [weekStart, setWeekStart] = useState(getMonday(todayISO()));
   const [month, setMonth] = useState(todayISO().slice(0, 7));
   const [year, setYear] = useState(todayISO().slice(0, 4));
@@ -1260,6 +1261,9 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   const weekStats = useMemo(() => weeklyMuscleStats(workouts, exercises, weekStartISO, weekEndISO), [workouts, exercises, weekStartISO, weekEndISO]);
   const monthStats = useMemo(() => weeklyMuscleStats(workouts, exercises, month + "-01", month + "-31"), [workouts, exercises, month]);
   const yearStats = useMemo(() => weeklyMuscleStats(workouts, exercises, year + "-01-01", year + "-12-31"), [workouts, exercises, year]);
+
+  const activeStats = mode === "settimana" ? weekStats : mode === "mese" ? monthStats : yearStats;
+  const activeRows = Object.entries(activeStats).filter(([, v]) => v.sets > 0);
 
   const muscleDayEntries = useMemo(() => {
     const map = {};
@@ -1362,28 +1366,46 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Section title="Statistiche" right={
+        <div style={{ display: "flex", gap: 6 }}>
+          {["settimana", "mese", "anno"].map((m) => (
+            <button key={m} className={"btn " + (mode === m ? "btn-primary" : "btn-ghost")} onClick={() => setMode(m)}>
+              {m.charAt(0).toUpperCase() + m.slice(1)}
+            </button>
+          ))}
+        </div>
+      }>
+        {mode === "settimana" && (
+          <div className="week-nav">
+            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={26} /></button>
+            <span className="font-display">{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
+            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={26} /></button>
+          </div>
+        )}
+        {mode === "mese" && (
+          <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
+        )}
+        {mode === "anno" && (
+          <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
+        )}
+
+        <div className="stats-table" style={{ marginTop: 14 }}>
+          <div className="stats-row stats-row-head">
+            <span>Gruppo muscolare</span><span>Serie</span><span>Ripetizioni</span><span>Volume (kg)</span>
+          </div>
+          {activeRows.length === 0 && <p className="muted" style={{ padding: "10px 0" }}>Nessun dato per questo periodo.</p>}
+          {activeRows.map(([m, v]) => (
+            <div className="stats-row" key={m}>
+              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span>{round1(v.volume)}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <Section title="Esporta su Excel">
         <p className="hint" style={{ marginBottom: 12 }}>
           Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, Recupero, TONN.
         </p>
-        <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginBottom: 14 }}>
-          <div>
-            <label className="label">Settimana</label>
-            <div className="week-nav">
-              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={22} /></button>
-              <span className="font-display" style={{ fontSize: 20 }}>{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
-              <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={22} /></button>
-            </div>
-          </div>
-          <div>
-            <label className="label">Mese</label>
-            <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
-          </div>
-          <div>
-            <label className="label">Anno</label>
-            <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
-          </div>
-        </div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <button className="btn btn-primary" onClick={() => downloadExcel(
             buildExportRows(workouts, exercises, weekStartISO, weekEndISO),
@@ -1539,110 +1561,11 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   );
 }
 
-function StatisticheRiepilogo({ workouts, exercises }) {
-  const [mode, setMode] = useState("settimana");
-  const [weekStart, setWeekStart] = useState(getMonday(todayISO()));
-  const [month, setMonth] = useState(todayISO().slice(0, 7));
-  const [year, setYear] = useState(todayISO().slice(0, 4));
-
-  const weekEnd = addDays(weekStart, 6);
-  const weekStartISO = isoOf(weekStart), weekEndISO = isoOf(weekEnd);
-
-  const weekStats = useMemo(() => weeklyMuscleStats(workouts, exercises, weekStartISO, weekEndISO), [workouts, exercises, weekStartISO, weekEndISO]);
-  const monthStats = useMemo(() => weeklyMuscleStats(workouts, exercises, month + "-01", month + "-31"), [workouts, exercises, month]);
-  const yearStats = useMemo(() => weeklyMuscleStats(workouts, exercises, year + "-01-01", year + "-12-31"), [workouts, exercises, year]);
-
-  const activeStats = mode === "settimana" ? weekStats : mode === "mese" ? monthStats : yearStats;
-  const activeRows = Object.entries(activeStats).filter(([, v]) => v.sets > 0);
-
-  return (
-    <div className="statistiche-nera">
-      <Section title="Statistiche" right={
-        <div style={{ display: "flex", gap: 6 }}>
-          {["settimana", "mese", "anno"].map((m) => (
-            <button key={m} className={"btn " + (mode === m ? "btn-primary" : "btn-ghost")} onClick={() => setMode(m)}>
-              {m.charAt(0).toUpperCase() + m.slice(1)}
-            </button>
-          ))}
-        </div>
-      }>
-        {mode === "settimana" && (
-          <div className="week-nav">
-            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, -7))}><ChevronLeft size={26} /></button>
-            <span className="font-display">{formatDateShort(weekStartISO)} – {formatDateShort(weekEndISO)}</span>
-            <button className="btn-icon" onClick={() => setWeekStart(addDays(weekStart, 7))}><ChevronRight size={26} /></button>
-          </div>
-        )}
-        {mode === "mese" && (
-          <input type="month" className="input" style={{ maxWidth: 200 }} value={month} onChange={(e) => setMonth(e.target.value)} />
-        )}
-        {mode === "anno" && (
-          <input type="number" className="input" style={{ maxWidth: 140 }} value={year} onChange={(e) => setYear(e.target.value)} />
-        )}
-
-        <div className="stats-table" style={{ marginTop: 14 }}>
-          <div className="stats-row stats-row-head">
-            <span>Gruppo muscolare</span><span>Serie</span><span>Ripetizioni</span><span>Volume (kg)</span>
-          </div>
-          {activeRows.length === 0 && <p className="muted" style={{ padding: "10px 0" }}>Nessun dato per questo periodo.</p>}
-          {activeRows.map(([m, v]) => (
-            <div className="stats-row" key={m}>
-              <span>{m}</span><span>{v.sets}</span><span>{v.reps}</span><span>{round1(v.volume)}</span>
-            </div>
-          ))}
-        </div>
-      </Section>
-    </div>
-  );
-}
-
 function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const usedExerciseIds = [...new Set(workouts.flatMap((w) => w.exercises.map((it) => it.exerciseId)))];
   const usableExercises = exercises.filter((e) => usedExerciseIds.includes(e.id));
   const [exId, setExId] = useState(usableExercises[0] ? usableExercises[0].id : "");
   const [muscle, setMuscle] = useState(MUSCLE_GROUPS[0]);
-
-  const now = new Date();
-  const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
-  const MESI_BREVI = MONTHS_IT.map((m) => m.slice(0, 3));
-
-  const [forzaAnno, setForzaAnno] = useState(now.getFullYear());
-  const [forzaGruppo, setForzaGruppo] = useState(MUSCLE_GROUPS[0]);
-  const eserciziEffettuatiForza = usableExercises.filter((e) => e.muscle === forzaGruppo);
-  const [forzaEsercizio, setForzaEsercizio] = useState("");
-  const forzaEsercizioAttivo = eserciziEffettuatiForza.some((e) => e.id === forzaEsercizio)
-    ? forzaEsercizio
-    : (eserciziEffettuatiForza[0] ? eserciziEffettuatiForza[0].id : "");
-
-  const [volAnno, setVolAnno] = useState(now.getFullYear());
-  const [volGruppo, setVolGruppo] = useState(MUSCLE_GROUPS[0]);
-
-  const yearlyStrengthData = useMemo(() => {
-    if (!forzaEsercizioAttivo) return [];
-    return [...workouts]
-      .filter((w) => w.date.startsWith(String(forzaAnno)))
-      .sort((a, b) => (a.date > b.date ? 1 : -1))
-      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizioAttivo))
-      .map((w) => {
-        const it = w.exercises.find((it) => it.exerciseId === forzaEsercizioAttivo);
-        const weights = it.sets.map((s) => Number(s.weight) || 0);
-        return { data: formatDateShort(w.date), peso: weights.length ? Math.max(...weights) : 0 };
-      });
-  }, [workouts, forzaAnno, forzaEsercizioAttivo]);
-
-  const yearlyVolumeData = useMemo(() => {
-    const perMese = Array.from({ length: 12 }, (_, i) => ({ mese: MESI_BREVI[i], volume: 0 }));
-    workouts.forEach((w) => {
-      if (!w.date.startsWith(String(volAnno))) return;
-      const meseIdx = Number(w.date.slice(5, 7)) - 1;
-      w.exercises.forEach((it) => {
-        const ex = exercises.find((e) => e.id === it.exerciseId);
-        if (!ex || ex.muscle !== volGruppo) return;
-        perMese[meseIdx].volume += itemVolume(it);
-      });
-    });
-    return perMese.map((m) => ({ ...m, volume: round1(m.volume) }));
-  }, [workouts, exercises, volAnno, volGruppo]);
 
   const strengthData = useMemo(() => {
     return [...workouts]
@@ -1669,38 +1592,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const bodyData = [...bodyLogs].sort((a, b) => (a.date > b.date ? 1 : -1)).map((b) => ({ data: formatDateShort(b.date), peso: Number(b.weight) || 0 }));
 
   return (
-    <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <StatisticheRiepilogo workouts={workouts} exercises={exercises} />
-
-      <Section title="Progressione forza per anno e gruppo" right={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
-            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <select className="input input-sm-w" value={forzaEsercizioAttivo} onChange={(e) => setForzaEsercizio(e.target.value)}>
-            {eserciziEffettuatiForza.length === 0 && <option value="">Nessun esercizio</option>}
-            {eserciziEffettuatiForza.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
-          </select>
-          <select className="input input-sm-w" value={forzaAnno} onChange={(e) => setForzaAnno(Number(e.target.value))}>
-            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
-          </select>
-        </div>
-      }>
-        {yearlyStrengthData.length === 0 ? <p className="muted">Nessun dato per questo esercizio in {forzaAnno}.</p> : (
-          <div style={{ height: 260 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={yearlyStrengthData}>
-                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
-                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
-                <YAxis stroke="var(--text-dim)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-                <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-      </Section>
-
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <Section title="Progressione forza" right={
         <select className="input input-sm-w" value={exId} onChange={(e) => setExId(e.target.value)}>
           {usableExercises.length === 0 && <option value="">Nessun dato</option>}
@@ -1720,29 +1612,6 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             </ResponsiveContainer>
           </div>
         )}
-      </Section>
-
-      <Section title="Volume per anno e gruppo" right={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
-            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <select className="input input-sm-w" value={volAnno} onChange={(e) => setVolAnno(Number(e.target.value))}>
-            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
-          </select>
-        </div>
-      }>
-        <div style={{ height: 260 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={yearlyVolumeData}>
-              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
-              <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
-              <YAxis stroke="var(--text-dim)" fontSize={11} />
-              <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-              <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
       </Section>
 
       <Section title="Volume settimanale per gruppo" right={
@@ -1781,6 +1650,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     </div>
   );
 }
+
 
 function RecordTab({ workouts, exercises }) {
   const [query, setQuery] = useState("");
@@ -1972,7 +1842,7 @@ export default function App() {
     { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
-    { key: "statistiche", label: "Cronologia", icon: BarChart2 },
+    { key: "statistiche", label: "Statistiche", icon: BarChart2 },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
