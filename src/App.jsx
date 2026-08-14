@@ -1245,6 +1245,15 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   const [year, setYear] = useState(todayISO().slice(0, 4));
   const [expanded, setExpanded] = useState({});
   const [historyQuery, setHistoryQuery] = useState("");
+  const [historyFilters, setHistoryFilters] = useState({});
+  const ANNI_CRONOLOGIA = Array.from({ length: 6 }, (_, i) => Number(todayISO().slice(0, 4)) - 4 + i);
+
+  function getHistoryFilter(muscle) {
+    return historyFilters[muscle] || { anno: Number(todayISO().slice(0, 4)), mese: Number(todayISO().slice(5, 7)) };
+  }
+  function setHistoryFilter(muscle, patch) {
+    setHistoryFilters((prev) => ({ ...prev, [muscle]: { ...getHistoryFilter(muscle), ...patch } }));
+  }
 
   const weekEnd = addDays(weekStart, 6);
   const weekStartISO = isoOf(weekStart), weekEndISO = isoOf(weekEnd);
@@ -1428,11 +1437,27 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
       }>
         {filteredEntries.length === 0 && <p className="muted">Nessun allenamento trovato.</p>}
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {groupedByMuscle.map(({ muscle, entries }) => (
+          {groupedByMuscle.map(({ muscle, entries }) => {
+            const filtro = getHistoryFilter(muscle);
+            const entriesDelMese = entries.filter((entry) => {
+              const entryMese = Number(entry.date.slice(5, 7));
+              const entryAnno = Number(entry.date.slice(0, 4));
+              return entryMese === filtro.mese && entryAnno === filtro.anno;
+            });
+            return (
             <div key={muscle}>
-              <div className="muscle-group-heading">{muscle.toUpperCase()}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+                <div className="muscle-group-heading" style={{ marginBottom: 0 }}>{muscle.toUpperCase()}</div>
+                <select className="input input-sm-w" value={filtro.mese} onChange={(e) => setHistoryFilter(muscle, { mese: Number(e.target.value) })}>
+                  {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+                </select>
+                <select className="input input-sm-w" value={filtro.anno} onChange={(e) => setHistoryFilter(muscle, { anno: Number(e.target.value) })}>
+                  {ANNI_CRONOLOGIA.map((a) => <option key={a} value={a}>{a}</option>)}
+                </select>
+              </div>
+              {entriesDelMese.length === 0 && <p className="muted" style={{ marginBottom: 8 }}>Nessun allenamento in {MONTHS_IT[filtro.mese - 1]} {filtro.anno}.</p>}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {entries.map((entry) => {
+          {entriesDelMese.map((entry) => {
             const isOpen = !!expanded[entry.key];
             return (
               <div key={entry.key} className="history-item">
@@ -1528,7 +1553,8 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
           })}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
     </div>
