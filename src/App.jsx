@@ -904,7 +904,6 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
     .filter((ex) => !q || ex.name.toLowerCase().includes(q));
 
   return (
-    <div className="nuovo-allenamento-dark">
     <Section title={`Nuovo allenamento — ${muscle.toUpperCase()}`}>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div>
@@ -968,7 +967,6 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
         </div>
       </div>
     </Section>
-    </div>
   );
 }
 
@@ -1166,7 +1164,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
   const finalIds = [...orderedIds, ...extraIds];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="nuovo-allenamento-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {finalIds.length > 0 && (
         <Section title={muscle.toUpperCase() + " — Esporta"}>
           <button className="btn btn-primary" onClick={() => downloadExcel(
@@ -2209,6 +2207,13 @@ export default function App() {
           --text:#ffffff; --text-dim:#ffffff;
           background:#000000; border-radius:12px; padding:16px;
         }
+        .nuovo-allenamento-dark .log-set-box,
+        .nuovo-allenamento-dark .log-rip-box,
+        .nuovo-allenamento-dark .log-note-box,
+        .nuovo-allenamento-dark .log-total-box{
+          background:#141414; border-color:#333333;
+        }
+        .nuovo-allenamento-dark .log-kg-box{ color:#1a1a1a; }
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; }
