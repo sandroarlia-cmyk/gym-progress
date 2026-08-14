@@ -1644,7 +1644,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} />
                 <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Legend wrapperStyle={{ fontSize: 11, color: "var(--text-dim)" }} />
                 {monthlyStrengthData.exNames.map((name, i) => (
                   <Line key={name} type="monotone" dataKey={name} stroke={LINE_COLORS[i % LINE_COLORS.length]} strokeWidth={2} dot={{ r: 3 }} connectNulls />
                 ))}
@@ -1927,10 +1927,10 @@ export default function App() {
   ];
 
   const tabs = [
+    { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
     { key: "statistiche", label: "Statistiche", icon: BarChart2 },
-    { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
@@ -1990,7 +1990,7 @@ export default function App() {
         .gt-bottomnav-item.active{ color:var(--accent); }
         .card{ background:var(--surface); border:1px solid var(--border-c); border-radius:10px; padding:18px 20px; }
         .section-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
-        .section-title{ font-size:38px; margin:0; }
+        .section-title{ font-size:38px; margin:0; color:var(--text); }
         .label{ display:block; font-size:26px; color:var(--text-dim); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.04em; }
         .input{ width:100%; background:var(--surface-2); border:1px solid var(--border-c); color:var(--text); border-radius:6px; padding:9px 11px; font-size:32px; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; }
         .input:focus{ outline:none; border-color:var(--accent); }
