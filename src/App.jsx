@@ -1164,7 +1164,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
   const finalIds = [...orderedIds, ...extraIds];
 
   return (
-    <div className="nuovo-allenamento-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {finalIds.length > 0 && (
         <Section title={muscle.toUpperCase() + " — Esporta"}>
           <button className="btn btn-primary" onClick={() => downloadExcel(
@@ -1192,7 +1192,8 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
           })
           .sort((a, b) => (a.date < b.date ? -1 : 1));
         return (
-          <Section key={exId} title={ex ? ex.name : "?"}>
+          <div className="nuovo-allenamento-dark" key={exId}>
+          <Section title={ex ? ex.name : "?"}>
             <div className="exercise-log-scroll">
               <div className="exercise-log-table">
                 <div className="exercise-log-row exercise-log-row-head">
@@ -1232,6 +1233,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
               </div>
             </div>
           </Section>
+          </div>
         );
       })}
     </div>
