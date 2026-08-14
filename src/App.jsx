@@ -36,21 +36,14 @@ const DEFAULT_EXERCISES = [
 
 const REQUIRED_EXERCISES = {
   Petto: [
+    "Panca piana",
     "Panca inclinata bilanciere",
+    "Croci ai cavi alti verso il basso",
+    "Dip alle parallele (petto)",
     "Panca piana manubri",
     "Panca inclinata manubri",
-    "Chest press macchina",
-    "Chest press inclinata macchina",
-    "Chest press convergente",
     "Croci ai cavi bassi verso l'alto (upper chest)",
-    "Croci ai cavi alti verso il basso",
-    "Croci ai cavi altezza petto",
-    "Croci con manubri panca piana",
-    "Croci con manubri panca inclinata",
-    "Pec deck / Butterfly macchina",
-    "Pullover manubrio",
-    "Push up / Piegamenti a corpo libero",
-    "Dip alle parallele (petto)"
+    "Push up / Piegamenti a corpo libero"
   ],
   Dorso: [
     "Lat Machine presa larga",
