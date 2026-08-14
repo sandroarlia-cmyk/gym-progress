@@ -1670,6 +1670,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
 
   return (
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <StatisticheTab workouts={workouts} exercises={exercises} />
+
       <Section title="Progressione forza per anno e gruppo" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
