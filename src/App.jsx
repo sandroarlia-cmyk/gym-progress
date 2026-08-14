@@ -1609,32 +1609,26 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [forzaAnno, setForzaAnno] = useState(now.getFullYear());
   const [forzaGruppo, setForzaGruppo] = useState(MUSCLE_GROUPS[0]);
   const eserciziEffettuatiForza = usableExercises.filter((e) => e.muscle === forzaGruppo);
-  const [forzaEsercizio, setForzaEsercizio] = useState(eserciziEffettuatiForza[0] ? eserciziEffettuatiForza[0].id : "");
-
-  useEffect(() => {
-    if (eserciziEffettuatiForza.length > 0 && !eserciziEffettuatiForza.some((e) => e.id === forzaEsercizio)) {
-      setForzaEsercizio(eserciziEffettuatiForza[0].id);
-    }
-    if (eserciziEffettuatiForza.length === 0 && forzaEsercizio !== "") {
-      setForzaEsercizio("");
-    }
-  }, [forzaGruppo, eserciziEffettuatiForza]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [forzaEsercizio, setForzaEsercizio] = useState("");
+  const forzaEsercizioAttivo = eserciziEffettuatiForza.some((e) => e.id === forzaEsercizio)
+    ? forzaEsercizio
+    : (eserciziEffettuatiForza[0] ? eserciziEffettuatiForza[0].id : "");
 
   const [volAnno, setVolAnno] = useState(now.getFullYear());
   const [volGruppo, setVolGruppo] = useState(MUSCLE_GROUPS[0]);
 
   const yearlyStrengthData = useMemo(() => {
-    if (!forzaEsercizio) return [];
+    if (!forzaEsercizioAttivo) return [];
     return [...workouts]
       .filter((w) => w.date.startsWith(String(forzaAnno)))
       .sort((a, b) => (a.date > b.date ? 1 : -1))
-      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizio))
+      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizioAttivo))
       .map((w) => {
-        const it = w.exercises.find((it) => it.exerciseId === forzaEsercizio);
+        const it = w.exercises.find((it) => it.exerciseId === forzaEsercizioAttivo);
         const weights = it.sets.map((s) => Number(s.weight) || 0);
         return { data: formatDateShort(w.date), peso: weights.length ? Math.max(...weights) : 0 };
       });
-  }, [workouts, forzaAnno, forzaEsercizio]);
+  }, [workouts, forzaAnno, forzaEsercizioAttivo]);
 
   const yearlyVolumeData = useMemo(() => {
     const perMese = Array.from({ length: 12 }, (_, i) => ({ mese: MESI_BREVI[i], volume: 0 }));
@@ -1683,7 +1677,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
             {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
           </select>
-          <select className="input input-sm-w" value={forzaEsercizio} onChange={(e) => setForzaEsercizio(e.target.value)}>
+          <select className="input input-sm-w" value={forzaEsercizioAttivo} onChange={(e) => setForzaEsercizio(e.target.value)}>
             {eserciziEffettuatiForza.length === 0 && <option value="">Nessun esercizio</option>}
             {eserciziEffettuatiForza.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
           </select>
