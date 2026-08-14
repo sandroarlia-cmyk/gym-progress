@@ -2267,13 +2267,13 @@ export default function App() {
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
-          .log-date-box{ width:130px; font-size:16px; padding:10px 8px; }
-          .log-set-box{ width:124px; font-size:16px; padding:10px 8px; }
-          .log-kg-box{ width:110px; font-size:16px; padding:10px 8px; background:var(--accent-dim); border-color:#E8C2BA; }
-          .log-rip-box{ width:80px; font-size:16px; padding:10px 8px; }
-          .log-note-box{ width:150px; font-size:14px; padding:10px 8px; }
-          .log-volume-box{ width:116px; font-size:18px; font-weight:700; padding:10px 8px; }
-          .log-total-box{ width:76px; font-size:16px; padding:10px 6px; }
+          .log-date-box{ width:150px; font-size:22px; padding:12px 10px; }
+          .log-set-box{ width:140px; font-size:22px; padding:12px 10px; }
+          .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
+          .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
+          .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
+          .log-volume-box{ width:140px; font-size:22px; font-weight:700; padding:12px 10px; }
+          .log-total-box{ width:84px; font-size:22px; padding:12px 8px; }
           .gt-root{ font-size:17px; }
           .gt-header{ padding:12px 14px; gap:10px; }
           .gt-logo{ width:32px; height:32px; border-width:4px; }
