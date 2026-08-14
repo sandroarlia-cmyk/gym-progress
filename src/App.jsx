@@ -1365,7 +1365,8 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
   }
 
   return (
-    <div className="statistiche-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="statistiche-dark">
       <Section title="Statistiche" right={
         <div style={{ display: "flex", gap: 6 }}>
           {["settimana", "mese", "anno"].map((m) => (
@@ -1401,6 +1402,7 @@ function StatisticheTab({ workouts, exercises, setWorkouts }) {
           ))}
         </div>
       </Section>
+      </div>
 
       <Section title="Esporta su Excel">
         <p className="hint" style={{ marginBottom: 12 }}>
@@ -2057,7 +2059,7 @@ export default function App() {
         .ex-row{ display:flex; align-items:center; gap:8px; }
         .ex-row .input{ flex:1; min-width:0; }
         .stats-table{ display:flex; flex-direction:column; gap:4px; }
-        .stats-row{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:9px 4px; font-size:30px; border-bottom:1px solid var(--border-c); }
+        .stats-row{ display:grid; grid-template-columns:2fr 1fr 1fr 1fr; padding:9px 4px; font-size:30px; border-bottom:1px solid var(--border-c); color:var(--text); }
         .stats-row-head{ color:var(--text-dim); font-size:26px; text-transform:uppercase; border-bottom:1px solid var(--border-c); }
         .week-nav{ display:flex; align-items:center; gap:14px; margin-bottom:8px; }
         .history-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
