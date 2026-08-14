@@ -1549,53 +1549,52 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [muscle, setMuscle] = useState(MUSCLE_GROUPS[0]);
 
   const now = new Date();
+  const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
+  const MESI_BREVI = MONTHS_IT.map((m) => m.slice(0, 3));
+
   const [forzaAnno, setForzaAnno] = useState(now.getFullYear());
-  const [forzaMese, setForzaMese] = useState(now.getMonth() + 1);
   const [forzaGruppo, setForzaGruppo] = useState(MUSCLE_GROUPS[0]);
+  const eserciziEffettuatiForza = usableExercises.filter((e) => e.muscle === forzaGruppo);
+  const [forzaEsercizio, setForzaEsercizio] = useState(eserciziEffettuatiForza[0] ? eserciziEffettuatiForza[0].id : "");
+
+  useEffect(() => {
+    if (eserciziEffettuatiForza.length > 0 && !eserciziEffettuatiForza.some((e) => e.id === forzaEsercizio)) {
+      setForzaEsercizio(eserciziEffettuatiForza[0].id);
+    }
+    if (eserciziEffettuatiForza.length === 0 && forzaEsercizio !== "") {
+      setForzaEsercizio("");
+    }
+  }, [forzaGruppo, eserciziEffettuatiForza]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [volAnno, setVolAnno] = useState(now.getFullYear());
-  const [volMese, setVolMese] = useState(now.getMonth() + 1);
   const [volGruppo, setVolGruppo] = useState(MUSCLE_GROUPS[0]);
 
-  const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
-  const LINE_COLORS = ["#7be08a", "#5aa668", "#a8d5ba", "#3E7191", "#D9412E", "#FBE3DE", "#2E8B57", "#639922"];
-
-  const monthlyStrengthData = useMemo(() => {
-    const rowsMap = {};
-    const exNamesSet = new Set();
-    const monthKey = `${forzaAnno}-${String(forzaMese).padStart(2, "0")}`;
-    workouts.forEach((w) => {
-      if (!w.date.startsWith(monthKey)) return;
-      w.exercises.forEach((it) => {
-        const ex = exercises.find((e) => e.id === it.exerciseId);
-        if (!ex || ex.muscle !== forzaGruppo) return;
+  const yearlyStrengthData = useMemo(() => {
+    if (!forzaEsercizio) return [];
+    return [...workouts]
+      .filter((w) => w.date.startsWith(String(forzaAnno)))
+      .sort((a, b) => (a.date > b.date ? 1 : -1))
+      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizio))
+      .map((w) => {
+        const it = w.exercises.find((it) => it.exerciseId === forzaEsercizio);
         const weights = it.sets.map((s) => Number(s.weight) || 0);
-        if (!weights.length) return;
-        const top = Math.max(...weights);
-        if (!rowsMap[w.date]) rowsMap[w.date] = { data: formatDateShort(w.date), dataIso: w.date };
-        rowsMap[w.date][ex.name] = Math.max(rowsMap[w.date][ex.name] || 0, top);
-        exNamesSet.add(ex.name);
+        return { data: formatDateShort(w.date), peso: weights.length ? Math.max(...weights) : 0 };
       });
-    });
-    const rows = Object.values(rowsMap).sort((a, b) => (a.dataIso < b.dataIso ? -1 : 1));
-    return { rows, exNames: Array.from(exNamesSet) };
-  }, [workouts, exercises, forzaAnno, forzaMese, forzaGruppo]);
+  }, [workouts, forzaAnno, forzaEsercizio]);
 
-  const monthlyVolumeData = useMemo(() => {
-    const map = {};
-    const monthKey = `${volAnno}-${String(volMese).padStart(2, "0")}`;
+  const yearlyVolumeData = useMemo(() => {
+    const perMese = Array.from({ length: 12 }, (_, i) => ({ mese: MESI_BREVI[i], volume: 0 }));
     workouts.forEach((w) => {
-      if (!w.date.startsWith(monthKey)) return;
+      if (!w.date.startsWith(String(volAnno))) return;
+      const meseIdx = Number(w.date.slice(5, 7)) - 1;
       w.exercises.forEach((it) => {
         const ex = exercises.find((e) => e.id === it.exerciseId);
         if (!ex || ex.muscle !== volGruppo) return;
-        map[w.date] = (map[w.date] || 0) + itemVolume(it);
+        perMese[meseIdx].volume += itemVolume(it);
       });
     });
-    return Object.entries(map)
-      .sort(([a], [b]) => (a < b ? -1 : 1))
-      .map(([date, vol]) => ({ data: formatDateShort(date), volume: round1(vol) }));
-  }, [workouts, exercises, volAnno, volMese, volGruppo]);
+    return perMese.map((m) => ({ ...m, volume: round1(m.volume) }));
+  }, [workouts, exercises, volAnno, volGruppo]);
 
   const strengthData = useMemo(() => {
     return [...workouts]
@@ -1623,60 +1622,30 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
 
   return (
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <Section title="Progressione forza per mese e gruppo" right={
+      <Section title="Progressione forza per anno e gruppo" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
             {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
           </select>
-          <select className="input input-sm-w" value={forzaMese} onChange={(e) => setForzaMese(Number(e.target.value))}>
-            {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
+          <select className="input input-sm-w" value={forzaEsercizio} onChange={(e) => setForzaEsercizio(e.target.value)}>
+            {eserciziEffettuatiForza.length === 0 && <option value="">Nessun esercizio</option>}
+            {eserciziEffettuatiForza.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
           </select>
           <select className="input input-sm-w" value={forzaAnno} onChange={(e) => setForzaAnno(Number(e.target.value))}>
             {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
           </select>
         </div>
       }>
-        {monthlyStrengthData.rows.length === 0 ? <p className="muted">Nessun dato per {forzaGruppo} in questo mese.</p> : (
+        {yearlyStrengthData.length === 0 ? <p className="muted">Nessun dato per questo esercizio in {forzaAnno}.</p> : (
           <div style={{ height: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlyStrengthData.rows}>
+              <LineChart data={yearlyStrengthData}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} />
                 <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-                <Legend wrapperStyle={{ fontSize: 11, color: "var(--text-dim)" }} />
-                {monthlyStrengthData.exNames.map((name, i) => (
-                  <Line key={name} type="monotone" dataKey={name} stroke={LINE_COLORS[i % LINE_COLORS.length]} strokeWidth={2} dot={{ r: 3 }} connectNulls />
-                ))}
+                <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
               </LineChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-      </Section>
-
-      <Section title="Volume per mese e gruppo" right={
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
-            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
-          </select>
-          <select className="input input-sm-w" value={volMese} onChange={(e) => setVolMese(Number(e.target.value))}>
-            {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
-          </select>
-          <select className="input input-sm-w" value={volAnno} onChange={(e) => setVolAnno(Number(e.target.value))}>
-            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
-          </select>
-        </div>
-      }>
-        {monthlyVolumeData.length === 0 ? <p className="muted">Nessun dato per {volGruppo} in questo mese.</p> : (
-          <div style={{ height: 240 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={monthlyVolumeData}>
-                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
-                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
-                <YAxis stroke="var(--text-dim)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-                <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
-              </BarChart>
             </ResponsiveContainer>
           </div>
         )}
@@ -1701,6 +1670,29 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             </ResponsiveContainer>
           </div>
         )}
+      </Section>
+
+      <Section title="Volume per anno e gruppo" right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
+            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={volAnno} onChange={(e) => setVolAnno(Number(e.target.value))}>
+            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+      }>
+        <div style={{ height: 260 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={yearlyVolumeData}>
+              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+              <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
+              <YAxis stroke="var(--text-dim)" fontSize={11} />
+              <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+              <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
 
       <Section title="Volume settimanale per gruppo" right={
