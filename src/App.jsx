@@ -1567,6 +1567,48 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [exId, setExId] = useState(usableExercises[0] ? usableExercises[0].id : "");
   const [muscle, setMuscle] = useState(MUSCLE_GROUPS[0]);
 
+  const now = new Date();
+  const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
+  const MESI_BREVI = MONTHS_IT.map((m) => m.slice(0, 3));
+
+  const [forzaAnno, setForzaAnno] = useState(now.getFullYear());
+  const [forzaGruppo, setForzaGruppo] = useState(MUSCLE_GROUPS[0]);
+  const eserciziEffettuatiForza = usableExercises.filter((e) => e.muscle === forzaGruppo);
+  const [forzaEsercizio, setForzaEsercizio] = useState("");
+  const forzaEsercizioAttivo = eserciziEffettuatiForza.some((e) => e.id === forzaEsercizio)
+    ? forzaEsercizio
+    : (eserciziEffettuatiForza[0] ? eserciziEffettuatiForza[0].id : "");
+
+  const [volAnno, setVolAnno] = useState(now.getFullYear());
+  const [volGruppo, setVolGruppo] = useState(MUSCLE_GROUPS[0]);
+
+  const yearlyStrengthData = useMemo(() => {
+    if (!forzaEsercizioAttivo) return [];
+    return [...workouts]
+      .filter((w) => w.date.startsWith(String(forzaAnno)))
+      .sort((a, b) => (a.date > b.date ? 1 : -1))
+      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizioAttivo))
+      .map((w) => {
+        const it = w.exercises.find((it) => it.exerciseId === forzaEsercizioAttivo);
+        const weights = it.sets.map((s) => Number(s.weight) || 0);
+        return { data: formatDateShort(w.date), peso: weights.length ? Math.max(...weights) : 0 };
+      });
+  }, [workouts, forzaAnno, forzaEsercizioAttivo]);
+
+  const yearlyVolumeData = useMemo(() => {
+    const perMese = Array.from({ length: 12 }, (_, i) => ({ mese: MESI_BREVI[i], volume: 0 }));
+    workouts.forEach((w) => {
+      if (!w.date.startsWith(String(volAnno))) return;
+      const meseIdx = Number(w.date.slice(5, 7)) - 1;
+      w.exercises.forEach((it) => {
+        const ex = exercises.find((e) => e.id === it.exerciseId);
+        if (!ex || ex.muscle !== volGruppo) return;
+        perMese[meseIdx].volume += itemVolume(it);
+      });
+    });
+    return perMese.map((m) => ({ ...m, volume: round1(m.volume) }));
+  }, [workouts, exercises, volAnno, volGruppo]);
+
   const strengthData = useMemo(() => {
     return [...workouts]
       .sort((a, b) => (a.date > b.date ? 1 : -1))
@@ -1592,7 +1634,36 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const bodyData = [...bodyLogs].sort((a, b) => (a.date > b.date ? 1 : -1)).map((b) => ({ data: formatDateShort(b.date), peso: Number(b.weight) || 0 }));
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <Section title="Progressione forza per anno e gruppo" right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
+            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={forzaEsercizioAttivo} onChange={(e) => setForzaEsercizio(e.target.value)}>
+            {eserciziEffettuatiForza.length === 0 && <option value="">Nessun esercizio</option>}
+            {eserciziEffettuatiForza.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+          </select>
+          <select className="input input-sm-w" value={forzaAnno} onChange={(e) => setForzaAnno(Number(e.target.value))}>
+            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+      }>
+        {yearlyStrengthData.length === 0 ? <p className="muted">Nessun dato per questo esercizio in {forzaAnno}.</p> : (
+          <div style={{ height: 260 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={yearlyStrengthData}>
+                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
+                <YAxis stroke="var(--text-dim)" fontSize={11} />
+                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+                <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </Section>
+
       <Section title="Progressione forza" right={
         <select className="input input-sm-w" value={exId} onChange={(e) => setExId(e.target.value)}>
           {usableExercises.length === 0 && <option value="">Nessun dato</option>}
@@ -1612,6 +1683,29 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             </ResponsiveContainer>
           </div>
         )}
+      </Section>
+
+      <Section title="Volume per anno e gruppo" right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
+            {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+          <select className="input input-sm-w" value={volAnno} onChange={(e) => setVolAnno(Number(e.target.value))}>
+            {ANNI_DISPONIBILI.map((a) => <option key={a} value={a}>{a}</option>)}
+          </select>
+        </div>
+      }>
+        <div style={{ height: 260 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={yearlyVolumeData}>
+              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+              <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
+              <YAxis stroke="var(--text-dim)" fontSize={11} />
+              <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+              <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
 
       <Section title="Volume settimanale per gruppo" right={
@@ -1650,7 +1744,6 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     </div>
   );
 }
-
 
 function RecordTab({ workouts, exercises }) {
   const [query, setQuery] = useState("");
@@ -2063,13 +2156,6 @@ export default function App() {
           background:var(--bg); border-radius:12px; padding:16px;
         }
         .progressi-dark .btn-primary{ color:#0f1310; }
-
-        .statistiche-nera{
-          --bg:#000000; --surface:#000000; --surface-2:#111111; --border-c:#333333;
-          --text:#ffffff; --text-dim:#ffffff; --accent:#7be08a; --accent-dim:#1a1a1a; --accent2:#7be08a; --good:#7be08a;
-          background:#000000; border-radius:12px; padding:16px;
-        }
-        .statistiche-nera .btn-primary{ color:#0f1310; }
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; }
