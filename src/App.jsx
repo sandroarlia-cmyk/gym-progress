@@ -2305,8 +2305,9 @@ export default function App() {
           .plate-label{ font-size:10.5px; }
           .save-bar{ padding:10px 12px; flex-wrap:wrap; gap:10px; bottom:6px; }
           .split-name-input{ font-size:18px; max-width:200px; }
-          .stats-row{ font-size:13px; padding:7px 3px; }
-          .stats-row-head{ font-size:11px; }
+          .stats-row{ font-size:13px; padding:7px 3px; grid-template-columns:1.5fr 0.8fr 1.1fr 1fr; gap:4px; }
+          .stats-row-head{ font-size:10px; align-items:start; }
+          .stats-row-head span{ white-space:normal; line-height:1.15; word-break:break-word; }
           .week-nav{ gap:8px; }
           .history-head{ padding:9px 10px; flex-wrap:wrap; gap:6px; }
           .history-body{ padding:9px 10px; }
