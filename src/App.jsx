@@ -2133,20 +2133,20 @@ export default function App() {
         .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box{
           flex-shrink:0; display:flex; align-items:center; justify-content:center;
           padding:14px 10px; border-radius:6px; font-weight:700; white-space:nowrap;
-          font-size:20px; overflow:hidden;
+          font-size:22px; overflow:hidden;
         }
         .exercise-log-row-head .log-date-box, .exercise-log-row-head .log-set-box,
         .exercise-log-row-head .log-kg-box, .exercise-log-row-head .log-rip-box,
         .exercise-log-row-head .log-note-box, .exercise-log-row-head .log-volume-box,
-        .exercise-log-row-head .log-total-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:20px; }
-        .log-date-box{ width:150px; background:var(--surface-2); color:var(--text); font-size:20px; }
-        .log-set-box{ width:140px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
-        .log-kg-box{ width:130px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:20px; }
-        .log-rip-box{ width:90px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
-        .log-note-box{ width:190px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; font-size:20px; }
+        .exercise-log-row-head .log-total-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:22px; }
+        .log-date-box{ width:150px; background:var(--surface-2); color:var(--text); font-size:22px; }
+        .log-set-box{ width:140px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-kg-box{ width:130px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:22px; }
+        .log-rip-box{ width:90px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-note-box{ width:190px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; font-size:22px; }
         .log-note-box span{ white-space:nowrap; }
         .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
-        .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:20px; }
+        .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
