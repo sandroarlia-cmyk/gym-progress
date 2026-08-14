@@ -1823,7 +1823,6 @@ export default function App() {
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
     { key: "statistiche", label: "Statistiche", icon: BarChart2 },
     { key: "progressi", label: "Progressi", icon: TrendingUp },
-    { key: "record", label: "Record", icon: Trophy },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
@@ -2162,7 +2161,6 @@ export default function App() {
           )}
           {tab === "statistiche" && <StatisticheTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "progressi" && <ProgressiTab workouts={workouts} exercises={exercises} bodyLogs={bodyLogs} />}
-          {tab === "record" && <RecordTab workouts={workouts} exercises={exercises} />}
           {tab === "impostazioni" && <ImpostazioniTab bodyLogs={bodyLogs} setBodyLogs={setBodyLogs} />}
         </div>
       </div>
