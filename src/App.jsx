@@ -850,6 +850,133 @@ function NuovoAllenamento({ exercises, setExercises, workouts, setWorkouts }) {
   );
 }
 
+function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkouts }) {
+  const [date, setDate] = useState(todayISO());
+  const [items, setItems] = useState([]);
+  const [query, setQuery] = useState("");
+  const [openCards, setOpenCards] = useState([]);
+
+  function openExerciseCard(exerciseId, dateStr) {
+    const cardId = "ex-" + exerciseId + "-" + dateStr;
+    setOpenCards((prev) => (prev.some((c) => c.id === cardId) ? prev : [...prev, { id: cardId, type: "exercise", date: dateStr, exerciseId }]));
+  }
+  function closeCard(cardId) { setOpenCards((prev) => prev.filter((c) => c.id !== cardId)); }
+
+  function addExerciseToSession(ex) {
+    if (items.some((it) => it.exerciseId === ex.id)) return;
+    setItems([...items, { id: uid(), exerciseId: ex.id, sets: [{ weight: "", reps: "", rir: "", recupero: "", notes: "" }] }]);
+  }
+  function addCustomExercise(text) {
+    const newEx = { id: uid(), name: text, muscle, secondary: "", equipment: "", favorite: false };
+    setExercises([...exercises, newEx]);
+    setItems([...items, { id: uid(), exerciseId: newEx.id, sets: [{ weight: "", reps: "", rir: "", recupero: "", notes: "" }] }]);
+  }
+  function removeExercise(itemId) { setItems(items.filter((it) => it.id !== itemId)); }
+  function addSet(itemId) {
+    setItems(items.map((it) => it.id === itemId && it.sets.length < 10
+      ? { ...it, sets: [...it.sets, { weight: "", reps: "", rir: "", recupero: "", notes: "" }] }
+      : it));
+  }
+  function updateSet(itemId, idx, field, value) {
+    setItems(items.map((it) => it.id === itemId
+      ? { ...it, sets: it.sets.map((s, i) => i === idx ? { ...s, [field]: value } : s) }
+      : it));
+  }
+  function removeSet(itemId, idx) {
+    setItems(items.map((it) => it.id === itemId ? { ...it, sets: it.sets.filter((_, i) => i !== idx) } : it));
+  }
+
+  function lastExecution(exerciseId) {
+    const past = workouts
+      .filter((w) => w.date <= date && w.exercises.some((it) => it.exerciseId === exerciseId))
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
+    if (!past.length) return null;
+    const it = past[0].exercises.find((it) => it.exerciseId === exerciseId);
+    if (!it || !it.sets.length) return null;
+    return { date: past[0].date, sets: it.sets };
+  }
+
+  function save() {
+    if (!items.length) return;
+    setWorkouts([...workouts, { id: uid(), date, exercises: items }]);
+    setItems([]);
+  }
+
+  const totalVolume = items.reduce((a, it) => a + itemVolume(it), 0);
+  const groupList = orderedExerciseList(exercises, muscle);
+  const addedList = groupList.filter((ex) => items.some((it) => it.exerciseId === ex.id));
+  const q = query.trim().toLowerCase();
+  const availableList = groupList
+    .filter((ex) => !items.some((it) => it.exerciseId === ex.id))
+    .filter((ex) => !q || ex.name.toLowerCase().includes(q));
+
+  return (
+    <Section title={`Nuovo allenamento — ${muscle.toUpperCase()}`}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <div>
+          <label className="label">Data</label>
+          <DateItalianPicker value={date} onChange={setDate} />
+          <div className="hint" style={{ marginTop: 6 }}>{dayNameFromDate(date)} {formatDateLong(date)}</div>
+        </div>
+
+        {addedList.length > 0 && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {addedList.map((ex) => {
+              const item = items.find((it) => it.exerciseId === ex.id);
+              return (
+                <ExerciseEditor key={ex.id} item={item} ex={ex} last={lastExecution(ex.id)} workouts={workouts}
+                  onOpenExercise={openExerciseCard}
+                  addSet={addSet} updateSet={updateSet} removeSet={removeSet} removeExercise={removeExercise} hideMuscleBadge />
+              );
+            })}
+          </div>
+        )}
+
+        {openCards.length > 0 && (
+          <div className="history-cards-grid">
+            {openCards.map((card) => (
+              <HistoryCard key={card.id} card={card} workouts={workouts} exercises={exercises} onClose={() => closeCard(card.id)} />
+            ))}
+          </div>
+        )}
+
+        <div>
+          <label className="label">Cerca in {muscle}</label>
+          <div className="search-wrap">
+            <Search size={22} className="search-icon" />
+            <input className="input" style={{ paddingLeft: 46 }} placeholder={`Cerca un esercizio di ${muscle}...`}
+              value={query} onChange={(e) => setQuery(e.target.value)} />
+          </div>
+        </div>
+
+        <div className="group-ex-list">
+          {availableList.map((ex) => (
+            <div key={ex.id} className="group-ex-row" onClick={() => addExerciseToSession(ex)}>
+              <span>{ex.name}</span>
+              <Plus size={24} />
+            </div>
+          ))}
+          {availableList.length === 0 && <p className="muted" style={{ padding: "4px 0" }}>Nessun esercizio trovato.</p>}
+        </div>
+
+        <div className="custom-slots">
+          <div className="label">Esercizio personalizzato</div>
+          {[0, 1, 2].map((idx) => (
+            <CustomSlot key={idx} placeholder={`Esercizio personalizzato ${idx + 1}`} onAdd={addCustomExercise} />
+          ))}
+        </div>
+
+        <div className="save-bar">
+          <Plate value={round1(totalVolume)} label="volume sessione" unit="kg" />
+          <button className="btn btn-primary" disabled={!items.length} onClick={save}>
+            <Save size={24} /> Salva allenamento
+          </button>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 const SPLIT_ROWS = 10;
 
 function getSplitDayRows(split, day) {
@@ -1651,7 +1778,7 @@ function NavIcon({ t, size }) {
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [loadFailed, setLoadFailed] = useState(false);
-  const [tab, setTab] = useState("nuovo");
+  const [tab, setTab] = useState("m-Petto");
   const [exercises, setExercises] = useState(DEFAULT_EXERCISES);
   const [splits, setSplits] = useState([]);
   const [workouts, setWorkouts] = useState([]);
@@ -1692,7 +1819,6 @@ export default function App() {
   ];
 
   const tabs = [
-    { key: "nuovo", label: "Nuovo allenamento", icon: Dumbbell },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
     { key: "statistiche", label: "Statistiche", icon: BarChart2 },
@@ -2027,11 +2153,13 @@ export default function App() {
         </div>
 
         <div className="gt-main">
-          <div style={{ display: tab === "nuovo" ? "block" : "none" }}>
-            <NuovoAllenamento exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
-          </div>
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
-          {tab.startsWith("m-") && <MuscleLogTab muscle={tab.slice(2)} workouts={workouts} exercises={exercises} />}
+          {tab.startsWith("m-") && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <MuscleLogTab muscle={tab.slice(2)} workouts={workouts} exercises={exercises} />
+              <MuscleEntryPanel muscle={tab.slice(2)} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
+            </div>
+          )}
           {tab === "statistiche" && <StatisticheTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "progressi" && <ProgressiTab workouts={workouts} exercises={exercises} bodyLogs={bodyLogs} />}
           {tab === "record" && <RecordTab workouts={workouts} exercises={exercises} />}
