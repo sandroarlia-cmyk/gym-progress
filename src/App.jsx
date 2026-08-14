@@ -1966,10 +1966,10 @@ export default function App() {
 
   const tabs = [
     { key: "progressi", label: "Progressi", icon: TrendingUp },
-    { key: "split", label: "Split settimanali", icon: CalendarDays },
-    ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
     { key: "statistiche", label: "Statistiche", icon: BarChart2 },
     { key: "cronologia", label: "Cronologia", icon: Search },
+    { key: "split", label: "Split settimanali", icon: CalendarDays },
+    ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
