@@ -2210,10 +2210,20 @@ export default function App() {
         .nuovo-allenamento-dark .log-set-box,
         .nuovo-allenamento-dark .log-rip-box,
         .nuovo-allenamento-dark .log-note-box,
-        .nuovo-allenamento-dark .log-total-box{
-          background:#141414; border-color:#333333;
+        .nuovo-allenamento-dark .log-total-box,
+        .nuovo-allenamento-dark .log-kg-box{
+          background:#FFFFFF; color:#1a1a1a; border-color:#dddddd;
         }
-        .nuovo-allenamento-dark .log-kg-box{ color:#1a1a1a; }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
+          background:#FFFFFF; color:#1a1a1a;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-date-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box{
+          color:#ffffff;
+        }
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; }
