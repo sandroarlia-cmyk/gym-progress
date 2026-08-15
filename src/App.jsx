@@ -2282,7 +2282,12 @@ export default function App() {
           .comp-table-mobile > span:not(.comp-header):not(.comp-label):not(.diff-badge){ font-size:17px; }
           .comp-table-mobile .diff-badge{ font-size:19px; padding:4px 9px; }
           .last-time-block .kg-chip-row{ display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; }
-          .last-time-block .kg-chip{ width:100%; box-sizing:border-box; text-align:center; }
+          .last-time-block .kg-chip{
+            width:100%; box-sizing:border-box; text-align:center;
+            white-space:normal; word-break:break-word; line-height:1.25;
+            display:flex; align-items:center; justify-content:center;
+            min-height:44px; padding:6px 4px; font-size:11.5px;
+          }
           .diff-badge{ font-size:15px; padding:3px 8px; background:#FFF6C4; border-color:#E8D97A; }
           .comp-table{ grid-template-columns:auto 80px 80px; gap:5px 8px; }
           .comp-header, .comp-label{ font-size:15px; }
