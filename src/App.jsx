@@ -2091,8 +2091,8 @@ export default function App() {
         }
         .input-kg{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; font-weight:700; }
         .input-kg::placeholder{ color:#f5d5d0 !important; }
-        .input-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; font-weight:700; }
-        .input-rip::placeholder{ color:#c9e8cf !important; }
+        .input-rip{ background:#aef000 !important; color:#000000 !important; border-color:#aef000 !important; font-weight:700; }
+        .input-rip::placeholder{ color:#4a5a00 !important; }
         .input-rir{ background:#ffffff !important; color:#1a1a1a !important; border-color:#dddddd !important; font-weight:700; }
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
