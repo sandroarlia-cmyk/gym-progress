@@ -2320,7 +2320,7 @@ export default function App() {
           .badge{ font-size:11.5px; padding:2px 7px; }
           .exercise-name{ font-size:16px; }
           .set-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:8px; }
-          .set-row{ grid-template-columns:24px 58px 48px 40px 46px 37px 100px 34px; min-width:480px; gap:5px; }
+          .set-row{ grid-template-columns:24px 78px 68px 58px 100px 46px 110px 34px; min-width:700px; gap:6px; }
           .set-row-head{ font-size:10.5px; min-width:480px; }
           .set-idx{ font-size:12px; }
           .set-row .btn-icon{ padding:2px; }
@@ -2353,8 +2353,8 @@ export default function App() {
           .group-ex-row{ font-size:14px; padding:9px 10px; }
           .recall-ex{ font-size:12.5px; }
           .tonn-cell{ font-size:12.5px; }
-          .tonn-box{ font-size:16.5px; font-weight:700; padding:6px 6px; }
-          .input-kg, .input-rip, .input-rir{ font-size:18px !important; }
+          .tonn-box{ font-size:18.5px; font-weight:700; padding:8px 6px; }
+          .input-kg, .input-rip, .input-rir{ font-size:20px !important; padding:10px 6px !important; }
           .split-col{ width:170px; }
           .split-col-head{ font-size:14px; padding:8px 4px; }
           .split-cell-input{ padding:6px 8px; }
