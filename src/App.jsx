@@ -494,8 +494,8 @@ function CompTable({ prevVol, prevReps, vol, totalReps, diffVol, diffReps, mobil
       <span>{round1(vol)}</span>
       <span>{totalReps}</span>
       <span className="comp-label">Differenza</span>
-      <span className="diff-badge">{diffVol >= 0 ? "+" : ""}{diffVol}</span>
-      <span className="diff-badge">{diffReps >= 0 ? "+" : ""}{diffReps}</span>
+      <span className="diff-badge diff-tonn">{diffVol >= 0 ? "+" : ""}{diffVol}</span>
+      <span className="diff-badge diff-rip">{diffReps >= 0 ? "+" : ""}{diffReps}</span>
     </div>
   );
 }
@@ -541,10 +541,10 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
                 {last.sets.map((s, i) => (
                   <span key={i} className="kg-chip">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
                 ))}
-                <span className="kg-chip kg-chip-accent">
+                <span className="kg-chip kg-chip-accent chip-tonn">
                   {prevVol} kg tonn.
                 </span>
-                <span className="kg-chip kg-chip-accent">
+                <span className="kg-chip kg-chip-accent chip-rip">
                   {prevReps} rip. tot.
                 </span>
               </div>
@@ -2073,6 +2073,15 @@ export default function App() {
         .exercise-block-dark, .exercise-block-dark *{ color:#ffffff !important; font-weight:700; }
         .exercise-block-dark .input, .exercise-block-dark select.input{ background:#262626; border-color:#444444; color:#ffffff !important; }
         .exercise-block-dark .badge{ background:#262626; border-color:#444444; }
+        .exercise-block-dark .date-chip{ color:#1a1a1a !important; }
+        .exercise-block-dark .dates-count-box{ background:#c0392b !important; color:#ffffff !important; }
+        .exercise-block-dark .dates-arrow-box{ background:#ffffff !important; color:#1a1a1a !important; }
+        .exercise-block-dark .kg-chip{ color:#1a1a1a !important; }
+        .exercise-block-dark .chip-tonn{ background:#c0392b !important; color:#ffffff !important; }
+        .exercise-block-dark .chip-rip{ background:#1f6b3a !important; color:#ffffff !important; }
+        .exercise-block-dark .diff-tonn{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; }
+        .exercise-block-dark .diff-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; }
+        .exercise-block-dark .delete-icon-btn{ background:#ffffff !important; color:#c0392b !important; }
         .tonn-box{
           background:#c0392b !important; color:#ffffff !important; border-radius:6px;
           font-size:calc(28px + 2pt); padding:4px 6px;
