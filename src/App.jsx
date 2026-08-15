@@ -415,7 +415,7 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
             {item.sets.map((s, idx) => (
               <div className="plain-set-row" key={idx}>
                 <span>{idx + 1}</span>
-                <span>{s.weight || 0}</span>
+                <span className="plain-kg-box">{s.weight || 0}</span>
                 <span>{s.reps || 0}</span>
                 <span>{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</span>
                 <span className="plain-tonn plain-tonn-box">{round1(setVolume(s))}</span>
@@ -2146,9 +2146,14 @@ export default function App() {
           background:#c0392b; color:#ffffff !important; border-radius:6px;
           padding:2px 6px; display:inline-block; text-align:center;
         }
+        .plain-kg-box{
+          background:#c0392b; color:#ffffff !important; border-radius:6px;
+          padding:2px 6px; display:inline-block; text-align:center;
+          font-size:calc(26px + 1pt); font-weight:700;
+        }
         .tot-esercizio-badge{
           background:#c0392b; color:#ffffff; font-weight:700; padding:3px 10px;
-          border-radius:6px; display:inline-block;
+          border-radius:6px; display:inline-block; font-size:calc(28px + 3pt);
         }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
@@ -2311,7 +2316,8 @@ export default function App() {
           .history-card-dark .plain-set-row-head{ font-size:14px; font-weight:700; }
           .history-card-dark .plain-note-cell{ font-size:14px; font-weight:700; }
           .history-card-dark .font-display{ font-size:18px; }
-          .history-card-dark .tot-esercizio-badge{ font-size:17px; }
+          .history-card-dark .tot-esercizio-badge{ font-size:20px; }
+          .history-card-dark .plain-kg-box{ font-size:19px; }
           .history-card-dark .hint{ font-size:16px; font-weight:700; }
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
