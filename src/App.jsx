@@ -2093,6 +2093,7 @@ export default function App() {
         .input-kg::placeholder{ color:#f5d5d0 !important; }
         .input-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; font-weight:700; }
         .input-rip::placeholder{ color:#c9e8cf !important; }
+        .input-rir{ background:#ffffff !important; color:#1a1a1a !important; border-color:#dddddd !important; font-weight:700; }
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
         .set-table{ margin-top:10px; display:flex; flex-direction:column; gap:7px; }
@@ -2320,7 +2321,7 @@ export default function App() {
           .badge{ font-size:11.5px; padding:2px 7px; }
           .exercise-name{ font-size:16px; }
           .set-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:8px; }
-          .set-row{ grid-template-columns:24px 78px 68px 58px 100px 46px 110px 34px; min-width:700px; gap:6px; }
+          .set-row{ grid-template-columns:24px 62px 54px 46px 100px 46px 110px 34px; min-width:700px; gap:6px; }
           .set-row-head{ font-size:10.5px; min-width:480px; }
           .set-idx{ font-size:12px; }
           .set-row .btn-icon{ padding:2px; }
