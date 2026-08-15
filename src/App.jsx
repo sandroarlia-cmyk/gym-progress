@@ -574,11 +574,11 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
           {item.sets.map((s, idx) => (
             <div className="set-row" key={idx}>
               <span className="set-idx">{idx + 1}</span>
-              <input className="input input-sm" type="number" value={s.weight}
+              <input className="input input-sm input-kg" type="number" value={s.weight}
                 onChange={(e) => updateSet(item.id, idx, "weight", e.target.value)} />
-              <input className="input input-sm" type="number" value={s.reps}
+              <input className="input input-sm input-rip" type="number" value={s.reps}
                 onChange={(e) => updateSet(item.id, idx, "reps", e.target.value)} />
-              <input className="input input-sm" type="number" value={s.rir}
+              <input className="input input-sm input-rir" type="number" value={s.rir}
                 onChange={(e) => updateSet(item.id, idx, "rir", e.target.value)} />
               <span className="tonn-cell tonn-box">{round1(setVolume(s))}</span>
               <select className="input input-sm" value={s.recupero}
@@ -2086,13 +2086,17 @@ export default function App() {
         .exercise-block-dark .delete-icon-btn svg{ color:#c0392b !important; stroke:#c0392b !important; }
         .exercise-block-dark .comp-table-mobile{ background:#141414 !important; }
         .tonn-box{
-          background:#c0392b !important; color:#ffffff !important; border-radius:6px;
-          font-size:calc(28px + 2pt); padding:4px 6px;
+          background:#c0392b !important; color:#ffffff !important; border-radius:8px;
+          font-size:calc(28px + 4pt); font-weight:700; padding:8px 8px;
         }
+        .input-kg{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; font-weight:700; }
+        .input-kg::placeholder{ color:#f5d5d0 !important; }
+        .input-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; font-weight:700; }
+        .input-rip::placeholder{ color:#c9e8cf !important; }
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
         .set-table{ margin-top:10px; display:flex; flex-direction:column; gap:7px; }
-        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 0.7fr 0.65fr 1.5fr 44px; gap:10px; align-items:center; }
+        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 1.1fr 0.65fr 1fr 44px; gap:10px; align-items:center; }
         .set-row-head{ color:var(--text-dim); font-size:24px; text-transform:uppercase; }
         .set-idx{ color:var(--text-dim); font-size:28px; text-align:center; }
         .save-bar{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border-c); border-radius:10px; padding:14px 18px; position:sticky; bottom:12px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
@@ -2349,7 +2353,8 @@ export default function App() {
           .group-ex-row{ font-size:14px; padding:9px 10px; }
           .recall-ex{ font-size:12.5px; }
           .tonn-cell{ font-size:12.5px; }
-          .tonn-box{ font-size:14.5px; padding:3px 4px; }
+          .tonn-box{ font-size:16.5px; font-weight:700; padding:6px 6px; }
+          .input-kg, .input-rip, .input-rir{ font-size:18px !important; }
           .split-col{ width:170px; }
           .split-col-head{ font-size:14px; padding:8px 4px; }
           .split-cell-input{ padding:6px 8px; }
