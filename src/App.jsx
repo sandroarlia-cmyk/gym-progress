@@ -2286,7 +2286,7 @@ export default function App() {
             width:100%; box-sizing:border-box; text-align:center;
             white-space:normal; word-break:break-word; line-height:1.25;
             display:flex; align-items:center; justify-content:center;
-            min-height:44px; padding:6px 4px; font-size:11.5px;
+            min-height:44px; padding:6px 4px; font-size:13.5px;
           }
           .diff-badge{ font-size:15px; padding:3px 8px; background:#FFF6C4; border-color:#E8D97A; }
           .comp-table{ grid-template-columns:auto 80px 80px; gap:5px 8px; }
