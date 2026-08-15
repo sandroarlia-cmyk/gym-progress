@@ -569,7 +569,7 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
       {item.sets.length > 0 && (
         <div className="set-table">
           <div className="set-row set-row-head">
-            <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Recupero</span><span>Tonn.</span><span>Note</span><span></span>
+            <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Tonn.</span><span>TIME</span><span>Note</span><span></span>
           </div>
           {item.sets.map((s, idx) => (
             <div className="set-row" key={idx}>
@@ -580,12 +580,12 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
                 onChange={(e) => updateSet(item.id, idx, "reps", e.target.value)} />
               <input className="input input-sm" type="number" value={s.rir}
                 onChange={(e) => updateSet(item.id, idx, "rir", e.target.value)} />
+              <span className="tonn-cell">{round1(setVolume(s))}</span>
               <select className="input input-sm" value={s.recupero}
                 onChange={(e) => updateSet(item.id, idx, "recupero", e.target.value)}>
                 <option value="">—</option>
                 {RECUPERO_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
               </select>
-              <span className="tonn-cell">{round1(setVolume(s))}</span>
               <input className="input input-sm" value={s.notes}
                 onChange={(e) => updateSet(item.id, idx, "notes", e.target.value)} />
               <button className="btn-icon" onClick={() => removeSet(item.id, idx)}><X size={20} /></button>
@@ -1091,7 +1091,7 @@ function buildExportRows(workouts, exercises, startISO, endISO) {
             Kg: Number(s.weight) || 0,
             Serie: idx + 1,
             Ripetizioni: Number(s.reps) || 0,
-            "Recupero (min)": s.recupero || "",
+            "TIME": s.recupero || "",
             "TONN. (kg)": round1(setVolume(s))
           });
         });
@@ -1421,7 +1421,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <Section title="Esporta su Excel">
         <p className="hint" style={{ marginBottom: 12 }}>
-          Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, Recupero, TONN.
+          Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, TIME, TONN.
         </p>
         <div style={{ display: "flex", gap: 24, flexWrap: "wrap", marginBottom: 14 }}>
           <div>
@@ -1546,7 +1546,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                             <>
                               <div className="set-table">
                                 <div className="set-row set-row-head">
-                                  <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Recupero</span><span>Tonn.</span><span>Note</span><span></span>
+                                  <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>TIME</span><span>Tonn.</span><span>Note</span><span></span>
                                 </div>
                                 {it.sets.map((s, idx) => (
                                   <div className="set-row" key={idx}>
@@ -2072,7 +2072,7 @@ export default function App() {
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
         .set-table{ margin-top:10px; display:flex; flex-direction:column; gap:7px; }
-        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 1.3fr 0.7fr 1.5fr 44px; gap:10px; align-items:center; }
+        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 0.7fr 0.65fr 1.5fr 44px; gap:10px; align-items:center; }
         .set-row-head{ color:var(--text-dim); font-size:24px; text-transform:uppercase; }
         .set-idx{ color:var(--text-dim); font-size:28px; text-align:center; }
         .save-bar{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border-c); border-radius:10px; padding:14px 18px; position:sticky; bottom:12px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
@@ -2296,7 +2296,7 @@ export default function App() {
           .badge{ font-size:11.5px; padding:2px 7px; }
           .exercise-name{ font-size:16px; }
           .set-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:8px; }
-          .set-row{ grid-template-columns:24px 58px 48px 40px 74px 46px 100px 34px; min-width:480px; gap:5px; }
+          .set-row{ grid-template-columns:24px 58px 48px 40px 46px 37px 100px 34px; min-width:480px; gap:5px; }
           .set-row-head{ font-size:10.5px; min-width:480px; }
           .set-idx{ font-size:12px; }
           .set-row .btn-icon{ padding:2px; }
