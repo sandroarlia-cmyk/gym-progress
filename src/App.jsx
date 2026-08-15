@@ -2307,6 +2307,12 @@ export default function App() {
           .plain-set-row{ grid-template-columns:20px 44px 38px 38px 62px 42px 100px; gap:4px; font-size:15px; }
           .plain-set-row-head{ font-size:11px; }
           .plain-note-cell{ font-size:11px; }
+          .history-card-dark .plain-set-row{ font-size:18px; font-weight:700; }
+          .history-card-dark .plain-set-row-head{ font-size:14px; font-weight:700; }
+          .history-card-dark .plain-note-cell{ font-size:14px; font-weight:700; }
+          .history-card-dark .font-display{ font-size:18px; }
+          .history-card-dark .tot-esercizio-badge{ font-size:17px; }
+          .history-card-dark .hint{ font-size:16px; font-weight:700; }
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
