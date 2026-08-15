@@ -510,7 +510,7 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
   const diffReps = last ? totalReps - prevReps : null;
   const prevDates = ex && workouts ? datesForExercise(workouts, ex.id) : [];
   return (
-    <div className="exercise-block">
+    <div className="exercise-block exercise-block-dark">
       <div className="exercise-block-head">
         <div>
           <div className="exercise-name">
@@ -580,7 +580,7 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
                 onChange={(e) => updateSet(item.id, idx, "reps", e.target.value)} />
               <input className="input input-sm" type="number" value={s.rir}
                 onChange={(e) => updateSet(item.id, idx, "rir", e.target.value)} />
-              <span className="tonn-cell">{round1(setVolume(s))}</span>
+              <span className="tonn-cell tonn-box">{round1(setVolume(s))}</span>
               <select className="input input-sm" value={s.recupero}
                 onChange={(e) => updateSet(item.id, idx, "recupero", e.target.value)}>
                 <option value="">—</option>
@@ -2069,6 +2069,14 @@ export default function App() {
         .dropdown-item{ display:flex; justify-content:space-between; padding:10px 14px; cursor:pointer; font-size:30px; }
         .dropdown-item:hover{ background:var(--surface-2); }
         .exercise-block{ border:1px solid var(--border-c); border-radius:8px; padding:14px; background:var(--surface-2); }
+        .exercise-block-dark{ background:#141414; border-color:#333333; }
+        .exercise-block-dark, .exercise-block-dark *{ color:#ffffff !important; font-weight:700; }
+        .exercise-block-dark .input, .exercise-block-dark select.input{ background:#262626; border-color:#444444; color:#ffffff !important; }
+        .exercise-block-dark .badge{ background:#262626; border-color:#444444; }
+        .tonn-box{
+          background:#c0392b !important; color:#ffffff !important; border-radius:6px;
+          font-size:calc(28px + 2pt); padding:4px 6px;
+        }
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
         .set-table{ margin-top:10px; display:flex; flex-direction:column; gap:7px; }
@@ -2329,6 +2337,7 @@ export default function App() {
           .group-ex-row{ font-size:14px; padding:9px 10px; }
           .recall-ex{ font-size:12.5px; }
           .tonn-cell{ font-size:12.5px; }
+          .tonn-box{ font-size:14.5px; padding:3px 4px; }
           .split-col{ width:170px; }
           .split-col-head{ font-size:14px; padding:8px 4px; }
           .split-cell-input{ padding:6px 8px; }
