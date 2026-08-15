@@ -2072,6 +2072,7 @@ export default function App() {
         .exercise-block-dark{ background:#141414; border-color:#333333; }
         .exercise-block-dark, .exercise-block-dark *{ color:#ffffff !important; font-weight:700; }
         .exercise-block-dark .input, .exercise-block-dark select.input{ background:#262626; border-color:#444444; color:#ffffff !important; }
+        .exercise-block-dark .input-rip{ color:#000000 !important; }
         .exercise-block-dark .badge{ background:#262626; border-color:#444444; }
         .exercise-block-dark .date-chip{ color:#1a1a1a !important; }
         .exercise-block-dark .dates-count-box{ background:#c0392b !important; color:#ffffff !important; }
