@@ -2076,12 +2076,15 @@ export default function App() {
         .exercise-block-dark .date-chip{ color:#1a1a1a !important; }
         .exercise-block-dark .dates-count-box{ background:#c0392b !important; color:#ffffff !important; }
         .exercise-block-dark .dates-arrow-box{ background:#ffffff !important; color:#1a1a1a !important; }
+        .exercise-block-dark .dates-arrow-box svg{ color:#1a1a1a !important; stroke:#1a1a1a !important; }
         .exercise-block-dark .kg-chip{ color:#1a1a1a !important; }
         .exercise-block-dark .chip-tonn{ background:#c0392b !important; color:#ffffff !important; }
         .exercise-block-dark .chip-rip{ background:#1f6b3a !important; color:#ffffff !important; }
         .exercise-block-dark .diff-tonn{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; }
         .exercise-block-dark .diff-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; }
         .exercise-block-dark .delete-icon-btn{ background:#ffffff !important; color:#c0392b !important; }
+        .exercise-block-dark .delete-icon-btn svg{ color:#c0392b !important; stroke:#c0392b !important; }
+        .exercise-block-dark .comp-table-mobile{ background:#141414 !important; }
         .tonn-box{
           background:#c0392b !important; color:#ffffff !important; border-radius:6px;
           font-size:calc(28px + 2pt); padding:4px 6px;
