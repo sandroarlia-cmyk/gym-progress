@@ -401,7 +401,7 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
   const ex = exercises.find((e) => e.id === card.exerciseId);
   const vol = item ? itemVolume(item) : 0;
   return (
-    <div className="history-card">
+    <div className="history-card history-card-dark">
       <div className="history-card-head">
         <span className="font-display">{ex ? ex.name : "?"} — {formatDateLong(card.date)}</span>
         <button className="btn-icon" onClick={onClose} title="Chiudi"><X size={26} /></button>
@@ -410,7 +410,7 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
         <div className="plain-set-scroll">
           <div className="plain-set-table">
             <div className="plain-set-row plain-set-row-head">
-              <span>S</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Min.</span><span>Tonn.</span><span className="plain-note-cell">Note</span>
+              <span>S</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Tonn.</span><span>Min.</span><span className="plain-note-cell">Note</span>
             </div>
             {item.sets.map((s, idx) => (
               <div className="plain-set-row" key={idx}>
@@ -418,15 +418,15 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
                 <span>{s.weight || 0}</span>
                 <span>{s.reps || 0}</span>
                 <span>{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</span>
+                <span className="plain-tonn plain-tonn-box">{round1(setVolume(s))}</span>
                 <span>{s.recupero || "—"}</span>
-                <span className="plain-tonn">{round1(setVolume(s))}</span>
                 <span className="plain-note-cell">{s.notes || "—"}</span>
               </div>
             ))}
           </div>
         </div>
       ) : <p className="muted">Nessuna serie registrata quel giorno.</p>}
-      <div className="hint" style={{ marginTop: 4 }}>TONN. esercizio: {round1(vol)} kg</div>
+      <div className="hint" style={{ marginTop: 4 }}>TONN. esercizio: <span className="tot-esercizio-badge">{round1(vol)} kg</span></div>
     </div>
   );
 }
@@ -2137,11 +2137,23 @@ export default function App() {
         .vertical-ex-title{ font-size:32px; margin-bottom:2px; }
         .plain-set-table{ display:flex; flex-direction:column; gap:6px; }
         .plain-set-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
-        .plain-set-row{ display:grid; grid-template-columns:30px 65px 55px 55px 65px 90px 160px; gap:8px; align-items:center; font-size:24px; font-weight:700; }
-        .plain-set-row-head{ color:var(--text-dim); font-size:24px; text-transform:uppercase; font-weight:600; }
+        .plain-set-row{ display:grid; grid-template-columns:30px 65px 55px 55px 90px 65px 160px; gap:8px; align-items:center; font-size:26px; font-weight:700; }
+        .plain-set-row-head{ color:var(--text-dim); font-size:26px; text-transform:uppercase; font-weight:600; }
         .plain-note-cell{ font-size:14px; font-weight:700; }
         .plain-set-row-head .plain-note-cell{ font-size:12px; font-weight:600; text-transform:uppercase; }
         .plain-tonn{ color:var(--accent); font-weight:700; }
+        .plain-tonn-box{
+          background:#c0392b; color:#ffffff !important; border-radius:6px;
+          padding:2px 6px; display:inline-block; text-align:center;
+        }
+        .tot-esercizio-badge{
+          background:#c0392b; color:#ffffff; font-weight:700; padding:3px 10px;
+          border-radius:6px; display:inline-block;
+        }
+        .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
+        .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
+        .history-card-dark .plain-tonn-box, .history-card-dark .tot-esercizio-badge{ color:#ffffff !important; }
+        .history-card-dark .btn-icon svg{ color:#ffffff !important; stroke:#ffffff !important; }
         .vertical-total{ background:var(--surface-2); color:var(--text); font-weight:700; padding:8px 12px; border-radius:6px; margin-top:2px; display:inline-block; align-self:flex-start; }
         .last-time-block{ display:flex; flex-direction:column; gap:6px; margin-top:2px; }
         .dates-section{ margin-bottom:22px; }
@@ -2292,7 +2304,7 @@ export default function App() {
           .comp-table{ grid-template-columns:auto 80px 80px; gap:5px 8px; }
           .comp-header, .comp-label{ font-size:15px; }
           .comp-table > span:not(.comp-header):not(.comp-label):not(.diff-badge){ font-size:15px; }
-          .plain-set-row{ grid-template-columns:20px 44px 38px 38px 42px 62px 100px; gap:4px; font-size:13px; }
+          .plain-set-row{ grid-template-columns:20px 44px 38px 38px 62px 42px 100px; gap:4px; font-size:15px; }
           .plain-set-row-head{ font-size:11px; }
           .plain-note-cell{ font-size:11px; }
           .vertical-ex-title{ font-size:15px; }
