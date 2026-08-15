@@ -2152,7 +2152,7 @@ export default function App() {
           font-size:calc(26px + 1pt); font-weight:700;
         }
         .plain-rip-box{
-          background:#aef000; color:#ffffff !important; border-radius:6px;
+          background:#aef000; color:#000000 !important; border-radius:6px;
           padding:2px 6px; display:inline-block; text-align:center;
           font-size:calc(26px + 1pt); font-weight:700;
         }
@@ -2162,6 +2162,7 @@ export default function App() {
         }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
+        .history-card-dark .plain-rip-box{ color:#000000 !important; }
         .history-card-dark .plain-tonn-box, .history-card-dark .tot-esercizio-badge{ color:#ffffff !important; }
         .history-card-dark .btn-icon svg{ color:#ffffff !important; stroke:#ffffff !important; }
         .vertical-total{ background:var(--surface-2); color:var(--text); font-weight:700; padding:8px 12px; border-radius:6px; margin-top:2px; display:inline-block; align-self:flex-start; }
