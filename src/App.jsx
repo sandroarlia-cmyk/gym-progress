@@ -1755,15 +1755,16 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             <BarChart data={weeklyVolumeData}>
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
-              <YAxis stroke="var(--text-dim)" fontSize={11} />
+              <YAxis yAxisId="left" stroke="#c0392b" fontSize={11} />
+              <YAxis yAxisId="right" orientation="right" stroke="#7ea600" fontSize={11} />
               <Tooltip
                 contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                 labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
-                formatter={(value, name) => name === "serieTot" ? [value, "RIP. TOT."] : [`${value} kg`, "Volume"]}
+                formatter={(value, name) => name === "RIP. TOT." ? [`${value} Rip.`, "Volume"] : [`${value} kg`, "Volume"]}
               />
               <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
-              <Bar dataKey="serieTot" fill="#aef000" name="RIP. TOT." radius={[3, 3, 0, 0]} />
+              <Bar yAxisId="left" dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+              <Bar yAxisId="right" dataKey="serieTot" fill="#aef000" name="RIP. TOT." radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
