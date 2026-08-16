@@ -427,7 +427,7 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
         </div>
       ) : <p className="muted">Nessuna serie registrata quel giorno.</p>}
       <div className="hint" style={{ marginTop: 4 }}>TONN. esercizio: <span className="tot-esercizio-badge">{round1(vol)} kg</span></div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+      <div className="close-card-row">
         <button className="close-card-btn" onClick={onClose}>
           Chiudi <X size={22} strokeWidth={3} />
         </button>
@@ -2225,6 +2225,7 @@ export default function App() {
         .history-card-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
         .history-card-head .font-display{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1; }
         .history-card-head .btn-icon{ flex-shrink:0; }
+        .close-card-row{ display:flex; justify-content:center; margin-top:8px; }
         .close-card-btn{
           display:flex; align-items:center; gap:6px;
           background:#c0392b; color:#ffffff !important; font-weight:700;
@@ -2343,6 +2344,8 @@ export default function App() {
             display:flex; align-items:center; justify-content:center;
           }
           .history-card-dark .history-card-head .btn-icon svg{ color:#1a1a1a !important; stroke:#1a1a1a !important; }
+          .close-card-row{ justify-content:center; width:100%; }
+          .close-card-btn{ padding:7px 12px; font-size:13px; gap:4px; }
           .history-card-dark .plain-rip-box{ font-size:19px; }
           .history-card-dark .hint{ font-size:16px; font-weight:700; }
           .vertical-ex-title{ font-size:15px; }
