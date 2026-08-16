@@ -427,6 +427,11 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
         </div>
       ) : <p className="muted">Nessuna serie registrata quel giorno.</p>}
       <div className="hint" style={{ marginTop: 4 }}>TONN. esercizio: <span className="tot-esercizio-badge">{round1(vol)} kg</span></div>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 8 }}>
+        <button className="close-card-btn" onClick={onClose}>
+          Chiudi <X size={22} strokeWidth={3} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -2220,6 +2225,11 @@ export default function App() {
         .history-card-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
         .history-card-head .font-display{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1; }
         .history-card-head .btn-icon{ flex-shrink:0; }
+        .close-card-btn{
+          display:flex; align-items:center; gap:6px;
+          background:#c0392b; color:#ffffff !important; font-weight:700;
+          border:none; border-radius:8px; padding:10px 18px; font-size:16px; cursor:pointer;
+        }
         .accordion{ display:flex; flex-direction:column; gap:8px; }
         .accordion-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .accordion-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; background:var(--surface-2); font-size:30px; }
