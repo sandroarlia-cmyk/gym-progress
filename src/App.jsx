@@ -912,6 +912,14 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
           <div className="hint" style={{ marginTop: 6 }}>{dayNameFromDate(date)} {formatDateLong(date)}</div>
         </div>
 
+        {openCards.length > 0 && (
+          <div className="history-cards-grid">
+            {openCards.map((card) => (
+              <HistoryCard key={card.id} card={card} workouts={workouts} exercises={exercises} onClose={() => closeCard(card.id)} />
+            ))}
+          </div>
+        )}
+
         {addedList.length > 0 && (
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {addedList.map((ex) => {
@@ -922,14 +930,6 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
                   addSet={addSet} updateSet={updateSet} removeSet={removeSet} removeExercise={removeExercise} hideMuscleBadge />
               );
             })}
-          </div>
-        )}
-
-        {openCards.length > 0 && (
-          <div className="history-cards-grid">
-            {openCards.map((card) => (
-              <HistoryCard key={card.id} card={card} workouts={workouts} exercises={exercises} onClose={() => closeCard(card.id)} />
-            ))}
           </div>
         )}
 
@@ -2218,6 +2218,8 @@ export default function App() {
         .history-cards-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(380px,1fr)); gap:16px; }
         .history-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; display:flex; flex-direction:column; gap:8px; }
         .history-card-head{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+        .history-card-head .font-display{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1; }
+        .history-card-head .btn-icon{ flex-shrink:0; }
         .accordion{ display:flex; flex-direction:column; gap:8px; }
         .accordion-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .accordion-head{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; cursor:pointer; background:var(--surface-2); font-size:30px; }
