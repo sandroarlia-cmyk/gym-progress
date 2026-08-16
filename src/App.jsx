@@ -1689,7 +1689,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <StatisticheTab workouts={workouts} exercises={exercises} />
 
-      <Section title="Progressione forza per anno e gruppo" right={
+      <Section title="Progressione forza esercizi annuali" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
             {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
@@ -1770,7 +1770,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         </div>
       </Section>
 
-      <Section title="Volume per anno e gruppo" right={
+      <Section title="Volume tonnellaggio annuali" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
             {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
@@ -1787,7 +1787,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
               <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-              <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
