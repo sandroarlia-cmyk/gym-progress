@@ -1226,7 +1226,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                         const s = r.sets[idx];
                         return (
                           <React.Fragment key={idx}>
-                            <div className="log-kg-box">{s ? s.weight || 0 : ""}</div>
+                            <div className="log-kg-box">{s ? `${s.weight || 0} KG` : ""}</div>
                             <div className="log-rip-box">{s ? s.reps || 0 : ""}</div>
                           </React.Fragment>
                         );
@@ -2287,7 +2287,7 @@ export default function App() {
           background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-color:#c0392b;
         }
         .nuovo-allenamento-dark .log-kg-box{
-          background:#f28b82; color:#5c0d0d; font-weight:700; border:2px solid #ffffff;
+          background:#f28b82; color:#5c0d0d; font-weight:700; font-size:23px; border:2px solid #ffffff;
         }
         .nuovo-allenamento-dark .log-rip-box{
           background:#aef000; color:#3a4700; font-weight:700; border:2px solid #ffffff;
