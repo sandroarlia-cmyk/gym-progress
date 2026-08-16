@@ -2208,10 +2208,10 @@ export default function App() {
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
         .record-line strong{ color:var(--text); }
         .date-it-picker{ display:flex; gap:8px; max-width:760px; }
-        .date-it-picker .input{ min-width:0; }
+        .date-it-picker .input{ min-width:0; background:#ffffff; border:3px solid #c0392b; }
         .date-it-day{ flex:0 0 78px; }
         .date-it-month{ flex:1 1 auto; }
-        .date-it-year{ flex:0 0 100px; }
+        .date-it-year{ flex:0 0 200px; }
         .date-muscle-row{ display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
         .muscle-select-btn{ display:flex; align-items:center; gap:12px; justify-content:space-between; background:var(--surface-2); border:1px solid var(--border-c); color:var(--text); padding:12px 20px; border-radius:6px; cursor:pointer; font-size:34px; min-width:280px; }
         .muscle-select-btn:hover{ border-color:var(--accent); }
