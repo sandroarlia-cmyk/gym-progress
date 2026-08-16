@@ -1428,7 +1428,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="cronologia-theme" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <Section title="Esporta su Excel">
         <p className="hint" style={{ marginBottom: 12 }}>
           Ogni file contiene una riga per serie: Esercizio, Data, Kg, Serie, Ripetizioni, TIME, TONN.
@@ -1512,8 +1512,8 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                     <span className="hint" style={{ marginLeft: 8 }}>{dayNameFromDate(entry.date)} — {entry.muscle.toUpperCase()}</span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span className="badge">{entry.reps} rip.</span>
-                    <span className="badge badge-accent">{round1(entry.volume)} kg</span>
+                    <span className="badge badge-rep">{entry.reps} rip.</span>
+                    <span className="badge badge-accent badge-tonn">{round1(entry.volume)} kg</span>
                     {isOpen && (
                       <button className="btn-icon" title="Chiudi" onClick={(e) => { e.stopPropagation(); setExpanded({ ...expanded, [entry.key]: false }); }}>
                         <X size={22} />
@@ -2267,6 +2267,9 @@ export default function App() {
           background:#c0392b; color:#ffffff; font-weight:700; padding:3px 10px;
           border-radius:6px; display:inline-block; font-size:calc(28px + 3pt);
         }
+        .cronologia-theme .input{ background:#ffffff !important; border:3px solid #c0392b !important; }
+        .cronologia-theme .badge{ background:#ffffff !important; border:3px solid #c0392b !important; color:#1a1a1a; }
+        .cronologia-theme .history-head{ background:#ffffff !important; border:3px solid #c0392b; border-radius:8px; }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
         .history-card-dark .plain-rip-box{ color:#000000 !important; }
@@ -2451,6 +2454,11 @@ export default function App() {
           .close-card-row{ justify-content:center; width:100%; }
           .close-card-btn{ padding:7px 12px; font-size:13px; gap:4px; }
           .history-card-dark .plain-rip-box{ font-size:19px; }
+          .cronologia-theme .input{ font-size:calc(16px + 2pt); font-weight:700; }
+          .cronologia-theme .badge{ font-size:calc(11.5px + 2pt); font-weight:700; }
+          .cronologia-theme .history-head span{ font-size:calc(14px + 2pt); font-weight:700; }
+          .cronologia-theme .badge-rep, .cronologia-theme .badge-tonn{ font-size:calc(11.5px + 3pt); font-weight:700; }
+          .cronologia-theme .tonn-cell{ font-size:calc(12.5px + 3pt); font-weight:700; }
           .history-card-dark .hint{ font-size:16px; font-weight:700; }
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
