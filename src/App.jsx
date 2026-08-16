@@ -2326,6 +2326,11 @@ export default function App() {
           .history-card-dark .font-display{ font-size:18px; }
           .history-card-dark .tot-esercizio-badge{ font-size:20px; }
           .history-card-dark .plain-kg-box{ font-size:19px; }
+          .history-card-dark .history-card-head .btn-icon{
+            background:#ffffff !important; border-radius:50%; padding:6px !important; width:32px; height:32px;
+            display:flex; align-items:center; justify-content:center;
+          }
+          .history-card-dark .history-card-head .btn-icon svg{ color:#1a1a1a !important; stroke:#1a1a1a !important; }
           .history-card-dark .plain-rip-box{ font-size:19px; }
           .history-card-dark .hint{ font-size:16px; font-weight:700; }
           .vertical-ex-title{ font-size:15px; }
