@@ -2088,8 +2088,8 @@ export default function App() {
         .exercise-block-dark .kg-chip{ color:#1a1a1a !important; }
         .exercise-block-dark .chip-tonn{ background:#c0392b !important; color:#ffffff !important; }
         .exercise-block-dark .chip-rip{ background:#1f6b3a !important; color:#ffffff !important; }
-        .exercise-block-dark .diff-tonn{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; }
-        .exercise-block-dark .diff-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; }
+        .exercise-block-dark .diff-tonn{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; outline:2px solid #ffffff; outline-offset:2px; }
+        .exercise-block-dark .diff-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; outline:2px solid #ffffff; outline-offset:2px; }
         .exercise-block-dark .delete-icon-btn{ background:#ffffff !important; color:#c0392b !important; }
         .exercise-block-dark .delete-icon-btn svg{ color:#c0392b !important; stroke:#c0392b !important; }
         .exercise-block-dark .comp-table-mobile{ background:#141414 !important; }
