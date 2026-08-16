@@ -1658,8 +1658,11 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
       .filter((w) => w.exercises.some((it) => it.exerciseId === exId))
       .map((w) => {
         const it = w.exercises.find((it) => it.exerciseId === exId);
-        const weights = it.sets.map((s) => Number(s.weight) || 0);
-        return { data: formatDateShort(w.date), peso: weights.length ? Math.max(...weights) : 0 };
+        const pesoMax = it.sets.length ? Math.max(...it.sets.map((s) => Number(s.weight) || 0)) : 0;
+        const ripMax = it.sets
+          .filter((s) => (Number(s.weight) || 0) === pesoMax)
+          .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
+        return { data: formatDateShort(w.date), peso: pesoMax, ripMax, tonnMax: pesoMax * ripMax };
       });
   }, [workouts, exId]);
 
@@ -1712,7 +1715,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         )}
       </Section>
 
-      <Section title="Progressione forza" right={
+      <Section title="PROGRESSIONE FORZA PER RIPETIZIONI TONNELLAGGIO" right={
         <select className="input input-sm-w" value={exId} onChange={(e) => setExId(e.target.value)}>
           {usableExercises.length === 0 && <option value="">Nessun dato</option>}
           {usableExercises.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
@@ -1725,7 +1728,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} />
-                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+                <Tooltip
+                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                  formatter={(value, name, props) => [`${props.payload.tonnMax} TONN.`, "TOT. KG x RIP."]}
+                />
                 <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
               </LineChart>
             </ResponsiveContainer>
