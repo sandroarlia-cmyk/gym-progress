@@ -2270,7 +2270,10 @@ export default function App() {
         .cronologia-theme .input{ background:#ffffff !important; border:3px solid #c0392b !important; }
         .cronologia-theme .badge{ background:#ffffff !important; border:3px solid #c0392b !important; color:#1a1a1a; }
         .cronologia-theme .history-head{ background:#ffffff !important; border:3px solid #c0392b; border-radius:8px; }
-        .cronologia-theme .muscle-group-heading{ background:#aef000 !important; color:#000000 !important; font-size:24px; }
+        .cronologia-theme .muscle-group-heading{
+          background:#aef000 !important; color:#000000 !important; font-size:24px;
+          border:3px solid #ffffff; box-shadow:0 0 0 3px #c0392b;
+        }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
         .history-card-dark .plain-rip-box{ color:#000000 !important; }
