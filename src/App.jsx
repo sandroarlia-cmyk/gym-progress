@@ -2244,7 +2244,7 @@ export default function App() {
         .group-ex-row:hover{ background:var(--accent-dim); border-color:var(--accent-dim); }
         .custom-slots{ border-top:1px solid var(--border-c); padding-top:10px; display:flex; flex-direction:column; gap:6px; }
         .custom-slot-row{ display:flex; gap:8px; }
-        .custom-slot-row .input{ flex:1; }
+        .custom-slot-row .input{ flex:1; background:#ffffff; border:3px solid #c0392b; }
         .recall-box{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:12px 14px; }
         .recall-detail{ margin-top:10px; padding-top:10px; border-top:1px solid var(--border-c); display:flex; flex-direction:column; gap:6px; }
         .recall-detail-head{ display:flex; justify-content:space-between; align-items:center; }
