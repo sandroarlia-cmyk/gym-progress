@@ -1672,7 +1672,13 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
       const ws = addDays(getMonday(todayISO()), -7 * i);
       const we = addDays(ws, 6);
       const stats = weeklyMuscleStats(workouts, exercises, isoOf(ws), isoOf(we));
-      weeks.push({ settimana: formatDateShort(isoOf(ws)), volume: round1((stats[muscle] || { volume: 0 }).volume) });
+      const s = stats[muscle] || { volume: 0, sets: 0 };
+      weeks.push({
+        settimana: formatDateShort(isoOf(ws)),
+        periodo: `${formatDateShort(isoOf(ws))} - ${formatDateShort(isoOf(we))}`,
+        volume: round1(s.volume),
+        serieTot: s.sets
+      });
     }
     return weeks;
   }, [workouts, exercises, muscle]);
@@ -1739,6 +1745,30 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         )}
       </Section>
 
+      <Section title="Volume settimanale per gruppo" right={
+        <select className="input input-sm-w" value={muscle} onChange={(e) => setMuscle(e.target.value)}>
+          {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+        </select>
+      }>
+        <div style={{ height: 260 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={weeklyVolumeData}>
+              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+              <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
+              <YAxis stroke="var(--text-dim)" fontSize={11} />
+              <Tooltip
+                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
+                formatter={(value, name) => name === "serieTot" ? [value, "RIP. TOT."] : [`${value} kg`, "Volume"]}
+              />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="serieTot" fill="#aef000" name="RIP. TOT." radius={[3, 3, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </Section>
+
       <Section title="Volume per anno e gruppo" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
@@ -1757,24 +1787,6 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <YAxis stroke="var(--text-dim)" fontSize={11} />
               <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
               <Bar dataKey="volume" fill="var(--accent)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </Section>
-
-      <Section title="Volume settimanale per gruppo" right={
-        <select className="input input-sm-w" value={muscle} onChange={(e) => setMuscle(e.target.value)}>
-          {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
-        </select>
-      }>
-        <div style={{ height: 260 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={weeklyVolumeData}>
-              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
-              <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
-              <YAxis stroke="var(--text-dim)" fontSize={11} />
-              <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
-              <Bar dataKey="volume" fill="var(--accent2)" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
