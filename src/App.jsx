@@ -2275,12 +2275,10 @@ export default function App() {
           background:#000000; border-radius:12px; padding:16px;
         }
         .nuovo-allenamento-dark .log-set-box,
-        .nuovo-allenamento-dark .log-rip-box,
         .nuovo-allenamento-dark .log-note-box,
         .nuovo-allenamento-dark .log-total-box{
           background:#FFFFFF; color:#1a1a1a; border-color:#dddddd;
         }
-        .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
           background:#FFFFFF; color:#1a1a1a;
@@ -2289,13 +2287,19 @@ export default function App() {
           background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-color:#c0392b;
         }
         .nuovo-allenamento-dark .log-kg-box{
-          background:#a8e6a1; color:#0f3d1e; font-weight:700; border-color:#a8e6a1;
+          background:#f28b82; color:#5c0d0d; font-weight:700; border:2px solid #ffffff;
+        }
+        .nuovo-allenamento-dark .log-rip-box{
+          background:#aef000; color:#3a4700; font-weight:700; border:2px solid #ffffff;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box{
           background:#c0392b; color:#ffffff; font-weight:700; font-size:22px;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box{
-          background:#a8e6a1; color:#0f3d1e; font-weight:700;
+          background:#f28b82; color:#5c0d0d; font-weight:700; border:2px solid #ffffff;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box{
+          background:#aef000; color:#3a4700; font-weight:700; border:2px solid #ffffff;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-date-box{
           color:#ffffff;
