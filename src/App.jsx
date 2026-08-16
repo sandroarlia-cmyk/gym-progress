@@ -352,17 +352,18 @@ function Section({ title, right, children }) {
 }
 
 function HistoryCard({ card, workouts, exercises, onClose }) {
-  const workout = workouts.find((w) => w.date === card.date);
-  if (!workout) return null;
+  const dayWorkouts = workouts.filter((w) => w.date === card.date);
+  if (dayWorkouts.length === 0) return null;
 
   if (card.type === "day") {
+    const allExercises = dayWorkouts.flatMap((w) => w.exercises);
     return (
       <div className="history-card">
         <div className="history-card-head">
           <span className="font-display">{formatDateLong(card.date)}</span>
           <button className="btn-icon" onClick={onClose} title="Chiudi"><X size={26} /></button>
         </div>
-        {workout.exercises.map((it) => {
+        {allExercises.map((it) => {
           const ex = exercises.find((e) => e.id === it.exerciseId);
           return (
             <div key={it.id} className="vertical-ex-block">
@@ -397,7 +398,11 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
     );
   }
 
-  const item = workout.exercises.find((it) => it.exerciseId === card.exerciseId);
+  let item = null;
+  for (const w of dayWorkouts) {
+    const found = w.exercises.find((it) => it.exerciseId === card.exerciseId);
+    if (found) { item = found; break; }
+  }
   const ex = exercises.find((e) => e.id === card.exerciseId);
   const vol = item ? itemVolume(item) : 0;
   return (
