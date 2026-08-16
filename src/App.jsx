@@ -942,7 +942,7 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
           <label className="label">Cerca in {muscle}</label>
           <div className="search-wrap">
             <Search size={22} className="search-icon" />
-            <input className="input" style={{ paddingLeft: 46 }} placeholder={`Cerca un esercizio di ${muscle}...`}
+            <input className="input search-muscolo-input" style={{ paddingLeft: 46 }} placeholder={`Cerca un esercizio di ${muscle}...`}
               value={query} onChange={(e) => setQuery(e.target.value)} />
           </div>
         </div>
@@ -2069,6 +2069,7 @@ export default function App() {
         .comp-table > span:not(.comp-header):not(.comp-label):not(.diff-badge){ text-align:center; font-weight:700; font-size:26px; }
         .diff-badge{ font-size:26px; font-weight:700; color:#000000; background:#FFF6C4; border:1px solid #E8D97A; padding:4px 10px; border-radius:8px; text-align:center; }
         .search-wrap{ position:relative; }
+        .search-muscolo-input{ border:3px solid #c0392b !important; background:#ffffff; }
         .search-icon{ position:absolute; left:12px; top:16px; color:var(--text-dim); }
         .dropdown{ position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1px solid var(--border-c); border-radius:8px; z-index:5; max-height:260px; overflow-y:auto; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
         .dropdown-item{ display:flex; justify-content:space-between; padding:10px 14px; cursor:pointer; font-size:30px; }
