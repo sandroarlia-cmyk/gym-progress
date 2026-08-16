@@ -1730,9 +1730,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <YAxis stroke="var(--text-dim)" fontSize={11} />
                 <Tooltip
                   contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                  formatter={(value, name, props) => [`${props.payload.tonnMax} TONN.`, "TOT. KG x RIP."]}
+                  formatter={(value) => [`${value} TONN.`, "TOT. KG x RIP."]}
                 />
-                <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
+                <Line type="monotone" dataKey="tonnMax" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Tonnellaggio (TONN.)" />
               </LineChart>
             </ResponsiveContainer>
           </div>
