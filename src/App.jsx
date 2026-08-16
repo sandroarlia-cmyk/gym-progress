@@ -1652,6 +1652,41 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     return perMese.map((m) => ({ ...m, volume: round1(m.volume) }));
   }, [workouts, exercises, volAnno, volGruppo]);
 
+  const [e1rmExId, setE1rmExId] = useState("");
+  const [e1rmMode, setE1rmMode] = useState("kg");
+  const e1rmExIdAttivo = usableExercises.some((e) => e.id === e1rmExId)
+    ? e1rmExId
+    : (usableExercises[0] ? usableExercises[0].id : "");
+
+  const e1rmWeeklyData = useMemo(() => {
+    if (!e1rmExIdAttivo) return [];
+    const weekMap = {};
+    workouts.forEach((w) => {
+      const it = w.exercises.find((it) => it.exerciseId === e1rmExIdAttivo);
+      if (!it) return;
+      it.sets.forEach((s) => {
+        const reps = Number(s.reps) || 0;
+        const weight = Number(s.weight) || 0;
+        if (reps < 1 || reps > 6 || weight <= 0) return;
+        const e1rm = weight * (1 + reps / 30);
+        const weekStart = isoOf(getMonday(w.date));
+        if (!weekMap[weekStart] || e1rm > weekMap[weekStart]) weekMap[weekStart] = e1rm;
+      });
+    });
+    const weeks = Object.keys(weekMap).sort();
+    if (weeks.length === 0) return [];
+    const iniziale = weekMap[weeks[0]];
+    return weeks.map((wk, idx) => {
+      const val = weekMap[wk];
+      return {
+        settimana: `S${idx + 1}`,
+        periodo: formatDateShort(wk),
+        e1rm: round1(val),
+        percento: round1((val / iniziale) * 100)
+      };
+    });
+  }, [workouts, e1rmExIdAttivo]);
+
   const strengthData = useMemo(() => {
     return [...workouts]
       .sort((a, b) => (a.date > b.date ? 1 : -1))
@@ -1739,6 +1774,40 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   formatter={(value) => [`${value} TONN.`, "TOT. KG x RIP."]}
                 />
                 <Line type="monotone" dataKey="tonnMax" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Tonnellaggio (TONN.)" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </Section>
+
+      <Section title={e1rmMode === "kg" ? "Progressione della forza — e1RM stimato" : "Progressione della forza — variazione percentuale"} right={
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <select className="input input-sm-w" value={e1rmExIdAttivo} onChange={(e) => setE1rmExId(e.target.value)}>
+            {usableExercises.length === 0 && <option value="">Nessun dato</option>}
+            {usableExercises.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
+          </select>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button className={"btn " + (e1rmMode === "kg" ? "btn-primary" : "btn-ghost")} onClick={() => setE1rmMode("kg")}>e1RM (kg)</button>
+            <button className={"btn " + (e1rmMode === "percent" ? "btn-primary" : "btn-ghost")} onClick={() => setE1rmMode("percent")}>Progressione (%)</button>
+          </div>
+        </div>
+      }>
+        <p className="hint" style={{ marginBottom: 10 }}>
+          Calcolato con la formula di Epley (peso × (1 + rip/30)) sulle serie da 1 a 6 ripetizioni; per ogni settimana viene preso il valore più alto.
+        </p>
+        {e1rmWeeklyData.length === 0 ? <p className="muted">Nessuna serie valida (1-6 ripetizioni) trovata per questo esercizio.</p> : (
+          <div style={{ height: 260 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={e1rmWeeklyData}>
+                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+                <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} label={{ value: "Settimana", position: "insideBottom", offset: -3, fill: "var(--text-dim)", fontSize: 11 }} />
+                <YAxis stroke="var(--text-dim)" fontSize={11} label={{ value: e1rmMode === "kg" ? "1RM stimato (kg)" : "Performance (%)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 11 }} />
+                <Tooltip
+                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                  labelFormatter={(label, payload) => (payload && payload[0] ? `${label} (${payload[0].payload.periodo})` : label)}
+                  formatter={(value) => e1rmMode === "kg" ? [`${value} kg`, "e1RM"] : [`${value}%`, "Performance"]}
+                />
+                <Line type="monotone" dataKey={e1rmMode === "kg" ? "e1rm" : "percento"} stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name={e1rmMode === "kg" ? "e1RM (kg)" : "Performance (%)"} />
               </LineChart>
             </ResponsiveContainer>
           </div>
