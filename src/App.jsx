@@ -2382,9 +2382,8 @@ export default function App() {
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-note-box,
-        .nuovo-allenamento-dark .exercise-log-row-head .log-total-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
-          background:transparent; color:#ffffff; font-weight:700;
+          background:transparent; color:#ffffff; font-weight:700; border:none;
         }
         .nuovo-allenamento-dark .log-volume-box{
           background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-color:#1f6b3a;
