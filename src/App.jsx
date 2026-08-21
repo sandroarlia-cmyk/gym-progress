@@ -2257,6 +2257,10 @@ export default function App() {
         .cronologia-allenamenti-dark .card{ background:#141414; }
         .cronologia-allenamenti-dark .section-title{ color:#ffffff; }
         .cronologia-allenamenti-dark > .card > p.muted{ color:#ffffff; }
+        .cronologia-allenamenti-dark .history-body .history-ex-title-row strong{ color:#ffffff; }
+        .cronologia-allenamenti-dark .history-body .chevron{ color:#ffffff; }
+        .cronologia-allenamenti-dark .history-body .hint{ color:#ffffff; }
+        .cronologia-allenamenti-dark .history-body .muted{ color:#ffffff; }
         .cronologia-theme .muscle-group-heading{
           background:#aef000 !important; color:#000000 !important; font-size:24px;
           border:3px solid #ffffff; box-shadow:0 0 0 3px #c0392b;
