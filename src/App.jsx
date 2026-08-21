@@ -1231,7 +1231,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                         const s = r.sets[idx];
                         return (
                           <React.Fragment key={idx}>
-                            <div className="log-kg-box">{s ? <>{s.weight || 0} KG  <span className="kg-x-small">x</span></> : ""}</div>
+                            <div className="log-kg-box">{s ? `${s.weight || 0} KG` : ""}</div>
                             <div className="log-rip-box">{s ? s.reps || 0 : ""}</div>
                           </React.Fragment>
                         );
@@ -2275,8 +2275,7 @@ export default function App() {
         .exercise-log-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
         .exercise-log-table{ display:flex; flex-direction:column; gap:8px; width:max-content; }
         .exercise-log-row{ display:flex; gap:8px; align-items:stretch; }
-        .nuovo-allenamento-dark .log-kg-box{ margin-right:-7px; }
-        .kg-x-small{ font-size:calc(24px - 3pt); }
+        .nuovo-allenamento-dark .log-kg-box{ margin-right:-11px; }
         .nuovo-allenamento-dark .exercise-log-row:not(.exercise-log-row-head){
           border-bottom:1px solid rgba(123,224,138,0.25); padding-bottom:8px; margin-bottom:2px;
         }
