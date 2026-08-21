@@ -1210,7 +1210,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                   <div className="log-date-box">Data</div>
                   <div className="log-volume-box">Volume</div>
                   <div className="log-total-box">Rip.</div>
-                  <div className="log-total-box">Serie</div>
+                  <div className="log-serie-box">Serie</div>
                   {Array.from({ length: 10 }).map((_, idx) => (
                     <React.Fragment key={idx}>
                       <div className="log-kg-box">Kg</div>
@@ -1226,7 +1226,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                       <div className="log-date-box">{formatDateShort(r.date)}</div>
                       <div className="log-volume-box">{round1(r.volume)} kg</div>
                       <div className="log-total-box">{totalReps}</div>
-                      <div className="log-total-box">{r.sets.length}</div>
+                      <div className="log-serie-box">{r.sets.length}</div>
                       {Array.from({ length: 10 }).map((_, idx) => {
                         const s = r.sets[idx];
                         return (
@@ -2280,7 +2280,7 @@ export default function App() {
           border-bottom:1px solid rgba(123,224,138,0.25); padding-bottom:8px; margin-bottom:2px;
         }
         .exercise-log-row-head{ color:var(--text-dim); font-size:16px; text-transform:uppercase; }
-        .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box{
+        .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box, .log-serie-box{
           flex-shrink:0; display:flex; align-items:center; justify-content:center;
           padding:14px 10px; border-radius:6px; font-weight:700; white-space:nowrap;
           font-size:22px; overflow:hidden;
@@ -2288,7 +2288,7 @@ export default function App() {
         .exercise-log-row-head .log-date-box, .exercise-log-row-head .log-set-box,
         .exercise-log-row-head .log-kg-box, .exercise-log-row-head .log-rip-box,
         .exercise-log-row-head .log-note-box, .exercise-log-row-head .log-volume-box,
-        .exercise-log-row-head .log-total-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:22px; }
+        .exercise-log-row-head .log-total-box, .exercise-log-row-head .log-serie-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:22px; }
         .log-date-box{ width:150px; background:var(--surface-2); color:var(--text); font-size:22px; }
         .log-set-box{ width:140px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kg-box{ width:130px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:22px; }
@@ -2297,6 +2297,7 @@ export default function App() {
         .log-note-box span{ white-space:nowrap; }
         .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
         .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-serie-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
@@ -2374,12 +2375,18 @@ export default function App() {
         .nuovo-allenamento-dark .log-total-box{
           background:transparent; border:none; color:#ffffff; font-weight:700; font-size:24px;
         }
+        .nuovo-allenamento-dark .log-serie-box{
+          background:#ffffff; border:1px solid #7be08a; color:#1a1a1a; font-weight:700; font-size:24px;
+        }
         .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-note-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
           background:transparent; color:#ffffff; font-weight:700;
+        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
+          background:#ffffff; border:1px solid #7be08a; color:#1a1a1a; font-weight:700;
         }
         .nuovo-allenamento-dark .log-volume-box{
           background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-color:#1f6b3a;
@@ -2454,6 +2461,7 @@ export default function App() {
           .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
           .log-volume-box{ width:140px; font-size:22px; font-weight:700; padding:12px 10px; }
           .log-total-box{ width:84px; font-size:22px; padding:12px 8px; }
+          .log-serie-box{ width:84px; font-size:22px; padding:12px 8px; }
           .gt-root{ font-size:17px; }
           .gt-header{ padding:12px 14px; gap:10px; }
           .gt-logo{ width:32px; height:32px; border-width:4px; }
