@@ -1639,7 +1639,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         const ripMax = it.sets
           .filter((s) => (Number(s.weight) || 0) === pesoMax)
           .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
-        return { data: formatDateShort(w.date), peso: pesoMax, ripMax };
+        return { data: formatDateShort(w.date), peso: pesoMax, ripMax, tonnMax: pesoMax * ripMax };
       });
   }, [workouts, forzaAnno, forzaEsercizioAttivo]);
 
@@ -1749,36 +1749,19 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <LineChart data={yearlyStrengthData}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
-                <YAxis stroke="var(--text-dim)" fontSize={11} />
+                <YAxis yAxisId="left" stroke="var(--accent)" fontSize={11} />
+                <YAxis yAxisId="right" orientation="right" stroke="#c0392b" fontSize={11} />
                 <Tooltip
                   contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                  formatter={(value, name, props) => [`${value} kg x ${props.payload.ripMax}`, "Peso max"]}
+                  formatter={(value, name, props) =>
+                    name === "Tonnellaggio (TONN.)"
+                      ? [`${value} TONN.`, "TOT. KG x RIP."]
+                      : [`${value} kg x ${props.payload.ripMax}`, "Peso max"]
+                  }
                 />
-                <Line type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        )}
-      </Section>
-
-      <Section title="PROGRESSIONE FORZA PER RIPETIZIONI TONNELLAGGIO" right={
-        <select className="input input-sm-w" value={exId} onChange={(e) => setExId(e.target.value)}>
-          {usableExercises.length === 0 && <option value="">Nessun dato</option>}
-          {usableExercises.map((e) => <option key={e.id} value={e.id}>{e.name}</option>)}
-        </select>
-      }>
-        {strengthData.length === 0 ? <p className="muted">Registra qualche seduta per vedere il grafico.</p> : (
-          <div style={{ height: 260 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={strengthData}>
-                <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
-                <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
-                <YAxis stroke="var(--text-dim)" fontSize={11} />
-                <Tooltip
-                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                  formatter={(value) => [`${value} TONN.`, "TOT. KG x RIP."]}
-                />
-                <Line type="monotone" dataKey="tonnMax" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Tonnellaggio (TONN.)" />
+                <Legend wrapperStyle={{ fontSize: 11 }} />
+                <Line yAxisId="left" type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
+                <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 3 }} name="Tonnellaggio (TONN.)" />
               </LineChart>
             </ResponsiveContainer>
           </div>
