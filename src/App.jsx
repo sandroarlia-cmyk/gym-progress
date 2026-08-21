@@ -2275,9 +2275,9 @@ export default function App() {
         .exercise-log-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
         .exercise-log-table{ display:flex; flex-direction:column; gap:8px; width:max-content; }
         .exercise-log-row{ display:flex; gap:8px; align-items:stretch; }
-        .nuovo-allenamento-dark .log-kg-box{ margin-right:-6px; }
+        .nuovo-allenamento-dark .log-kg-box{ margin-right:-4px; }
         .nuovo-allenamento-dark .exercise-log-row:not(.exercise-log-row-head){
-          border-bottom:1px solid #7be08a; padding-bottom:8px; margin-bottom:2px;
+          border-bottom:1px solid rgba(123,224,138,0.25); padding-bottom:8px; margin-bottom:2px;
         }
         .exercise-log-row-head{ color:var(--text-dim); font-size:16px; text-transform:uppercase; }
         .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box{
