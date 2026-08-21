@@ -1518,7 +1518,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
             const isOpen = !!expanded[entry.key];
             return (
               <div key={entry.key} className="history-item">
-                <div className="history-head" onClick={() => setExpanded({ ...expanded, [entry.key]: !isOpen })}>
+                <div className="history-head" style={{ background: MUSCLE_HEADING_COLORS[entry.muscle] || MUSCLE_HEADING_COLORS.Altro }} onClick={() => setExpanded({ ...expanded, [entry.key]: !isOpen })}>
                   <div>
                     <span className="font-display">{formatDateLong(entry.date)}</span>
                     <span className="hint" style={{ marginLeft: 8 }}>{dayNameFromDate(entry.date)} — {entry.muscle.toUpperCase()}</span>
@@ -2266,7 +2266,7 @@ export default function App() {
         }
         .cronologia-theme .input{ background:#ffffff !important; border:3px solid #c0392b !important; }
         .cronologia-theme .badge{ background:#ffffff !important; border:3px solid #c0392b !important; color:#1a1a1a; }
-        .cronologia-theme .history-head{ background:#ffffff !important; border:3px solid #c0392b; border-radius:8px; }
+        .cronologia-theme .history-head{ border:3px solid #c0392b; border-radius:8px; }
         .cronologia-allenamenti-dark .card{ background:#141414; }
         .cronologia-allenamenti-dark .section-title{ color:#ffffff; }
         .cronologia-allenamenti-dark > .card > p.muted{ color:#ffffff; }
