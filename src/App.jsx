@@ -1471,6 +1471,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
         </div>
       </Section>
 
+      <div className="cronologia-allenamenti-dark">
       <Section title="Cronologia allenamenti" right={
         <div className="search-wrap">
           <Search size={22} className="search-icon" />
@@ -1600,6 +1601,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
           })}
         </div>
       </Section>
+      </div>
     </div>
   );
 }
@@ -2252,6 +2254,9 @@ export default function App() {
         .cronologia-theme .input{ background:#ffffff !important; border:3px solid #c0392b !important; }
         .cronologia-theme .badge{ background:#ffffff !important; border:3px solid #c0392b !important; color:#1a1a1a; }
         .cronologia-theme .history-head{ background:#ffffff !important; border:3px solid #c0392b; border-radius:8px; }
+        .cronologia-allenamenti-dark .card{ background:#141414; }
+        .cronologia-allenamenti-dark .section-title{ color:#ffffff; }
+        .cronologia-allenamenti-dark > .card > p.muted{ color:#ffffff; }
         .cronologia-theme .muscle-group-heading{
           background:#aef000 !important; color:#000000 !important; font-size:24px;
           border:3px solid #ffffff; box-shadow:0 0 0 3px #c0392b;
