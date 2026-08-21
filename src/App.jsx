@@ -1524,7 +1524,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                     <span className="hint" style={{ marginLeft: 8 }}>{dayNameFromDate(entry.date)} — {entry.muscle.toUpperCase()}</span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span className="badge badge-rep">{entry.reps} rip.</span>
+                    <span className="badge badge-rep">{entry.sets} serie</span>
                     <span className="badge badge-accent badge-tonn">{round1(entry.volume)} kg</span>
                     {isOpen && (
                       <button className="btn-icon" title="Chiudi" onClick={(e) => { e.stopPropagation(); setExpanded({ ...expanded, [entry.key]: false }); }}>
