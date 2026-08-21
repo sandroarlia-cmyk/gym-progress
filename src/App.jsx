@@ -2297,7 +2297,7 @@ export default function App() {
         .log-note-box span{ white-space:nowrap; }
         .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
         .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
-        .log-serie-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
@@ -2382,11 +2382,9 @@ export default function App() {
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-note-box,
-        .nuovo-allenamento-dark .exercise-log-row-head .log-total-box{
-          background:transparent; color:#ffffff; font-weight:700;
-        }
+        .nuovo-allenamento-dark .exercise-log-row-head .log-total-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
-          background:#ffffff; border:1px solid #7be08a; color:#1a1a1a; font-weight:700;
+          background:transparent; color:#ffffff; font-weight:700;
         }
         .nuovo-allenamento-dark .log-volume-box{
           background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-color:#1f6b3a;
@@ -2461,7 +2459,7 @@ export default function App() {
           .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
           .log-volume-box{ width:140px; font-size:22px; font-weight:700; padding:12px 10px; }
           .log-total-box{ width:84px; font-size:22px; padding:12px 8px; }
-          .log-serie-box{ width:84px; font-size:22px; padding:12px 8px; }
+          .log-serie-box{ width:52px; font-size:22px; padding:12px 8px; }
           .gt-root{ font-size:17px; }
           .gt-header{ padding:12px 14px; gap:10px; }
           .gt-logo{ width:32px; height:32px; border-width:4px; }
