@@ -2195,10 +2195,10 @@ export default function App() {
         .exercise-block-dark .dates-arrow-box{ background:#ffffff !important; color:#1a1a1a !important; }
         .exercise-block-dark .dates-arrow-box svg{ color:#1a1a1a !important; stroke:#1a1a1a !important; }
         .exercise-block-dark .kg-chip{ color:#1a1a1a !important; }
-        .exercise-block-dark .chip-tonn{ background:#c0392b !important; color:#ffffff !important; }
-        .exercise-block-dark .chip-rip{ background:#1f6b3a !important; color:#ffffff !important; }
-        .exercise-block-dark .diff-tonn{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; outline:2px solid #ffffff; outline-offset:2px; }
-        .exercise-block-dark .diff-rip{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; outline:2px solid #ffffff; outline-offset:2px; }
+        .exercise-block-dark .chip-tonn{ background:#1f6b3a !important; color:#ffffff !important; }
+        .exercise-block-dark .chip-rip{ background:#aef000 !important; color:#000000 !important; }
+        .exercise-block-dark .diff-tonn{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; outline:2px solid #ffffff; outline-offset:2px; }
+        .exercise-block-dark .diff-rip{ background:#aef000 !important; color:#000000 !important; border-color:#aef000 !important; outline:2px solid #ffffff; outline-offset:2px; }
         .exercise-block-dark .delete-icon-btn{ background:#ffffff !important; color:#c0392b !important; }
         .exercise-block-dark .delete-icon-btn svg{ color:#c0392b !important; stroke:#c0392b !important; }
         .exercise-block-dark .comp-table-mobile{ background:#141414 !important; }
@@ -2206,8 +2206,8 @@ export default function App() {
           background:#c0392b !important; color:#ffffff !important; border-radius:8px;
           font-size:calc(28px + 4pt); font-weight:700; padding:8px 8px;
         }
-        .input-kg{ background:#c0392b !important; color:#ffffff !important; border-color:#c0392b !important; font-weight:700; }
-        .input-kg::placeholder{ color:#f5d5d0 !important; }
+        .input-kg{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; font-weight:700; }
+        .input-kg::placeholder{ color:#c9e8cf !important; }
         .input-rip{ background:#aef000 !important; color:#000000 !important; border-color:#aef000 !important; font-weight:700; }
         .input-rip::placeholder{ color:#4a5a00 !important; }
         .input-rir{ background:#ffffff !important; color:#1a1a1a !important; border-color:#dddddd !important; font-weight:700; }
