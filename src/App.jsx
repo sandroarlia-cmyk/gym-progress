@@ -2447,10 +2447,10 @@ export default function App() {
           .comp-table-mobile .diff-badge{ font-size:19px; padding:4px 9px; }
           .last-time-block .kg-chip-row{ display:flex; flex-direction:column; gap:6px; }
           .exercise-block .last-time-block .kg-chip{
-            width:100% !important; box-sizing:border-box !important; text-align:center !important;
-            white-space:nowrap !important; overflow-x:auto !important; line-height:1.25 !important;
+            width:67% !important; margin:0 auto !important; box-sizing:border-box !important; text-align:center !important;
+            white-space:nowrap !important; overflow-x:auto !important; line-height:1 !important;
             display:flex !important; align-items:center !important; justify-content:center !important;
-            min-height:14px !important; padding:2px 4px !important; font-size:19.5px !important;
+            min-height:0 !important; padding:4px 4px !important; font-size:19.5px !important;
           }
           .diff-badge{ font-size:15px; padding:3px 8px; background:#FFF6C4; border-color:#E8D97A; }
           .comp-table{ grid-template-columns:auto 80px 80px; gap:5px 8px; }
