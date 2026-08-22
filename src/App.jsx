@@ -1218,6 +1218,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
               <div className="exercise-log-table">
                 <div className="exercise-log-row exercise-log-row-head">
                   <div className="log-date-box">Data</div>
+                  <div className="log-kgmax-box">Kg Max</div>
                   <div className="log-volume-box">Volume</div>
                   <div className="log-total-box">Rip.</div>
                   <div className="log-serie-box">Serie</div>
@@ -1231,9 +1232,14 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                 </div>
                 {rows.map((r, i) => {
                   const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
+                  const kgMax = r.sets.length ? Math.max(...r.sets.map((s) => Number(s.weight) || 0)) : 0;
+                  const ripAlKgMax = r.sets
+                    .filter((s) => (Number(s.weight) || 0) === kgMax)
+                    .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
                   return (
                     <div key={i} className="exercise-log-row">
                       <div className="log-date-box">{formatDateShort(r.date)}</div>
+                      <div className="log-kgmax-box">{kgMax} KG x {ripAlKgMax}</div>
                       <div className="log-volume-box">{round1(r.volume)} kg</div>
                       <div className="log-total-box">{totalReps}</div>
                       <div className="log-serie-box">{r.sets.length}</div>
@@ -2309,7 +2315,7 @@ export default function App() {
           border-bottom:1px solid rgba(123,224,138,0.25); padding-bottom:8px; margin-bottom:2px;
         }
         .exercise-log-row-head{ color:var(--text-dim); font-size:16px; text-transform:uppercase; }
-        .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box, .log-serie-box{
+        .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box, .log-serie-box, .log-kgmax-box{
           flex-shrink:0; display:flex; align-items:center; justify-content:center;
           padding:14px 10px; border-radius:6px; font-weight:700; white-space:nowrap;
           font-size:22px; overflow:hidden;
@@ -2317,7 +2323,8 @@ export default function App() {
         .exercise-log-row-head .log-date-box, .exercise-log-row-head .log-set-box,
         .exercise-log-row-head .log-kg-box, .exercise-log-row-head .log-rip-box,
         .exercise-log-row-head .log-note-box, .exercise-log-row-head .log-volume-box,
-        .exercise-log-row-head .log-total-box, .exercise-log-row-head .log-serie-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:22px; }
+        .exercise-log-row-head .log-total-box, .exercise-log-row-head .log-serie-box,
+        .exercise-log-row-head .log-kgmax-box{ background:transparent; font-weight:600; padding:6px 10px; font-size:22px; }
         .log-date-box{ width:150px; background:var(--surface-2); color:var(--text); font-size:22px; }
         .log-set-box{ width:140px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kg-box{ width:130px; background:var(--accent-dim); border:1px solid #E8C2BA; color:var(--text); font-size:22px; }
@@ -2327,6 +2334,7 @@ export default function App() {
         .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
         .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
@@ -2402,7 +2410,8 @@ export default function App() {
         .nuovo-allenamento-dark .log-kg-box,
         .nuovo-allenamento-dark .log-rip-box,
         .nuovo-allenamento-dark .log-note-box,
-        .nuovo-allenamento-dark .log-total-box{
+        .nuovo-allenamento-dark .log-total-box,
+        .nuovo-allenamento-dark .log-kgmax-box{
           background:transparent; border:none; color:#ffffff; font-weight:700; font-size:24px;
         }
         .nuovo-allenamento-dark .log-serie-box{
@@ -2412,6 +2421,7 @@ export default function App() {
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-note-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-kgmax-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
           background:transparent; color:#ffffff; font-weight:700; border:none;
         }
@@ -2573,12 +2583,12 @@ export default function App() {
 
         <div className="gt-main">
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
-          {tab.startsWith("m-") && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              <MuscleLogTab muscle={tab.slice(2)} workouts={workouts} exercises={exercises} />
-              <MuscleEntryPanel muscle={tab.slice(2)} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
+          {MUSCLE_NAV.map((m) => (
+            <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
+              <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} />
+              <MuscleEntryPanel muscle={m.muscle} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
             </div>
-          )}
+          ))}
           {tab === "cronologia" && <CronologiaTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "progressi" && <ProgressiTab workouts={workouts} exercises={exercises} bodyLogs={bodyLogs} />}
           {tab === "impostazioni" && <ImpostazioniTab bodyLogs={bodyLogs} setBodyLogs={setBodyLogs} />}
