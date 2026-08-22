@@ -2446,11 +2446,11 @@ export default function App() {
           .comp-table-mobile > span:not(.comp-header):not(.comp-label):not(.diff-badge){ font-size:17px; }
           .comp-table-mobile .diff-badge{ font-size:19px; padding:4px 9px; }
           .last-time-block .kg-chip-row{ display:flex; flex-direction:column; gap:6px; }
-          .last-time-block .kg-chip{
-            width:100%; box-sizing:border-box; text-align:center;
-            white-space:nowrap; overflow-x:auto; line-height:1.25;
-            display:flex; align-items:center; justify-content:center;
-            min-height:44px; padding:6px 10px; font-size:15.5px;
+          .exercise-block .last-time-block .kg-chip{
+            width:100% !important; box-sizing:border-box !important; text-align:center !important;
+            white-space:nowrap !important; overflow-x:auto !important; line-height:1.25 !important;
+            display:flex !important; align-items:center !important; justify-content:center !important;
+            min-height:14px !important; padding:2px 4px !important; font-size:19.5px !important;
           }
           .diff-badge{ font-size:15px; padding:3px 8px; background:#FFF6C4; border-color:#E8D97A; }
           .comp-table{ grid-template-columns:auto 80px 80px; gap:5px 8px; }
