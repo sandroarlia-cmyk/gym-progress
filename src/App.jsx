@@ -2332,7 +2332,7 @@ export default function App() {
         .log-note-box{ width:190px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; font-size:22px; }
         .log-note-box span{ white-space:nowrap; }
         .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
-        .log-total-box{ width:84px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-total-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
@@ -2410,18 +2410,21 @@ export default function App() {
         .nuovo-allenamento-dark .log-kg-box,
         .nuovo-allenamento-dark .log-rip-box,
         .nuovo-allenamento-dark .log-note-box,
-        .nuovo-allenamento-dark .log-total-box,
         .nuovo-allenamento-dark .log-kgmax-box{
           background:transparent; border:none; color:#ffffff; font-weight:700; font-size:24px;
         }
         .nuovo-allenamento-dark .log-serie-box{
           background:#ffffff; border:1px solid #7be08a; color:#1a1a1a; font-weight:700; font-size:24px;
         }
+        .nuovo-allenamento-dark .log-total-box{
+          background:#aef000; border:none; color:#000000; font-weight:700; font-size:24px;
+        }
         .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-rip-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-note-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-kgmax-box,
+        .nuovo-allenamento-dark .exercise-log-row-head .log-total-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
           background:transparent; color:#ffffff; font-weight:700; border:none;
         }
@@ -2498,7 +2501,7 @@ export default function App() {
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
           .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
           .log-volume-box{ width:140px; font-size:22px; font-weight:700; padding:12px 10px; }
-          .log-total-box{ width:84px; font-size:22px; padding:12px 8px; }
+          .log-total-box{ width:56px; font-size:22px; padding:12px 8px; }
           .log-serie-box{ width:52px; font-size:22px; padding:12px 8px; }
           .exercise-log-row-head .log-serie-box{ width:68px; }
           .gt-root{ font-size:17px; }
