@@ -1642,17 +1642,26 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
 
   const yearlyStrengthData = useMemo(() => {
     if (!forzaEsercizioAttivo) return [];
-    return [...workouts]
+    const perData = {};
+    workouts
       .filter((w) => w.date.startsWith(String(forzaAnno)))
-      .sort((a, b) => (a.date > b.date ? 1 : -1))
-      .filter((w) => w.exercises.some((it) => it.exerciseId === forzaEsercizioAttivo))
-      .map((w) => {
+      .forEach((w) => {
         const it = w.exercises.find((it) => it.exerciseId === forzaEsercizioAttivo);
-        const pesoMax = it.sets.length ? Math.max(...it.sets.map((s) => Number(s.weight) || 0)) : 0;
-        const ripMax = it.sets
-          .filter((s) => (Number(s.weight) || 0) === pesoMax)
+        if (!it || !it.sets.length) return;
+        const pesoMaxSessione = Math.max(...it.sets.map((s) => Number(s.weight) || 0));
+        const ripMaxSessione = it.sets
+          .filter((s) => (Number(s.weight) || 0) === pesoMaxSessione)
           .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
-        return { data: formatDateShort(w.date), peso: pesoMax, ripMax, tonnMax: pesoMax * ripMax };
+        const attuale = perData[w.date];
+        if (!attuale || pesoMaxSessione > attuale.peso || (pesoMaxSessione === attuale.peso && ripMaxSessione > attuale.ripMax)) {
+          perData[w.date] = { peso: pesoMaxSessione, ripMax: ripMaxSessione };
+        }
+      });
+    return Object.keys(perData)
+      .sort()
+      .map((dateIso) => {
+        const { peso, ripMax } = perData[dateIso];
+        return { data: formatDateShort(dateIso), peso, ripMax, tonnMax: peso * ripMax };
       });
   }, [workouts, forzaAnno, forzaEsercizioAttivo]);
 
@@ -1759,7 +1768,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         {yearlyStrengthData.length === 0 ? <p className="muted">Nessun dato per questo esercizio in {forzaAnno}.</p> : (
           <div style={{ height: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={yearlyStrengthData}>
+              <LineChart data={yearlyStrengthData} margin={{ top: 5, right: 20, bottom: 5, left: 5 }}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis yAxisId="left" stroke="var(--accent)" fontSize={11} />
@@ -1773,8 +1782,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   }
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Line yAxisId="left" type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name="Peso max (kg)" />
-                <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 3 }} name="Tonnellaggio (TONN.)" />
+                <Line yAxisId="left" type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Peso max (kg)" />
+                <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Tonnellaggio (TONN.)" />
               </LineChart>
             </ResponsiveContainer>
           </div>
