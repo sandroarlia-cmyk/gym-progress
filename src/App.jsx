@@ -577,7 +577,7 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
       {item.sets.length > 0 && (
         <div className="set-table">
           <div className="set-row set-row-head">
-            <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Tonn.</span><span>TIME</span><span>Note</span><span></span>
+            <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>TIME</span><span>Note</span><span></span>
           </div>
           {item.sets.map((s, idx) => (
             <div className="set-row" key={idx}>
@@ -588,7 +588,6 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
                 onChange={(e) => updateSet(item.id, idx, "reps", e.target.value)} />
               <input className="input input-sm input-rir" type="number" value={s.rir}
                 onChange={(e) => updateSet(item.id, idx, "rir", e.target.value)} />
-              <span className="tonn-cell tonn-box">{round1(setVolume(s))}</span>
               <select className="input input-sm" value={s.recupero}
                 onChange={(e) => updateSet(item.id, idx, "recupero", e.target.value)}>
                 <option value="">—</option>
@@ -2209,7 +2208,7 @@ export default function App() {
         .exercise-block-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
         .exercise-name{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:36px; }
         .set-table{ margin-top:10px; display:flex; flex-direction:column; gap:7px; }
-        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 1.1fr 0.65fr 1fr 44px; gap:10px; align-items:center; }
+        .set-row{ display:grid; grid-template-columns:44px 1fr 1fr 0.8fr 0.65fr 1fr 44px; gap:10px; align-items:center; }
         .set-row-head{ color:var(--text-dim); font-size:24px; text-transform:uppercase; }
         .set-idx{ color:var(--text-dim); font-size:28px; text-align:center; }
         .save-bar{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border-c); border-radius:10px; padding:14px 18px; position:sticky; bottom:12px; box-shadow:0 4px 14px rgba(0,0,0,0.06); }
@@ -2513,7 +2512,7 @@ export default function App() {
           .badge{ font-size:11.5px; padding:2px 7px; }
           .exercise-name{ font-size:16px; }
           .set-table{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin-top:8px; }
-          .set-row{ grid-template-columns:24px 62px 54px 46px 100px 46px 110px 34px; min-width:700px; gap:6px; }
+          .set-row{ grid-template-columns:24px 62px 54px 46px 46px 110px 34px; min-width:600px; gap:6px; }
           .set-row-head{ font-size:10.5px; min-width:480px; }
           .set-idx{ font-size:12px; }
           .set-row .btn-icon{ padding:2px; }
