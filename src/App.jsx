@@ -2274,7 +2274,7 @@ export default function App() {
         .comp-table > span:not(.comp-header):not(.comp-label):not(.diff-badge){ text-align:center; font-weight:700; font-size:26px; }
         .diff-badge{ font-size:26px; font-weight:700; color:#000000; background:#FFF6C4; border:1px solid #E8D97A; padding:4px 10px; border-radius:8px; text-align:center; }
         .search-wrap{ position:relative; }
-        .search-muscolo-input{ border:3px solid #c0392b !important; background:#141414; color:#ffffff !important; }
+        .search-muscolo-input{ background:#141414; color:#ffffff !important; }
         .search-icon{ position:absolute; left:12px; top:16px; color:var(--text-dim); }
         .dropdown{ position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1px solid var(--border-c); border-radius:8px; z-index:5; max-height:260px; overflow-y:auto; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
         .dropdown-item{ display:flex; justify-content:space-between; padding:10px 14px; cursor:pointer; font-size:30px; }
@@ -2459,7 +2459,7 @@ export default function App() {
         .record-line{ display:flex; justify-content:space-between; font-size:28px; padding:4px 0; color:var(--text-dim); }
         .record-line strong{ color:var(--text); }
         .date-it-picker{ display:flex; gap:8px; max-width:760px; }
-        .date-it-picker .input{ min-width:0; background:#141414; color:#ffffff !important; border:3px solid #c0392b; }
+        .date-it-picker .input{ min-width:0; background:#141414; color:#ffffff !important; }
         .date-it-day{ flex:0 0 78px; }
         .date-it-month{ flex:1 1 auto; }
         .date-it-year{ flex:0 0 200px; }
