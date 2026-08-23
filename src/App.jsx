@@ -2346,7 +2346,7 @@ export default function App() {
         .log-date-card-body .log-total-box{ padding:7px 10px; }
         .log-date-card-body .log-rir-box{ padding:7px 10px; }
         .log-date-card-body .log-note-box{ padding:7px 10px; }
-        .log-kg-value-box{ width:140px; flex-shrink:0; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kg-value-box{ width:140px; flex-shrink:0; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:flex-end; text-align:right; }
         .log-date-list{ display:flex; flex-direction:column; gap:6px; }
         .log-date-card{ padding-bottom:8px; border-bottom:1px solid rgba(123,224,138,0.3); margin-bottom:4px; }
         .log-date-card:last-child{ border-bottom:none; }
