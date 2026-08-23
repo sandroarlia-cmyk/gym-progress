@@ -1170,6 +1170,7 @@ function firstNote(sets) {
 }
 
 function MuscleLogTab({ muscle, workouts, exercises }) {
+  const [expandedDates, setExpandedDates] = useState({});
   const relevantIds = useMemo(() => {
     const ids = new Set();
     workouts.forEach((w) => w.exercises.forEach((it) => {
@@ -1182,6 +1183,10 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
   const orderedIds = orderedExerciseList(exercises, muscle).map((e) => e.id).filter((id) => relevantIds.has(id));
   const extraIds = [...relevantIds].filter((id) => !orderedIds.includes(id));
   const finalIds = [...orderedIds, ...extraIds];
+
+  function toggleExpanded(key) {
+    setExpandedDates((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -1208,55 +1213,46 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
           .filter((w) => w.exercises.some((it) => it.exerciseId === exId))
           .map((w) => {
             const it = w.exercises.find((it) => it.exerciseId === exId);
-            return { date: w.date, sets: it.sets, volume: itemVolume(it), note: firstNote(it.sets) };
+            return { date: w.date, sets: it.sets, volume: itemVolume(it) };
           })
           .sort((a, b) => (a.date < b.date ? -1 : 1));
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
           <Section title={ex ? ex.name : "?"}>
-            <div className="exercise-log-scroll">
-              <div className="exercise-log-table">
-                <div className="exercise-log-row exercise-log-row-head">
-                  <div className="log-date-box">Data</div>
-                  <div className="log-kgmax-box">Kg Max</div>
-                  <div className="log-volume-box">Volume</div>
-                  <div className="log-total-box">Rip.</div>
-                  <div className="log-serie-box">Serie</div>
-                  {Array.from({ length: 10 }).map((_, idx) => (
-                    <React.Fragment key={idx}>
-                      <div className="log-kg-box">Kg</div>
-                      <div className="log-rip-box">Rip</div>
-                    </React.Fragment>
-                  ))}
-                  <div className="log-note-box">Note</div>
-                </div>
-                {rows.map((r, i) => {
-                  const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
-                  const kgMax = r.sets.length ? Math.max(...r.sets.map((s) => Number(s.weight) || 0)) : 0;
-                  const ripAlKgMax = r.sets
-                    .filter((s) => (Number(s.weight) || 0) === kgMax)
-                    .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
-                  return (
-                    <div key={i} className="exercise-log-row">
+            <div className="log-date-list">
+              {rows.map((r, i) => {
+                const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
+                const kgMax = r.sets.length ? Math.max(...r.sets.map((s) => Number(s.weight) || 0)) : 0;
+                const ripAlKgMax = r.sets
+                  .filter((s) => (Number(s.weight) || 0) === kgMax)
+                  .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
+                const key = exId + "-" + r.date + "-" + i;
+                const isOpen = !!expandedDates[key];
+                return (
+                  <div key={key} className="log-date-card">
+                    <div className="log-date-card-head" onClick={() => toggleExpanded(key)}>
                       <div className="log-date-box">{formatDateShort(r.date)}</div>
                       <div className="log-kgmax-box">{kgMax} KG x {ripAlKgMax}</div>
-                      <div className="log-volume-box">{round1(r.volume)} kg</div>
-                      <div className="log-total-box">{totalReps}</div>
-                      <div className="log-serie-box">{r.sets.length}</div>
-                      {Array.from({ length: 10 }).map((_, idx) => {
-                        const s = r.sets[idx];
-                        return (
-                          <React.Fragment key={idx}>
-                            <div className="log-kg-box">{s ? `${s.weight || 0} KG` : ""}</div>
-                            <div className="log-rip-box">{s ? s.reps || 0 : ""}</div>
-                          </React.Fragment>
-                        );
-                      })}
-                      <div className="log-note-box"><span>{r.note}</span></div>
                     </div>
-                  );
-                })}
-              </div>
+                    {isOpen && (
+                      <div className="log-date-card-body">
+                        <div className="log-set-row">
+                          <div className="log-volume-box">{round1(r.volume)} kg</div>
+                          <div className="log-total-box">{totalReps}</div>
+                        </div>
+                        {r.sets.map((s, idx) => (
+                          <div className="log-set-row" key={idx}>
+                            <div className="log-volume-box">{s.weight || 0} KG</div>
+                            <div className="log-total-box">{s.reps || 0}</div>
+                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</div>
+                            <div className="log-note-box"><span>{s.notes || "—"}</span></div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </Section>
           </div>
@@ -2335,6 +2331,12 @@ export default function App() {
         .log-total-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
+        .log-rir-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
+        .log-date-list{ display:flex; flex-direction:column; gap:6px; }
+        .log-date-card{ padding-bottom:4px; }
+        .log-date-card-head{ display:flex; gap:8px; cursor:pointer; }
+        .log-date-card-body{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+        .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
@@ -2418,6 +2420,9 @@ export default function App() {
         }
         .nuovo-allenamento-dark .log-total-box{
           background:#aef000; border:none; color:#000000; font-weight:700; font-size:24px;
+        }
+        .nuovo-allenamento-dark .log-rir-box{
+          background:#ffffff; border:none; color:#1a1a1a; font-weight:700; font-size:24px;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-set-box,
         .nuovo-allenamento-dark .exercise-log-row-head .log-kg-box,
