@@ -2428,9 +2428,11 @@ export default function App() {
         .nuovo-allenamento-dark .log-set-box,
         .nuovo-allenamento-dark .log-kg-box,
         .nuovo-allenamento-dark .log-rip-box,
-        .nuovo-allenamento-dark .log-note-box,
         .nuovo-allenamento-dark .log-kgmax-box{
           background:transparent; border:none; color:#ffffff; font-weight:700; font-size:24px;
+        }
+        .nuovo-allenamento-dark .log-note-box{
+          background:#ffffff; border:none; color:#1a1a1a; font-weight:700; font-size:24px;
         }
         .nuovo-allenamento-dark .log-serie-box{
           background:#ffffff; border:1px solid #7be08a; color:#1a1a1a; font-weight:700; font-size:24px;
@@ -2522,6 +2524,17 @@ export default function App() {
           .log-kgmax-label-box{ width:50px; font-size:11px; padding:8px 3px; }
           .log-kgmax-value-box{ width:115px; font-size:18px; padding:9px 5px; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
+          .log-date-card-body{ gap:2px; }
+          .log-set-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+          .log-set-row-titles{ margin-top:10px; }
+          .log-kg-title-box{ font-size:19px; padding:4px 6px; }
+          .log-total-box{ font-size:19px; }
+          .log-date-card-body .log-total-box{ padding:4px 6px; }
+          .log-rir-box{ font-size:19px; }
+          .log-date-card-body .log-rir-box{ padding:4px 6px; }
+          .log-note-title-box{ font-size:19px; padding:4px 6px; }
+          .log-date-card-body .log-note-box{ padding:4px 6px; font-size:19px; }
+          .log-kg-value-box{ font-size:19px; padding:4px 6px; }
           .log-set-box{ width:140px; font-size:22px; padding:12px 10px; }
           .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
