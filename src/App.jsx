@@ -1170,6 +1170,7 @@ function firstNote(sets) {
 }
 
 function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
+  const [expandedExercises, setExpandedExercises] = useState({});
   const [expandedDates, setExpandedDates] = useState({});
   const [editingKey, setEditingKey] = useState(null);
   const relevantIds = useMemo(() => {
@@ -1187,6 +1188,10 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
 
   function toggleExpanded(key) {
     setExpandedDates((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  function toggleExercise(exId) {
+    setExpandedExercises((prev) => ({ ...prev, [exId]: !prev[exId] }));
   }
 
   function updateSetField(workoutId, exId, idx, field, value) {
@@ -1262,7 +1267,12 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
           .sort((a, b) => (a.date > b.date ? -1 : 1));
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
-          <Section title={ex ? ex.name : "?"}>
+          <div className="card">
+            <div className="section-head log-exercise-head" onClick={() => toggleExercise(exId)}>
+              <h2 className="font-display section-title">{ex ? ex.name : "?"}</h2>
+              <ChevronRight size={24} className={"chevron" + (expandedExercises[exId] ? " open" : "")} />
+            </div>
+            {expandedExercises[exId] && (
             <div className="log-date-list">
               {rows.map((r, i) => {
                 const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
@@ -1343,7 +1353,8 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
                 );
               })}
             </div>
-          </Section>
+            )}
+          </div>
           </div>
         );
       })}
@@ -2437,6 +2448,7 @@ export default function App() {
         .log-set-row-titles{ margin-top:14px; }
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
+        .log-exercise-head{ cursor:pointer; }
         .log-edit-table .set-row{ grid-template-columns:30px 1fr 1fr 0.8fr 1.5fr 40px; }
         .log-edit-table .set-idx{ color:#ffffff; }
         .log-edit-table .input:not(.input-kg):not(.input-rip):not(.input-rir){ color:#1a1a1a !important; background:#ffffff !important; }
