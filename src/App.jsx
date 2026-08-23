@@ -2348,7 +2348,8 @@ export default function App() {
         .log-date-card-body .log-note-box{ padding:7px 10px; }
         .log-kg-value-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-list{ display:flex; flex-direction:column; gap:6px; }
-        .log-date-card{ padding-bottom:4px; }
+        .log-date-card{ padding-bottom:8px; border-bottom:1px solid rgba(123,224,138,0.3); margin-bottom:4px; }
+        .log-date-card:last-child{ border-bottom:none; }
         .log-date-card-head{ display:flex; gap:8px; cursor:pointer; }
         .log-date-card-body{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
         .log-set-row-titles{ margin-top:14px; }
