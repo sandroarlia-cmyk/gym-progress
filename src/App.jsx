@@ -1232,8 +1232,8 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                   <div key={key} className="log-date-card">
                     <div className="log-date-card-head" onClick={() => toggleExpanded(key)}>
                       <div className="log-date-box">{formatDateShort(r.date)}</div>
-                      <div className="log-kgmax-value-box">{kgMax} KG</div>
-                      <div className="log-ripmax-box">{ripAlKgMax}</div>
+                      <div className="log-kgmax-label-box">KG MAX</div>
+                      <div className="log-kgmax-value-box">{kgMax} KG x {ripAlKgMax}</div>
                     </div>
                     {isOpen && (
                       <div className="log-date-card-body">
@@ -1241,7 +1241,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                           <div className="log-volume-box">{round1(r.volume)} kg</div>
                           <div className="log-total-box">{totalReps}</div>
                         </div>
-                        <div className="log-set-row">
+                        <div className="log-set-row log-set-row-titles">
                           <div className="log-kg-title-box">KG</div>
                           <div className="log-total-box">RIP</div>
                           <div className="log-rir-box">RIR</div>
@@ -1249,7 +1249,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                         </div>
                         {r.sets.map((s, idx) => (
                           <div className="log-set-row" key={idx}>
-                            <div className="log-volume-box">{s.weight ? `${s.weight} KG` : ""}</div>
+                            <div className="log-kg-value-box">{s.weight ? `${s.weight} KG` : ""}</div>
                             <div className="log-total-box">{s.reps || ""}</div>
                             <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
                             <div className="log-note-box"><span>{s.notes || ""}</span></div>
@@ -2339,14 +2339,19 @@ export default function App() {
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-rir-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
-        .log-kgmax-value-box{ width:100px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-ripmax-box{ width:70px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kgmax-label-box{ width:100px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kgmax-value-box{ width:140px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
         .log-kg-title-box{ width:140px; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-note-title-box{ width:190px; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-note-title-box{ width:190px; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-date-card-body .log-total-box{ padding:7px 10px; }
+        .log-date-card-body .log-rir-box{ padding:7px 10px; }
+        .log-date-card-body .log-note-box{ padding:7px 10px; }
+        .log-kg-value-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-list{ display:flex; flex-direction:column; gap:6px; }
         .log-date-card{ padding-bottom:4px; }
         .log-date-card-head{ display:flex; gap:8px; cursor:pointer; }
         .log-date-card-body{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+        .log-set-row-titles{ margin-top:14px; }
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
@@ -2444,7 +2449,8 @@ export default function App() {
         .nuovo-allenamento-dark .exercise-log-row-head .log-serie-box{
           background:transparent; color:#ffffff; font-weight:700; border:none;
         }
-        .nuovo-allenamento-dark .log-volume-box{
+        .nuovo-allenamento-dark .log-volume-box,
+        .nuovo-allenamento-dark .log-kg-value-box{
           background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-color:#1f6b3a;
         }
         .nuovo-allenamento-dark .exercise-log-row-head .log-volume-box{
