@@ -2536,7 +2536,7 @@ export default function App() {
           .log-date-card-body .log-rir-box{ padding:4px 6px; }
           .log-note-title-box{ font-size:19px; padding:4px 6px; }
           .log-date-card-body .log-note-box{ padding:4px 6px; font-size:19px; }
-          .log-kg-value-box{ font-size:19px; padding:4px 16px 4px 6px; }
+          .log-kg-value-box{ font-size:19px; padding:4px 30px 4px 6px; }
           .log-set-box{ width:140px; font-size:22px; padding:12px 10px; }
           .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
