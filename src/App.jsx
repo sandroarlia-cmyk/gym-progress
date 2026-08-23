@@ -1215,7 +1215,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
             const it = w.exercises.find((it) => it.exerciseId === exId);
             return { date: w.date, sets: it.sets, volume: itemVolume(it) };
           })
-          .sort((a, b) => (a.date < b.date ? -1 : 1));
+          .sort((a, b) => (a.date > b.date ? -1 : 1));
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
           <Section title={ex ? ex.name : "?"}>
