@@ -1313,24 +1313,19 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
                         )}
 
                         {isEditing && (
-                          <div className="set-table">
+                          <div className="set-table log-edit-table">
                             <div className="set-row set-row-head">
-                              <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>TIME</span><span>Note</span><span></span>
+                              <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Note</span><span></span>
                             </div>
                             {r.sets.map((s, idx) => (
                               <div className="set-row" key={idx}>
                                 <span className="set-idx">{idx + 1}</span>
-                                <input className="input input-sm" type="number" value={s.weight}
+                                <input className="input input-sm input-kg" type="number" value={s.weight}
                                   onChange={(e) => updateSetField(r.workoutId, exId, idx, "weight", e.target.value)} />
-                                <input className="input input-sm" type="number" value={s.reps}
+                                <input className="input input-sm input-rip" type="number" value={s.reps}
                                   onChange={(e) => updateSetField(r.workoutId, exId, idx, "reps", e.target.value)} />
-                                <input className="input input-sm" type="number" value={s.rir}
+                                <input className="input input-sm input-rir" type="number" value={s.rir}
                                   onChange={(e) => updateSetField(r.workoutId, exId, idx, "rir", e.target.value)} />
-                                <select className="input input-sm" value={s.recupero}
-                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "recupero", e.target.value)}>
-                                  <option value="">—</option>
-                                  {RECUPERO_OPTIONS.map((rp) => <option key={rp} value={rp}>{rp}</option>)}
-                                </select>
                                 <input className="input input-sm" value={s.notes}
                                   onChange={(e) => updateSetField(r.workoutId, exId, idx, "notes", e.target.value)} />
                                 <button className="btn-icon" onClick={() => removeSetFromRow(r.workoutId, exId, idx)}><X size={18} /></button>
@@ -2442,6 +2437,10 @@ export default function App() {
         .log-set-row-titles{ margin-top:14px; }
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
+        .log-edit-table .set-row{ grid-template-columns:30px 1fr 1fr 0.8fr 1.5fr 40px; }
+        .log-edit-table .set-idx{ color:#ffffff; }
+        .log-edit-table .input:not(.input-kg):not(.input-rip):not(.input-rir){ color:#1a1a1a !important; background:#ffffff !important; }
+        .log-edit-table .set-row-head{ color:#ffffff; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
