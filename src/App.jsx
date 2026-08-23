@@ -1232,7 +1232,8 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                   <div key={key} className="log-date-card">
                     <div className="log-date-card-head" onClick={() => toggleExpanded(key)}>
                       <div className="log-date-box">{formatDateShort(r.date)}</div>
-                      <div className="log-kgmax-box">{kgMax} KG x {ripAlKgMax}</div>
+                      <div className="log-kgmax-value-box">{kgMax} KG</div>
+                      <div className="log-ripmax-box">{ripAlKgMax}</div>
                     </div>
                     {isOpen && (
                       <div className="log-date-card-body">
@@ -1240,12 +1241,18 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                           <div className="log-volume-box">{round1(r.volume)} kg</div>
                           <div className="log-total-box">{totalReps}</div>
                         </div>
+                        <div className="log-set-row">
+                          <div className="log-kg-title-box">KG</div>
+                          <div className="log-total-box">RIP</div>
+                          <div className="log-rir-box">RIR</div>
+                          <div className="log-note-title-box">NOTE</div>
+                        </div>
                         {r.sets.map((s, idx) => (
                           <div className="log-set-row" key={idx}>
-                            <div className="log-volume-box">{s.weight || 0} KG</div>
-                            <div className="log-total-box">{s.reps || 0}</div>
-                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</div>
-                            <div className="log-note-box"><span>{s.notes || "—"}</span></div>
+                            <div className="log-volume-box">{s.weight ? `${s.weight} KG` : ""}</div>
+                            <div className="log-total-box">{s.reps || ""}</div>
+                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
+                            <div className="log-note-box"><span>{s.notes || ""}</span></div>
                           </div>
                         ))}
                       </div>
@@ -2332,6 +2339,10 @@ export default function App() {
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-rir-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
+        .log-kgmax-value-box{ width:100px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-ripmax-box{ width:70px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kg-title-box{ width:140px; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-note-title-box{ width:190px; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-list{ display:flex; flex-direction:column; gap:6px; }
         .log-date-card{ padding-bottom:4px; }
         .log-date-card-head{ display:flex; gap:8px; cursor:pointer; }
