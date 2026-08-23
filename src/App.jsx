@@ -2518,7 +2518,10 @@ export default function App() {
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
-          .log-date-box{ width:150px; font-size:22px; padding:12px 10px; }
+          .log-date-box{ width:75px; font-size:12px; padding:8px 4px; }
+          .log-kgmax-label-box{ width:50px; font-size:11px; padding:8px 3px; }
+          .log-kgmax-value-box{ width:80px; font-size:12px; padding:8px 4px; }
+          .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-set-box{ width:140px; font-size:22px; padding:12px 10px; }
           .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
