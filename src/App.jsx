@@ -1169,8 +1169,9 @@ function firstNote(sets) {
   return found ? found.notes : "";
 }
 
-function MuscleLogTab({ muscle, workouts, exercises }) {
+function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
   const [expandedDates, setExpandedDates] = useState({});
+  const [editingKey, setEditingKey] = useState(null);
   const relevantIds = useMemo(() => {
     const ids = new Set();
     workouts.forEach((w) => w.exercises.forEach((it) => {
@@ -1186,6 +1187,49 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
 
   function toggleExpanded(key) {
     setExpandedDates((prev) => ({ ...prev, [key]: !prev[key] }));
+  }
+
+  function updateSetField(workoutId, exId, idx, field, value) {
+    setWorkouts(workouts.map((w) => {
+      if (w.id !== workoutId) return w;
+      return {
+        ...w,
+        exercises: w.exercises.map((it) => it.exerciseId !== exId ? it : {
+          ...it,
+          sets: it.sets.map((s, i) => i === idx ? { ...s, [field]: value } : s)
+        })
+      };
+    }));
+  }
+  function addSetToRow(workoutId, exId) {
+    setWorkouts(workouts.map((w) => {
+      if (w.id !== workoutId) return w;
+      return {
+        ...w,
+        exercises: w.exercises.map((it) => it.exerciseId !== exId || it.sets.length >= 10 ? it : {
+          ...it,
+          sets: [...it.sets, { weight: "", reps: "", rir: "", recupero: "", notes: "" }]
+        })
+      };
+    }));
+  }
+  function removeSetFromRow(workoutId, exId, idx) {
+    setWorkouts(workouts.map((w) => {
+      if (w.id !== workoutId) return w;
+      return {
+        ...w,
+        exercises: w.exercises.map((it) => it.exerciseId !== exId ? it : {
+          ...it,
+          sets: it.sets.filter((_, i) => i !== idx)
+        })
+      };
+    }));
+  }
+  function deleteEntireEntry(workoutId, exId) {
+    const updated = workouts
+      .map((w) => (w.id === workoutId ? { ...w, exercises: w.exercises.filter((it) => it.exerciseId !== exId) } : w))
+      .filter((w) => w.exercises.length > 0);
+    setWorkouts(updated);
   }
 
   return (
@@ -1213,7 +1257,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
           .filter((w) => w.exercises.some((it) => it.exerciseId === exId))
           .map((w) => {
             const it = w.exercises.find((it) => it.exerciseId === exId);
-            return { date: w.date, sets: it.sets, volume: itemVolume(it) };
+            return { workoutId: w.id, date: w.date, sets: it.sets, volume: itemVolume(it) };
           })
           .sort((a, b) => (a.date > b.date ? -1 : 1));
         return (
@@ -1228,6 +1272,7 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                   .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
                 const key = exId + "-" + r.date + "-" + i;
                 const isOpen = !!expandedDates[key];
+                const isEditing = editingKey === key;
                 return (
                   <div key={key} className="log-date-card">
                     <div className="log-date-card-head" onClick={() => toggleExpanded(key)}>
@@ -1240,21 +1285,63 @@ function MuscleLogTab({ muscle, workouts, exercises }) {
                         <div className="log-set-row">
                           <div className="log-volume-box">{round1(r.volume)} kg</div>
                           <div className="log-total-box">{totalReps}</div>
+                          <button className="btn btn-ghost log-edit-btn" onClick={(e) => { e.stopPropagation(); setEditingKey(isEditing ? null : key); }}>
+                            {isEditing ? "Fatto" : "Modifica"}
+                          </button>
+                          <span onClick={(e) => e.stopPropagation()}>
+                            <DeleteButton onConfirm={() => deleteEntireEntry(r.workoutId, exId)} small />
+                          </span>
                         </div>
-                        <div className="log-set-row log-set-row-titles">
-                          <div className="log-kg-title-box">KG</div>
-                          <div className="log-total-box">RIP</div>
-                          <div className="log-rir-box">RIR</div>
-                          <div className="log-note-title-box">NOTE</div>
-                        </div>
-                        {r.sets.map((s, idx) => (
-                          <div className="log-set-row" key={idx}>
-                            <div className="log-kg-value-box">{s.weight ? `${s.weight} KG` : ""}</div>
-                            <div className="log-total-box">{s.reps || ""}</div>
-                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
-                            <div className="log-note-box"><span>{s.notes || ""}</span></div>
+
+                        {!isEditing && (
+                          <>
+                            <div className="log-set-row log-set-row-titles">
+                              <div className="log-kg-title-box">KG</div>
+                              <div className="log-total-box">RIP</div>
+                              <div className="log-rir-box">RIR</div>
+                              <div className="log-note-title-box">NOTE</div>
+                            </div>
+                            {r.sets.map((s, idx) => (
+                              <div className="log-set-row" key={idx}>
+                                <div className="log-kg-value-box">{s.weight ? `${s.weight} KG` : ""}</div>
+                                <div className="log-total-box">{s.reps || ""}</div>
+                                <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
+                                <div className="log-note-box"><span>{s.notes || ""}</span></div>
+                              </div>
+                            ))}
+                          </>
+                        )}
+
+                        {isEditing && (
+                          <div className="set-table">
+                            <div className="set-row set-row-head">
+                              <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>TIME</span><span>Note</span><span></span>
+                            </div>
+                            {r.sets.map((s, idx) => (
+                              <div className="set-row" key={idx}>
+                                <span className="set-idx">{idx + 1}</span>
+                                <input className="input input-sm" type="number" value={s.weight}
+                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "weight", e.target.value)} />
+                                <input className="input input-sm" type="number" value={s.reps}
+                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "reps", e.target.value)} />
+                                <input className="input input-sm" type="number" value={s.rir}
+                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "rir", e.target.value)} />
+                                <select className="input input-sm" value={s.recupero}
+                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "recupero", e.target.value)}>
+                                  <option value="">—</option>
+                                  {RECUPERO_OPTIONS.map((rp) => <option key={rp} value={rp}>{rp}</option>)}
+                                </select>
+                                <input className="input input-sm" value={s.notes}
+                                  onChange={(e) => updateSetField(r.workoutId, exId, idx, "notes", e.target.value)} />
+                                <button className="btn-icon" onClick={() => removeSetFromRow(r.workoutId, exId, idx)}><X size={18} /></button>
+                              </div>
+                            ))}
+                            <button className="btn btn-ghost" style={{ marginTop: 8 }} disabled={r.sets.length >= 10}
+                              onClick={() => addSetToRow(r.workoutId, exId)}>
+                              <Plus size={18} /> Aggiungi serie {r.sets.length >= 10 ? "(max 10)" : ""}
+                            </button>
                           </div>
-                        ))}
+                        )}
                       </div>
                     )}
                   </div>
@@ -2354,6 +2441,7 @@ export default function App() {
         .log-date-card-body{ display:flex; flex-direction:column; gap:6px; margin-top:8px; }
         .log-set-row-titles{ margin-top:14px; }
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
+        .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
@@ -2629,7 +2717,7 @@ export default function App() {
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
           {MUSCLE_NAV.map((m) => (
             <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
-              <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} />
+              <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
               <MuscleEntryPanel muscle={m.muscle} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
             </div>
           ))}
