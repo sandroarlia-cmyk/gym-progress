@@ -2525,7 +2525,8 @@ export default function App() {
           .log-kgmax-value-box{ width:115px; font-size:18px; padding:9px 5px; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
-          .log-set-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+          .log-note-box{ width:70px; }
+          .log-note-title-box{ width:70px; }
           .log-set-row-titles{ margin-top:10px; }
           .log-kg-title-box{ font-size:19px; padding:4px 6px; }
           .log-total-box{ font-size:19px; }
