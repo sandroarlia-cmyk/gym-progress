@@ -2521,7 +2521,7 @@ export default function App() {
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
           .log-date-box{ width:100px; font-size:18px; padding:9px 5px; }
-          .log-kgmax-label-box{ width:50px; font-size:11px; padding:8px 3px; }
+          .log-kgmax-label-box{ width:50px; font-size:13px; padding:8px 3px; text-align:center; justify-content:center; }
           .log-kgmax-value-box{ width:115px; font-size:18px; padding:9px 5px; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
