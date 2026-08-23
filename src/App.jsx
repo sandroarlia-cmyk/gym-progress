@@ -2338,15 +2338,15 @@ export default function App() {
         .log-total-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
-        .log-rir-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
-        .log-kgmax-label-box{ width:100px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-kgmax-value-box{ width:140px; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-kg-title-box{ width:140px; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-note-title-box{ width:190px; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-rir-box{ width:56px; flex-shrink:0; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
+        .log-kgmax-label-box{ width:100px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kgmax-value-box{ width:140px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kg-title-box{ width:140px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-note-title-box{ width:190px; flex-shrink:0; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-card-body .log-total-box{ padding:7px 10px; }
         .log-date-card-body .log-rir-box{ padding:7px 10px; }
         .log-date-card-body .log-note-box{ padding:7px 10px; }
-        .log-kg-value-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kg-value-box{ width:140px; flex-shrink:0; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-list{ display:flex; flex-direction:column; gap:6px; }
         .log-date-card{ padding-bottom:8px; border-bottom:1px solid rgba(123,224,138,0.3); margin-bottom:4px; }
         .log-date-card:last-child{ border-bottom:none; }
@@ -2527,6 +2527,7 @@ export default function App() {
           .log-date-card-body{ gap:2px; }
           .log-note-box{ width:70px; }
           .log-note-title-box{ width:70px; }
+          .log-set-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
           .log-set-row-titles{ margin-top:10px; }
           .log-kg-title-box{ font-size:19px; padding:4px 6px; }
           .log-total-box{ font-size:19px; }
