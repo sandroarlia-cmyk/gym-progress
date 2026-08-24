@@ -1723,6 +1723,29 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
   );
 }
 
+function PinnedTooltip({ active, payload, label, onClose, labelFormatter, formatter, valueColor }) {
+  if (!active || !payload || !payload.length) return null;
+  return (
+    <div
+      style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 6, padding: "8px 12px", cursor: "pointer" }}
+      onClick={onClose}
+    >
+      <div style={{ color: "var(--text-dim)", fontSize: 12, marginBottom: 4 }}>
+        {labelFormatter ? labelFormatter(label, payload) : label}
+      </div>
+      {payload.map((entry, i) => {
+        const [val, name] = formatter ? formatter(entry.value, entry.name, entry) : [entry.value, entry.name];
+        return (
+          <div key={i} style={{ color: valueColor || "#ffffff", fontWeight: 700, fontSize: 14 }}>
+            {name}: {val}
+          </div>
+        );
+      })}
+      <div style={{ color: "var(--text-dim)", fontSize: 11, marginTop: 4 }}>tocca per chiudere ×</div>
+    </div>
+  );
+}
+
 function ProgressiTab({ workouts, exercises, bodyLogs }) {
   useEffect(() => {
     const t1 = setTimeout(() => window.dispatchEvent(new Event("resize")), 150);
@@ -1922,12 +1945,12 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedForzaAnno ? pinnedForzaAnno.key : undefined}
                   coordinate={pinnedForzaAnno ? { x: pinnedForzaAnno.x, y: pinnedForzaAnno.y } : undefined}
-                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                  formatter={(value, name, props) =>
-                    name === "Tonnellaggio (TONN.)"
-                      ? [`${value} TONN.`, "TOT. KG x RIP."]
-                      : [`${value} kg x ${props.payload.ripMax}`, "Peso max"]
-                  }
+                  content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedForzaAnno(null)}
+                    formatter={(value, name, props2) =>
+                      name === "Tonnellaggio (TONN.)"
+                        ? [`${value} TONN.`, "TOT. KG x RIP."]
+                        : [`${value} kg x ${props2.payload.ripMax}`, "Peso max"]
+                    } />}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line yAxisId="left" type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Peso max (kg)" />
@@ -1976,9 +1999,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedE1rm ? pinnedE1rm.key : undefined}
                   coordinate={pinnedE1rm ? { x: pinnedE1rm.x, y: pinnedE1rm.y } : undefined}
-                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                  labelFormatter={(label, payload) => (payload && payload[0] ? `${label} (${payload[0].payload.periodo})` : label)}
-                  formatter={(value) => e1rmMode === "kg" ? [`${value} kg`, "e1RM"] : [`${value}%`, "Performance"]}
+                  content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedE1rm(null)}
+                    labelFormatter={(label, payload) => (payload && payload[0] ? `${label} (${payload[0].payload.periodo})` : label)}
+                    formatter={(value) => e1rmMode === "kg" ? [`${value} kg`, "e1RM"] : [`${value}%`, "Performance"]} />}
                 />
                 <Line type="monotone" dataKey={e1rmMode === "kg" ? "e1rm" : "percento"} stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name={e1rmMode === "kg" ? "e1RM (kg)" : "Performance (%)"} />
               </LineChart>
@@ -2009,9 +2032,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedSerieSett ? pinnedSerieSett.key : undefined}
                 coordinate={pinnedSerieSett ? { x: pinnedSerieSett.x, y: pinnedSerieSett.y } : undefined}
-                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
-                formatter={(value) => [value, "Totale serie"]}
+                content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedSerieSett(null)}
+                  labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
+                  formatter={(value) => [value, "Totale serie"]} />}
               />
               <Bar dataKey="serie" fill="#aef000" name="Totale serie" radius={[3, 3, 0, 0]} />
             </BarChart>
@@ -2041,9 +2064,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedVolSett ? pinnedVolSett.key : undefined}
                 coordinate={pinnedVolSett ? { x: pinnedVolSett.x, y: pinnedVolSett.y } : undefined}
-                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
-                labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
-                formatter={(value) => [`${value} kg`, "Volume"]}
+                content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedVolSett(null)} valueColor="#ffffff"
+                  labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
+                  formatter={(value) => [`${value} kg`, "Volume"]} />}
               />
               <Bar dataKey="volume" fill="#1f6b3a" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
@@ -2078,7 +2101,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedVolAnno ? pinnedVolAnno.key : undefined}
                 coordinate={pinnedVolAnno ? { x: pinnedVolAnno.x, y: pinnedVolAnno.y } : undefined}
-                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedVolAnno(null)} valueColor="#ffffff"
+                  formatter={(value) => [`${value} kg`, "Volume"]} />}
               />
               <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
@@ -2104,7 +2128,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedPeso ? pinnedPeso.key : undefined}
                   coordinate={pinnedPeso ? { x: pinnedPeso.x, y: pinnedPeso.y } : undefined}
-                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                  content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedPeso(null)} />}
                 />
                 <Line type="monotone" dataKey="peso" stroke="var(--good)" strokeWidth={2} dot={{ r: 3 }} name="Peso (kg)" />
               </LineChart>
