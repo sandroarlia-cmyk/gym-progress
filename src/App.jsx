@@ -2407,6 +2407,7 @@ export default function App() {
         .dates-arrow-box{ display:flex; align-items:center; justify-content:center; width:38px; height:38px; border:1px solid var(--border-c); border-radius:8px; background:#FFFFFF; color:var(--text); transition:transform 0.15s ease; }
         .dates-arrow-box.open{ transform:rotate(180deg); }
         .kg-chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+        .last-time-block .kg-chip-row{ display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
         .kg-chip{ background:var(--surface); border:1px solid var(--border-c); color:var(--text); padding:6px 12px; border-radius:6px; font-size:26px; font-weight:700; white-space:nowrap; }
         .kg-chip-accent{ background:var(--accent-dim); border-color:var(--accent-dim); color:var(--accent); }
         .exercise-log-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
