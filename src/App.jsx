@@ -2351,7 +2351,7 @@ export default function App() {
         .plain-set-table{ display:flex; flex-direction:column; gap:6px; }
         .plain-set-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
         .plain-set-row{ display:grid; grid-template-columns:30px 65px 55px 55px 90px 65px 160px; gap:8px; align-items:center; font-size:26px; font-weight:700; }
-        .history-card-dark .plain-set-row{ grid-template-columns:30px 65px 55px 55px 1fr; }
+        .history-card-dark .plain-set-row{ grid-template-columns:30px 100px 55px 55px 1fr; }
         .plain-set-row-head{ color:var(--text-dim); font-size:26px; text-transform:uppercase; font-weight:600; }
         .plain-note-cell{ font-size:14px; font-weight:700; }
         .plain-set-row-head .plain-note-cell{ font-size:12px; font-weight:600; text-transform:uppercase; }
@@ -2593,7 +2593,7 @@ export default function App() {
           .comp-header, .comp-label{ font-size:15px; }
           .comp-table > span:not(.comp-header):not(.comp-label):not(.diff-badge){ font-size:15px; }
           .plain-set-row{ grid-template-columns:20px 44px 38px 38px 62px 42px 100px; gap:4px; font-size:15px; }
-          .history-card-dark .plain-set-row{ grid-template-columns:20px 44px 38px 38px 1fr; }
+          .history-card-dark .plain-set-row{ grid-template-columns:20px 68px 38px 38px 1fr; }
           .plain-set-row-head{ font-size:11px; }
           .plain-note-cell{ font-size:11px; }
           .history-card-dark .plain-set-row{ font-size:18px; font-weight:700; }
