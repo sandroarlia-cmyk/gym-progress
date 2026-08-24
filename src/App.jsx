@@ -1740,8 +1740,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [pinnedVolAnno, setPinnedVolAnno] = useState(null);
   const [pinnedPeso, setPinnedPeso] = useState(null);
 
-  function togglePinned(current, setCurrent, key) {
-    setCurrent((prev) => (prev === key ? null : key));
+  function togglePinned(current, setCurrent, key, x, y) {
+    setCurrent((prev) => (prev && prev.key === key ? null : { key, x, y }));
   }
 
   const now = new Date();
@@ -1903,10 +1903,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
         </div>
       }>
         {yearlyStrengthData.length === 0 ? <p className="muted">Nessun dato per questo esercizio in {forzaAnno}.</p> : (
-          <div style={{ height: 260 }}>
+          <div className="chart-relative-wrap" style={{ height: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={yearlyStrengthData} margin={{ top: 5, right: 20, bottom: 5, left: 5 }}
-                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedForzaAnno, setPinnedForzaAnno, state.activeLabel); }}>
+                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedForzaAnno, setPinnedForzaAnno, state.activeLabel, state.chartX, state.chartY); }}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis yAxisId="left" stroke="var(--accent)" fontSize={11} />
@@ -1924,14 +1924,26 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Tonnellaggio (TONN.)" />
               </LineChart>
             </ResponsiveContainer>
+            {pinnedForzaAnno && (() => {
+              const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno.key);
+              if (!p) return null;
+              return (
+                <div className="pinned-float-box" style={{ left: pinnedForzaAnno.x, top: pinnedForzaAnno.y }} onClick={() => setPinnedForzaAnno(null)}>
+                  <span className="pinned-float-label">{pinnedForzaAnno.key}</span>
+                  <span className="pinned-float-value" style={{ color: "var(--accent)" }}>Peso max: {p.peso} kg x {p.ripMax}</span>
+                  <span className="pinned-float-value" style={{ color: "#c0392b" }}>Tonn.: {p.tonnMax}</span>
+                  <span className="pinned-float-close">chiudi ×</span>
+                </div>
+              );
+            })()}
           </div>
         )}
         {pinnedForzaAnno && (() => {
-          const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno);
+          const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedForzaAnno(null)}>
-              <span className="pinned-label">{pinnedForzaAnno}</span>
+              <span className="pinned-label">{pinnedForzaAnno.key}</span>
               <span className="pinned-value" style={{ color: "var(--accent)" }}>Peso max: {p.peso} kg x {p.ripMax}</span>
               <span className="pinned-value" style={{ color: "#c0392b" }}>Tonnellaggio: {p.tonnMax} TONN.</span>
               <span className="pinned-close">tocca per chiudere ×</span>
@@ -1958,10 +1970,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           Calcolato con la formula di Epley (peso × (1 + rip/30)) sulle serie da 1 a 6 ripetizioni; per ogni settimana viene preso il valore più alto.
         </p>
         {e1rmWeeklyData.length === 0 ? <p className="muted">Nessuna serie valida (1-6 ripetizioni) trovata per questo esercizio.</p> : (
-          <div style={{ height: 260 }}>
+          <div className="chart-relative-wrap" style={{ height: 260 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={e1rmWeeklyData}
-                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedE1rm, setPinnedE1rm, state.activeLabel); }}>
+                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedE1rm, setPinnedE1rm, state.activeLabel, state.chartX, state.chartY); }}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} label={{ value: "Settimana", position: "insideBottom", offset: -3, fill: "var(--text-dim)", fontSize: 11 }} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} label={{ value: e1rmMode === "kg" ? "1RM stimato (kg)" : "Performance (%)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 11 }} />
@@ -1973,14 +1985,27 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <Line type="monotone" dataKey={e1rmMode === "kg" ? "e1rm" : "percento"} stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name={e1rmMode === "kg" ? "e1RM (kg)" : "Performance (%)"} />
               </LineChart>
             </ResponsiveContainer>
+            {pinnedE1rm && (() => {
+              const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm.key);
+              if (!p) return null;
+              return (
+                <div className="pinned-float-box" style={{ left: pinnedE1rm.x, top: pinnedE1rm.y }} onClick={() => setPinnedE1rm(null)}>
+                  <span className="pinned-float-label">{pinnedE1rm.key}</span>
+                  <span className="pinned-float-value" style={{ color: "var(--accent)" }}>
+                    {e1rmMode === "kg" ? `${p.e1rm} kg` : `${p.percento}%`}
+                  </span>
+                  <span className="pinned-float-close">chiudi ×</span>
+                </div>
+              );
+            })()}
           </div>
         )}
         {pinnedE1rm && (() => {
-          const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm);
+          const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedE1rm(null)}>
-              <span className="pinned-label">{pinnedE1rm} ({p.periodo})</span>
+              <span className="pinned-label">{pinnedE1rm.key} ({p.periodo})</span>
               <span className="pinned-value" style={{ color: "var(--accent)" }}>
                 {e1rmMode === "kg" ? `e1RM: ${p.e1rm} kg` : `Performance: ${p.percento}%`}
               </span>
@@ -1997,10 +2022,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
       }>
-        <div style={{ height: 260 }}>
+        <div className="chart-relative-wrap" style={{ height: 260 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={weeklySeriesData}
-              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedSerieSett, setPinnedSerieSett, state.activeLabel); }}>
+              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedSerieSett, setPinnedSerieSett, state.activeLabel, state.chartX, state.chartY); }}>
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
@@ -2012,9 +2037,20 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <Bar dataKey="serie" fill="#aef000" name="Totale serie" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+          {pinnedSerieSett && (() => {
+            const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett.key);
+            if (!p) return null;
+            return (
+              <div className="pinned-float-box" style={{ left: pinnedSerieSett.x, top: pinnedSerieSett.y }} onClick={() => setPinnedSerieSett(null)}>
+                <span className="pinned-float-label">{p.periodo}</span>
+                <span className="pinned-float-value" style={{ color: "#aef000" }}>Serie: {p.serie}</span>
+                <span className="pinned-float-close">chiudi ×</span>
+              </div>
+            );
+          })()}
         </div>
         {pinnedSerieSett && (() => {
-          const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett);
+          const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedSerieSett(null)}>
@@ -2033,10 +2069,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
       }>
-        <div style={{ height: 260 }}>
+        <div className="chart-relative-wrap" style={{ height: 260 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={weeklyVolumeData}
-              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedVolSett, setPinnedVolSett, state.activeLabel); }}>
+              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedVolSett, setPinnedVolSett, state.activeLabel, state.chartX, state.chartY); }}>
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
@@ -2048,9 +2084,20 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <Bar dataKey="volume" fill="#1f6b3a" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+          {pinnedVolSett && (() => {
+            const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett.key);
+            if (!p) return null;
+            return (
+              <div className="pinned-float-box" style={{ left: pinnedVolSett.x, top: pinnedVolSett.y }} onClick={() => setPinnedVolSett(null)}>
+                <span className="pinned-float-label">{p.periodo}</span>
+                <span className="pinned-float-value" style={{ color: "#1f6b3a" }}>Volume: {p.volume} kg</span>
+                <span className="pinned-float-close">chiudi ×</span>
+              </div>
+            );
+          })()}
         </div>
         {pinnedVolSett && (() => {
-          const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett);
+          const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedVolSett(null)}>
@@ -2074,10 +2121,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </select>
         </div>
       }>
-        <div style={{ height: 260 }}>
+        <div className="chart-relative-wrap" style={{ height: 260 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={yearlyVolumeData}
-              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedVolAnno, setPinnedVolAnno, state.activeLabel); }}>
+              onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedVolAnno, setPinnedVolAnno, state.activeLabel, state.chartX, state.chartY); }}>
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
@@ -2085,13 +2132,24 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
+          {pinnedVolAnno && (() => {
+            const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno.key);
+            if (!p) return null;
+            return (
+              <div className="pinned-float-box" style={{ left: pinnedVolAnno.x, top: pinnedVolAnno.y }} onClick={() => setPinnedVolAnno(null)}>
+                <span className="pinned-float-label">{pinnedVolAnno.key}</span>
+                <span className="pinned-float-value" style={{ color: "#c0392b" }}>Volume: {p.volume} kg</span>
+                <span className="pinned-float-close">chiudi ×</span>
+              </div>
+            );
+          })()}
         </div>
         {pinnedVolAnno && (() => {
-          const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno);
+          const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedVolAnno(null)}>
-              <span className="pinned-label">{pinnedVolAnno}</span>
+              <span className="pinned-label">{pinnedVolAnno.key}</span>
               <span className="pinned-value" style={{ color: "#c0392b" }}>Volume: {p.volume} kg</span>
               <span className="pinned-close">tocca per chiudere ×</span>
             </div>
@@ -2102,10 +2160,10 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
 
       <Section title="Peso corporeo">
         {bodyData.length === 0 ? <p className="muted">Aggiungi il tuo peso in Impostazioni per vedere il grafico.</p> : (
-          <div style={{ height: 240 }}>
+          <div className="chart-relative-wrap" style={{ height: 240 }}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={bodyData}
-                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedPeso, setPinnedPeso, state.activeLabel); }}>
+                onClick={(state) => { if (state && state.activeLabel) togglePinned(pinnedPeso, setPinnedPeso, state.activeLabel, state.chartX, state.chartY); }}>
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} domain={["auto", "auto"]} />
@@ -2113,14 +2171,25 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <Line type="monotone" dataKey="peso" stroke="var(--good)" strokeWidth={2} dot={{ r: 3 }} name="Peso (kg)" />
               </LineChart>
             </ResponsiveContainer>
+            {pinnedPeso && (() => {
+              const p = bodyData.find((d) => d.data === pinnedPeso.key);
+              if (!p) return null;
+              return (
+                <div className="pinned-float-box" style={{ left: pinnedPeso.x, top: pinnedPeso.y }} onClick={() => setPinnedPeso(null)}>
+                  <span className="pinned-float-label">{pinnedPeso.key}</span>
+                  <span className="pinned-float-value" style={{ color: "var(--good)" }}>Peso: {p.peso} kg</span>
+                  <span className="pinned-float-close">chiudi ×</span>
+                </div>
+              );
+            })()}
           </div>
         )}
         {pinnedPeso && (() => {
-          const p = bodyData.find((d) => d.data === pinnedPeso);
+          const p = bodyData.find((d) => d.data === pinnedPeso.key);
           if (!p) return null;
           return (
             <div className="pinned-info-box" onClick={() => setPinnedPeso(null)}>
-              <span className="pinned-label">{pinnedPeso}</span>
+              <span className="pinned-label">{pinnedPeso.key}</span>
               <span className="pinned-value" style={{ color: "var(--good)" }}>Peso: {p.peso} kg</span>
               <span className="pinned-close">tocca per chiudere ×</span>
             </div>
@@ -2518,6 +2587,16 @@ export default function App() {
         .pinned-info-box .pinned-label{ font-size:13px; color:var(--text-dim); }
         .pinned-info-box .pinned-value{ font-weight:700; font-size:15px; color:var(--text); }
         .pinned-info-box .pinned-close{ margin-left:auto; font-size:12px; color:var(--text-dim); }
+        .chart-relative-wrap{ position:relative; }
+        .pinned-float-box{
+          position:absolute; z-index:20; transform:translate(-50%, -110%);
+          display:flex; flex-direction:column; gap:4px; padding:10px 14px;
+          background:var(--surface-2); border:2px solid var(--accent); border-radius:8px;
+          box-shadow:0 4px 14px rgba(0,0,0,0.35); cursor:pointer; white-space:nowrap; pointer-events:auto;
+        }
+        .pinned-float-box .pinned-float-label{ font-size:12px; color:var(--text-dim); }
+        .pinned-float-box .pinned-float-value{ font-weight:700; font-size:14px; color:var(--text); }
+        .pinned-float-box .pinned-float-close{ font-size:11px; color:var(--text-dim); align-self:flex-end; }
         .tot-esercizio-badge{
           background:#c0392b; color:#ffffff; font-weight:700; padding:3px 10px;
           border-radius:6px; display:inline-block; font-size:calc(28px + 3pt);
