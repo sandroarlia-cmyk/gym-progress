@@ -1724,6 +1724,11 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
 }
 
 function ProgressiTab({ workouts, exercises, bodyLogs }) {
+  useEffect(() => {
+    const t1 = setTimeout(() => window.dispatchEvent(new Event("resize")), 150);
+    const t2 = setTimeout(() => window.dispatchEvent(new Event("resize")), 500);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
   const usedExerciseIds = [...new Set(workouts.flatMap((w) => w.exercises.map((it) => it.exerciseId)))];
   const usableExercises = exercises.filter((e) => usedExerciseIds.includes(e.id));
   const [exId, setExId] = useState(usableExercises[0] ? usableExercises[0].id : "");
@@ -1855,6 +1860,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <StatisticheTab workouts={workouts} exercises={exercises} />
 
+      <div className="chart-uniform-wrap">
       <Section title="Progressione forza esercizi annuali" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
@@ -1893,7 +1899,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </div>
         )}
       </Section>
+      </div>
 
+      <div className="chart-uniform-wrap">
       <Section title={e1rmMode === "kg" ? "Progressione della forza — e1RM stimato" : "Progressione della forza — variazione percentuale"} right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={e1rmExIdAttivo} onChange={(e) => setE1rmExId(e.target.value)}>
@@ -1927,7 +1935,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </div>
         )}
       </Section>
+      </div>
 
+      <div className="chart-uniform-wrap">
       <Section title="Volume settimanale per gruppo" right={
         <select className="input input-sm-w" value={muscle} onChange={(e) => setMuscle(e.target.value)}>
           {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
@@ -1952,7 +1962,9 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </ResponsiveContainer>
         </div>
       </Section>
+      </div>
 
+      <div className="chart-uniform-wrap">
       <Section title="Volume tonnellaggio annuali" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={volGruppo} onChange={(e) => setVolGruppo(e.target.value)}>
@@ -1975,6 +1987,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </ResponsiveContainer>
         </div>
       </Section>
+      </div>
 
       <Section title="Peso corporeo">
         {bodyData.length === 0 ? <p className="muted">Aggiungi il tuo peso in Impostazioni per vedere il grafico.</p> : (
@@ -2571,6 +2584,12 @@ export default function App() {
 
         @media (max-width: 640px) {
           .progressi-dark{ padding:10px; border-radius:8px; max-width:100%; box-sizing:border-box; overflow-x:hidden; }
+          .chart-uniform-wrap{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; }
+          .chart-uniform-wrap .card{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; overflow-x:hidden !important; }
+          .chart-uniform-wrap .section-head{ flex-wrap:wrap !important; }
+          .chart-uniform-wrap .section-head > div{ min-width:0 !important; max-width:100% !important; flex-wrap:wrap !important; }
+          .chart-uniform-wrap select.input-sm-w{ min-width:0 !important; max-width:100% !important; }
+          .chart-uniform-wrap > div[style]{ height:260px !important; }
           .dropdown-item{ font-size:15px; padding:9px 12px; }
           .date-it-picker .input{ font-size:14px; padding:8px 4px; }
           .date-it-day{ flex:0 0 54px; }
