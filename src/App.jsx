@@ -1620,7 +1620,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
             });
             return (
             <div key={muscle}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
+              <div style={{ display: "flex", alignItems: "stretch", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
                 <div className="muscle-group-heading" style={{ marginBottom: 0, background: MUSCLE_DARK_COLORS[muscle] || MUSCLE_DARK_COLORS.Altro }}>{muscle.toUpperCase()}</div>
                 <select className="input input-sm-w" value={filtro.mese} onChange={(e) => setHistoryFilter(muscle, { mese: Number(e.target.value) })}>
                   {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
@@ -2519,11 +2519,11 @@ export default function App() {
         .stats-row-head{ color:var(--text-dim); font-size:26px; text-transform:uppercase; border-bottom:1px solid var(--border-c); }
         .week-nav{ display:flex; align-items:center; gap:14px; margin-bottom:8px; }
         .history-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
-        .muscle-group-heading{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:22px; color:var(--accent); background:var(--accent-dim); padding:8px 14px; border-radius:8px; margin-bottom:10px; width:fit-content; }
+        .muscle-group-heading{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:22px; color:var(--accent); background:var(--accent-dim); padding:8px 14px; border-radius:2px; margin-bottom:10px; width:fit-content; display:flex; align-items:center; justify-content:center; box-sizing:border-box; }
         .history-head{ display:flex; justify-content:space-between; align-items:center; padding:11px 14px; cursor:pointer; background:var(--surface-2); }
         .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:#141414; border:1px solid #4a8f00; border-radius:0; margin-left:-20px; margin-right:-20px; }
         .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:20px; border-radius:8px; cursor:pointer; text-align:center; }
-        .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+        .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-left:10px; }
         .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#ffffff; font-weight:700; }
         .hist-serie-box{ padding:8px 14px; border-radius:8px; background:#aef000; color:#000000; font-weight:700; }
         .hist-volume-box{ padding:8px 14px; border-radius:8px; background:#1f6b3a; color:#ffffff; font-weight:700; }
@@ -2594,7 +2594,7 @@ export default function App() {
         .cronologia-allenamenti-dark .history-body .muted{ color:#ffffff; }
         .cronologia-theme .muscle-group-heading{
           color:#ffffff !important; font-size:24px;
-          border:1px solid #4a8f00;
+          border:1px solid #4a8f00; border-radius:2px;
         }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
