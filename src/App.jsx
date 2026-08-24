@@ -2090,7 +2090,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             return (
               <div className="pinned-float-box" style={{ left: pinnedVolSett.x, top: pinnedVolSett.y }} onClick={() => setPinnedVolSett(null)}>
                 <span className="pinned-float-label">{p.periodo}</span>
-                <span className="pinned-float-value" style={{ color: "#1f6b3a" }}>Volume: {p.volume} kg</span>
+                <span className="pinned-float-value" style={{ color: "#ffffff", fontSize: 15 }}>Volume: {p.volume} kg</span>
                 <span className="pinned-float-close">chiudi ×</span>
               </div>
             );
@@ -2102,7 +2102,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           return (
             <div className="pinned-info-box" onClick={() => setPinnedVolSett(null)}>
               <span className="pinned-label">{p.periodo}</span>
-              <span className="pinned-value" style={{ color: "#1f6b3a" }}>Volume: {p.volume} kg</span>
+              <span className="pinned-value" style={{ color: "#ffffff", fontSize: 16 }}>Volume: {p.volume} kg</span>
               <span className="pinned-close">tocca per chiudere ×</span>
             </div>
           );
@@ -2138,7 +2138,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             return (
               <div className="pinned-float-box" style={{ left: pinnedVolAnno.x, top: pinnedVolAnno.y }} onClick={() => setPinnedVolAnno(null)}>
                 <span className="pinned-float-label">{pinnedVolAnno.key}</span>
-                <span className="pinned-float-value" style={{ color: "#c0392b" }}>Volume: {p.volume} kg</span>
+                <span className="pinned-float-value" style={{ color: "#ffffff", fontSize: 15 }}>Volume: {p.volume} kg</span>
                 <span className="pinned-float-close">chiudi ×</span>
               </div>
             );
@@ -2150,7 +2150,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           return (
             <div className="pinned-info-box" onClick={() => setPinnedVolAnno(null)}>
               <span className="pinned-label">{pinnedVolAnno.key}</span>
-              <span className="pinned-value" style={{ color: "#c0392b" }}>Volume: {p.volume} kg</span>
+              <span className="pinned-value" style={{ color: "#ffffff", fontSize: 16 }}>Volume: {p.volume} kg</span>
               <span className="pinned-close">tocca per chiudere ×</span>
             </div>
           );
