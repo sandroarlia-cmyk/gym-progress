@@ -2570,7 +2570,7 @@ export default function App() {
         }
 
         @media (max-width: 640px) {
-          .progressi-dark{ padding:10px; border-radius:8px; }
+          .progressi-dark{ padding:10px; border-radius:8px; max-width:100%; box-sizing:border-box; overflow-x:hidden; }
           .dropdown-item{ font-size:15px; padding:9px 12px; }
           .date-it-picker .input{ font-size:14px; padding:8px 4px; }
           .date-it-day{ flex:0 0 54px; }
@@ -2658,7 +2658,10 @@ export default function App() {
           .gt-sub{ font-size:13px; }
           .gt-main{ padding:12px; }
           .gt-bottomnav-item{ font-size:11px; min-width:0; padding:7px 2px; gap:1px; }
-          .card{ padding:14px; overflow-x:hidden; }
+          .card{ padding:14px; overflow-x:hidden; max-width:100%; box-sizing:border-box; }
+          .section-head{ min-width:0; }
+          .section-head > div{ min-width:0; max-width:100%; }
+          .input-sm-w{ min-width:0; max-width:100%; }
           .exercise-block{ padding:12px; overflow-x:hidden; }
           .exercise-block-head{ flex-wrap:wrap; }
           .section-head{ margin-bottom:10px; }
