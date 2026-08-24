@@ -381,10 +381,10 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
                       <span>{i + 1}</span>
                       <span>{s.weight || 0}</span>
                       <span>{s.reps || 0}</span>
-                      <span>{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</span>
-                      <span>{s.recupero || "—"}</span>
+                      <span>{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</span>
+                      <span>{s.recupero || ""}</span>
                       <span className="plain-tonn">{round1(setVolume(s))}</span>
-                      <span className="plain-note-cell">{s.notes || "—"}</span>
+                      <span className="plain-note-cell">{s.notes || ""}</span>
                     </div>
                   ))}
                 </div>
@@ -422,8 +422,8 @@ function HistoryCard({ card, workouts, exercises, onClose }) {
                 <span>{idx + 1}</span>
                 <span className="plain-kg-box">{s.weight || 0}</span>
                 <span className="plain-rip-box">{s.reps || 0}</span>
-                <span>{s.rir !== undefined && s.rir !== "" ? s.rir : "—"}</span>
-                <span className="plain-note-cell">{s.notes || "—"}</span>
+                <span>{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</span>
+                <span className="plain-note-cell">{s.notes || ""}</span>
               </div>
             ))}
           </div>
