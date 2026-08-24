@@ -542,30 +542,11 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
               )}
             </div>
           )}
-          {last ? (
-            <div className="last-time-block">
-              <div className="hint">Ultima volta ({formatDateShort(last.date)}):</div>
-              <div className="kg-chip-row">
-                {last.sets.map((s, i) => (
-                  <span key={i} className="kg-chip">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
-                ))}
-                <span className="kg-chip kg-chip-accent chip-tonn">
-                  {prevVol} kg tonn.
-                </span>
-                <span className="kg-chip kg-chip-accent chip-rip">
-                  {prevReps} rip. tot.
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="hint">Nessuno storico</div>
-          )}
+          {!last && <div className="hint">Nessuno storico</div>}
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
           <span className="badge">{item.sets.length} serie</span>
-          {last ? (
-            <CompTable prevVol={prevVol} prevReps={prevReps} vol={vol} totalReps={totalReps} diffVol={diffVol} diffReps={diffReps} desktopOnly />
-          ) : (
+          {!last && (
             <div style={{ display: "flex", gap: 8 }}>
               <span className="badge">{totalReps} rip. oggi</span>
               <span className="badge badge-accent">{round1(vol)} kg oggi</span>
@@ -574,6 +555,25 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
           <DeleteButton onConfirm={() => removeExercise(item.id)} small />
         </div>
       </div>
+      {last && (
+        <div className="ultima-volta-comp-row">
+          <div className="last-time-block">
+            <div className="hint">Ultima volta ({formatDateShort(last.date)}):</div>
+            <div className="kg-chip-row">
+              {last.sets.map((s, i) => (
+                <span key={i} className="kg-chip">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
+              ))}
+              <span className="kg-chip kg-chip-accent chip-tonn">
+                {prevVol} kg tonn.
+              </span>
+              <span className="kg-chip kg-chip-accent chip-rip">
+                {prevReps} rip. tot.
+              </span>
+            </div>
+          </div>
+          <CompTable prevVol={prevVol} prevReps={prevReps} vol={vol} totalReps={totalReps} diffVol={diffVol} diffReps={diffReps} desktopOnly />
+        </div>
+      )}
       {item.sets.length > 0 && (
         <div className="set-table">
           <div className="set-row set-row-head">
@@ -2397,6 +2397,8 @@ export default function App() {
         .history-card-dark .btn-icon svg{ color:#ffffff !important; stroke:#ffffff !important; }
         .vertical-total{ background:var(--surface-2); color:var(--text); font-weight:700; padding:8px 12px; border-radius:6px; margin-top:2px; display:inline-block; align-self:flex-start; }
         .last-time-block{ display:flex; flex-direction:column; gap:6px; margin-top:2px; }
+        .ultima-volta-comp-row{ display:flex; align-items:flex-start; gap:48px; margin-top:12px; flex-wrap:wrap; }
+        .ultima-volta-comp-row .last-time-block{ flex:1; min-width:260px; margin-top:0; }
         .dates-section{ margin-bottom:22px; }
         .dates-toggle{ display:flex; align-items:center; gap:10px; cursor:pointer; width:fit-content; }
         .dates-count-box{ background:var(--accent-dim); color:var(--accent); font-weight:700; font-size:20px; padding:6px 10px; border-radius:8px; min-width:44px; text-align:center; box-sizing:border-box; }
