@@ -1727,21 +1727,21 @@ function PinnedTooltip({ active, payload, label, onClose, labelFormatter, format
   if (!active || !payload || !payload.length) return null;
   return (
     <div
-      style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 6, padding: "8px 12px", cursor: "pointer" }}
+      style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 8, padding: "14px 18px", cursor: "pointer", minWidth: 160 }}
       onClick={onClose}
     >
-      <div style={{ color: "var(--text-dim)", fontSize: 12, marginBottom: 4 }}>
+      <div style={{ color: "var(--text-dim)", fontSize: 14, marginBottom: 6 }}>
         {labelFormatter ? labelFormatter(label, payload) : label}
       </div>
       {payload.map((entry, i) => {
         const [val, name] = formatter ? formatter(entry.value, entry.name, entry) : [entry.value, entry.name];
         return (
-          <div key={i} style={{ color: valueColor || "#ffffff", fontWeight: 700, fontSize: 14 }}>
+          <div key={i} style={{ color: valueColor || "#ffffff", fontWeight: 700, fontSize: 17, marginBottom: 2 }}>
             {name}: {val}
           </div>
         );
       })}
-      <div style={{ color: "var(--text-dim)", fontSize: 11, marginTop: 4 }}>tocca per chiudere ×</div>
+      <div style={{ color: "var(--text-dim)", fontSize: 12, marginTop: 6 }}>tocca per chiudere ×</div>
     </div>
   );
 }
@@ -1945,6 +1945,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedForzaAnno ? pinnedForzaAnno.key : undefined}
                   coordinate={pinnedForzaAnno ? { x: pinnedForzaAnno.x, y: pinnedForzaAnno.y } : undefined}
+                  wrapperStyle={{ pointerEvents: "auto" }}
                   content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedForzaAnno(null)}
                     formatter={(value, name, props2) =>
                       name === "Tonnellaggio (TONN.)"
@@ -1999,6 +2000,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedE1rm ? pinnedE1rm.key : undefined}
                   coordinate={pinnedE1rm ? { x: pinnedE1rm.x, y: pinnedE1rm.y } : undefined}
+                  wrapperStyle={{ pointerEvents: "auto" }}
                   content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedE1rm(null)}
                     labelFormatter={(label, payload) => (payload && payload[0] ? `${label} (${payload[0].payload.periodo})` : label)}
                     formatter={(value) => e1rmMode === "kg" ? [`${value} kg`, "e1RM"] : [`${value}%`, "Performance"]} />}
@@ -2032,6 +2034,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedSerieSett ? pinnedSerieSett.key : undefined}
                 coordinate={pinnedSerieSett ? { x: pinnedSerieSett.x, y: pinnedSerieSett.y } : undefined}
+                wrapperStyle={{ pointerEvents: "auto" }}
                 content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedSerieSett(null)}
                   labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
                   formatter={(value) => [value, "Totale serie"]} />}
@@ -2064,6 +2067,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedVolSett ? pinnedVolSett.key : undefined}
                 coordinate={pinnedVolSett ? { x: pinnedVolSett.x, y: pinnedVolSett.y } : undefined}
+                wrapperStyle={{ pointerEvents: "auto" }}
                 content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedVolSett(null)} valueColor="#ffffff"
                   labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
                   formatter={(value) => [`${value} kg`, "Volume"]} />}
@@ -2101,6 +2105,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 })() : undefined}
                 label={pinnedVolAnno ? pinnedVolAnno.key : undefined}
                 coordinate={pinnedVolAnno ? { x: pinnedVolAnno.x, y: pinnedVolAnno.y } : undefined}
+                wrapperStyle={{ pointerEvents: "auto" }}
                 content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedVolAnno(null)} valueColor="#ffffff"
                   formatter={(value) => [`${value} kg`, "Volume"]} />}
               />
@@ -2128,6 +2133,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                   })() : undefined}
                   label={pinnedPeso ? pinnedPeso.key : undefined}
                   coordinate={pinnedPeso ? { x: pinnedPeso.x, y: pinnedPeso.y } : undefined}
+                  wrapperStyle={{ pointerEvents: "auto" }}
                   content={(props) => <PinnedTooltip {...props} onClose={() => setPinnedPeso(null)} />}
                 />
                 <Line type="monotone" dataKey="peso" stroke="var(--good)" strokeWidth={2} dot={{ r: 3 }} name="Peso (kg)" />
