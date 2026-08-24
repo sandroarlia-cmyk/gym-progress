@@ -2351,6 +2351,8 @@ export default function App() {
         .plain-set-table{ display:flex; flex-direction:column; gap:6px; }
         .plain-set-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
         .plain-set-row{ display:grid; grid-template-columns:30px 65px 55px 55px 90px 65px 160px; gap:8px; align-items:center; font-size:26px; font-weight:700; }
+        .plain-set-row > span{ display:flex; align-items:center; justify-content:center; text-align:center; }
+        .plain-note-cell{ justify-content:flex-start !important; text-align:left !important; }
         .history-card-dark .plain-set-row{ grid-template-columns:30px 100px 55px 55px 1fr; }
         .plain-set-row-head{ color:var(--text-dim); font-size:26px; text-transform:uppercase; font-weight:600; }
         .plain-note-cell{ font-size:14px; font-weight:700; }
@@ -2467,8 +2469,8 @@ export default function App() {
         .muscle-select-btn{ display:flex; align-items:center; gap:12px; justify-content:space-between; background:var(--surface-2); border:1px solid var(--border-c); color:var(--text); padding:12px 20px; border-radius:6px; cursor:pointer; font-size:34px; min-width:280px; }
         .muscle-select-btn:hover{ border-color:var(--accent); }
         .muscle-dropdown{ min-width:230px; }
-        .date-chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:6px; }
-        .date-chip{ background:var(--surface); border:1px solid var(--border-c); color:var(--text); padding:7px 14px; border-radius:20px; font-size:28px; cursor:pointer; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; }
+        .date-chip-row{ display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:6px; }
+        .date-chip{ background:var(--surface); border:1px solid var(--border-c); color:var(--text); padding:7px 14px; border-radius:20px; font-size:28px; cursor:pointer; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; width:100%; box-sizing:border-box; text-align:center; }
         .record-date-chip{ margin:4px 0 2px; }
         .date-chip:hover{ background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
         .history-cards-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(380px,1fr)); gap:16px; }
