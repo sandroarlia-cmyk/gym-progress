@@ -993,6 +993,19 @@ const MUSCLE_HEADING_COLORS = {
   Altro: "#cfd8dc"
 };
 
+const MUSCLE_DARK_COLORS = {
+  Petto: "#7a1f1f",
+  Spalle: "#8a5a00",
+  Dorso: "#1a3d7c",
+  Gambe: "#6b6b00",
+  Bicipiti: "#8a3b12",
+  Tricipiti: "#0f6b6b",
+  Calisthenics: "#8a1a52",
+  Polpacci: "#5b2c82",
+  Addome: "#4a5568",
+  Altro: "#555555"
+};
+
 const SPLIT_ROWS = 10;
 
 function getSplitDayRows(split, day) {
@@ -1627,7 +1640,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                     {formatDateLong(entry.date)} {dayNameFromDate(entry.date).toUpperCase()}
                   </div>
                   <div className="hist-row">
-                    <div className="hist-muscle-box" style={{ background: MUSCLE_HEADING_COLORS[entry.muscle] || MUSCLE_HEADING_COLORS.Altro }}>
+                    <div className="hist-muscle-box" style={{ background: MUSCLE_DARK_COLORS[entry.muscle] || MUSCLE_DARK_COLORS.Altro }}>
                       {entry.muscle.toUpperCase()}
                     </div>
                     <div className="hist-serie-box">{entry.sets} serie</div>
@@ -2511,7 +2524,7 @@ export default function App() {
         .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:#141414; border:3px solid #c0392b; border-radius:8px; }
         .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:20px; border-radius:8px; cursor:pointer; text-align:center; }
         .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-        .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#000000; font-weight:700; }
+        .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#ffffff; font-weight:700; }
         .hist-serie-box{ padding:8px 14px; border-radius:8px; background:#aef000; color:#000000; font-weight:700; }
         .hist-volume-box{ padding:8px 14px; border-radius:8px; background:#1f6b3a; color:#ffffff; font-weight:700; }
         .history-body{ padding:11px 14px; display:flex; flex-direction:column; gap:10px; }
