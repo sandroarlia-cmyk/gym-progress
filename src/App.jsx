@@ -1912,6 +1912,16 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <YAxis yAxisId="left" stroke="var(--accent)" fontSize={11} />
                 <YAxis yAxisId="right" orientation="right" stroke="#c0392b" fontSize={11} />
                 <Tooltip
+                  active={pinnedForzaAnno ? true : undefined}
+                  payload={pinnedForzaAnno ? (() => {
+                    const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno.key);
+                    return p ? [
+                      { name: "Peso max (kg)", value: p.peso, dataKey: "peso", payload: p, color: "var(--accent)" },
+                      { name: "Tonnellaggio (TONN.)", value: p.tonnMax, dataKey: "tonnMax", payload: p, color: "#c0392b" }
+                    ] : undefined;
+                  })() : undefined}
+                  label={pinnedForzaAnno ? pinnedForzaAnno.key : undefined}
+                  coordinate={pinnedForzaAnno ? { x: pinnedForzaAnno.x, y: pinnedForzaAnno.y } : undefined}
                   contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                   formatter={(value, name, props) =>
                     name === "Tonnellaggio (TONN.)"
@@ -1924,32 +1934,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Tonnellaggio (TONN.)" />
               </LineChart>
             </ResponsiveContainer>
-            {pinnedForzaAnno && (() => {
-              const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno.key);
-              if (!p) return null;
-              return (
-                <div className="pinned-float-box" style={{ left: pinnedForzaAnno.x, top: pinnedForzaAnno.y }} onClick={() => setPinnedForzaAnno(null)}>
-                  <span className="pinned-float-label">{pinnedForzaAnno.key}</span>
-                  <span className="pinned-float-value" style={{ color: "var(--accent)" }}>Peso max: {p.peso} kg x {p.ripMax}</span>
-                  <span className="pinned-float-value" style={{ color: "#c0392b" }}>Tonn.: {p.tonnMax}</span>
-                  <span className="pinned-float-close">chiudi ×</span>
-                </div>
-              );
-            })()}
           </div>
         )}
-        {pinnedForzaAnno && (() => {
-          const p = yearlyStrengthData.find((d) => d.data === pinnedForzaAnno.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedForzaAnno(null)}>
-              <span className="pinned-label">{pinnedForzaAnno.key}</span>
-              <span className="pinned-value" style={{ color: "var(--accent)" }}>Peso max: {p.peso} kg x {p.ripMax}</span>
-              <span className="pinned-value" style={{ color: "#c0392b" }}>Tonnellaggio: {p.tonnMax} TONN.</span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
       </div>
 
@@ -1978,6 +1964,18 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} label={{ value: "Settimana", position: "insideBottom", offset: -3, fill: "var(--text-dim)", fontSize: 11 }} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} label={{ value: e1rmMode === "kg" ? "1RM stimato (kg)" : "Performance (%)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 11 }} />
                 <Tooltip
+                  active={pinnedE1rm ? true : undefined}
+                  payload={pinnedE1rm ? (() => {
+                    const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm.key);
+                    return p ? [{
+                      name: e1rmMode === "kg" ? "e1RM (kg)" : "Performance (%)",
+                      value: e1rmMode === "kg" ? p.e1rm : p.percento,
+                      dataKey: e1rmMode === "kg" ? "e1rm" : "percento",
+                      payload: p, color: "var(--accent)"
+                    }] : undefined;
+                  })() : undefined}
+                  label={pinnedE1rm ? pinnedE1rm.key : undefined}
+                  coordinate={pinnedE1rm ? { x: pinnedE1rm.x, y: pinnedE1rm.y } : undefined}
                   contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                   labelFormatter={(label, payload) => (payload && payload[0] ? `${label} (${payload[0].payload.periodo})` : label)}
                   formatter={(value) => e1rmMode === "kg" ? [`${value} kg`, "e1RM"] : [`${value}%`, "Performance"]}
@@ -1985,34 +1983,8 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <Line type="monotone" dataKey={e1rmMode === "kg" ? "e1rm" : "percento"} stroke="var(--accent)" strokeWidth={2} dot={{ r: 3 }} name={e1rmMode === "kg" ? "e1RM (kg)" : "Performance (%)"} />
               </LineChart>
             </ResponsiveContainer>
-            {pinnedE1rm && (() => {
-              const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm.key);
-              if (!p) return null;
-              return (
-                <div className="pinned-float-box" style={{ left: pinnedE1rm.x, top: pinnedE1rm.y }} onClick={() => setPinnedE1rm(null)}>
-                  <span className="pinned-float-label">{pinnedE1rm.key}</span>
-                  <span className="pinned-float-value" style={{ color: "var(--accent)" }}>
-                    {e1rmMode === "kg" ? `${p.e1rm} kg` : `${p.percento}%`}
-                  </span>
-                  <span className="pinned-float-close">chiudi ×</span>
-                </div>
-              );
-            })()}
           </div>
         )}
-        {pinnedE1rm && (() => {
-          const p = e1rmWeeklyData.find((d) => d.settimana === pinnedE1rm.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedE1rm(null)}>
-              <span className="pinned-label">{pinnedE1rm.key} ({p.periodo})</span>
-              <span className="pinned-value" style={{ color: "var(--accent)" }}>
-                {e1rmMode === "kg" ? `e1RM: ${p.e1rm} kg` : `Performance: ${p.percento}%`}
-              </span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
       </div>
 
@@ -2030,6 +2002,13 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
               <Tooltip
+                active={pinnedSerieSett ? true : undefined}
+                payload={pinnedSerieSett ? (() => {
+                  const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett.key);
+                  return p ? [{ name: "Totale serie", value: p.serie, dataKey: "serie", payload: p, color: "#aef000" }] : undefined;
+                })() : undefined}
+                label={pinnedSerieSett ? pinnedSerieSett.key : undefined}
+                coordinate={pinnedSerieSett ? { x: pinnedSerieSett.x, y: pinnedSerieSett.y } : undefined}
                 contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                 labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
                 formatter={(value) => [value, "Totale serie"]}
@@ -2037,29 +2016,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <Bar dataKey="serie" fill="#aef000" name="Totale serie" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-          {pinnedSerieSett && (() => {
-            const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett.key);
-            if (!p) return null;
-            return (
-              <div className="pinned-float-box" style={{ left: pinnedSerieSett.x, top: pinnedSerieSett.y }} onClick={() => setPinnedSerieSett(null)}>
-                <span className="pinned-float-label">{p.periodo}</span>
-                <span className="pinned-float-value" style={{ color: "#aef000" }}>Serie: {p.serie}</span>
-                <span className="pinned-float-close">chiudi ×</span>
-              </div>
-            );
-          })()}
         </div>
-        {pinnedSerieSett && (() => {
-          const p = weeklySeriesData.find((d) => d.settimana === pinnedSerieSett.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedSerieSett(null)}>
-              <span className="pinned-label">{p.periodo}</span>
-              <span className="pinned-value" style={{ color: "#aef000" }}>Totale serie: {p.serie}</span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
       </div>
 
@@ -2077,6 +2034,13 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
               <Tooltip
+                active={pinnedVolSett ? true : undefined}
+                payload={pinnedVolSett ? (() => {
+                  const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett.key);
+                  return p ? [{ name: "Volume (kg)", value: p.volume, dataKey: "volume", payload: p, color: "#1f6b3a" }] : undefined;
+                })() : undefined}
+                label={pinnedVolSett ? pinnedVolSett.key : undefined}
+                coordinate={pinnedVolSett ? { x: pinnedVolSett.x, y: pinnedVolSett.y } : undefined}
                 contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                 labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
                 formatter={(value) => [`${value} kg`, "Volume"]}
@@ -2084,29 +2048,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <Bar dataKey="volume" fill="#1f6b3a" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-          {pinnedVolSett && (() => {
-            const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett.key);
-            if (!p) return null;
-            return (
-              <div className="pinned-float-box" style={{ left: pinnedVolSett.x, top: pinnedVolSett.y }} onClick={() => setPinnedVolSett(null)}>
-                <span className="pinned-float-label">{p.periodo}</span>
-                <span className="pinned-float-value" style={{ color: "#ffffff", fontSize: 15 }}>Volume: {p.volume} kg</span>
-                <span className="pinned-float-close">chiudi ×</span>
-              </div>
-            );
-          })()}
         </div>
-        {pinnedVolSett && (() => {
-          const p = weeklyVolumeData.find((d) => d.settimana === pinnedVolSett.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedVolSett(null)}>
-              <span className="pinned-label">{p.periodo}</span>
-              <span className="pinned-value" style={{ color: "#ffffff", fontSize: 16 }}>Volume: {p.volume} kg</span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
       </div>
 
@@ -2128,33 +2070,20 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="mese" stroke="var(--text-dim)" fontSize={11} />
               <YAxis stroke="var(--text-dim)" fontSize={11} />
-              <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+              <Tooltip
+                active={pinnedVolAnno ? true : undefined}
+                payload={pinnedVolAnno ? (() => {
+                  const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno.key);
+                  return p ? [{ name: "Volume (kg)", value: p.volume, dataKey: "volume", payload: p, color: "#c0392b" }] : undefined;
+                })() : undefined}
+                label={pinnedVolAnno ? pinnedVolAnno.key : undefined}
+                coordinate={pinnedVolAnno ? { x: pinnedVolAnno.x, y: pinnedVolAnno.y } : undefined}
+                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+              />
               <Bar dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
-          {pinnedVolAnno && (() => {
-            const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno.key);
-            if (!p) return null;
-            return (
-              <div className="pinned-float-box" style={{ left: pinnedVolAnno.x, top: pinnedVolAnno.y }} onClick={() => setPinnedVolAnno(null)}>
-                <span className="pinned-float-label">{pinnedVolAnno.key}</span>
-                <span className="pinned-float-value" style={{ color: "#ffffff", fontSize: 15 }}>Volume: {p.volume} kg</span>
-                <span className="pinned-float-close">chiudi ×</span>
-              </div>
-            );
-          })()}
         </div>
-        {pinnedVolAnno && (() => {
-          const p = yearlyVolumeData.find((d) => d.mese === pinnedVolAnno.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedVolAnno(null)}>
-              <span className="pinned-label">{pinnedVolAnno.key}</span>
-              <span className="pinned-value" style={{ color: "#ffffff", fontSize: 16 }}>Volume: {p.volume} kg</span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
       </div>
 
@@ -2167,34 +2096,21 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis stroke="var(--text-dim)" fontSize={11} domain={["auto", "auto"]} />
-                <Tooltip contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }} />
+                <Tooltip
+                  active={pinnedPeso ? true : undefined}
+                  payload={pinnedPeso ? (() => {
+                    const p = bodyData.find((d) => d.data === pinnedPeso.key);
+                    return p ? [{ name: "Peso (kg)", value: p.peso, dataKey: "peso", payload: p, color: "var(--good)" }] : undefined;
+                  })() : undefined}
+                  label={pinnedPeso ? pinnedPeso.key : undefined}
+                  coordinate={pinnedPeso ? { x: pinnedPeso.x, y: pinnedPeso.y } : undefined}
+                  contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                />
                 <Line type="monotone" dataKey="peso" stroke="var(--good)" strokeWidth={2} dot={{ r: 3 }} name="Peso (kg)" />
               </LineChart>
             </ResponsiveContainer>
-            {pinnedPeso && (() => {
-              const p = bodyData.find((d) => d.data === pinnedPeso.key);
-              if (!p) return null;
-              return (
-                <div className="pinned-float-box" style={{ left: pinnedPeso.x, top: pinnedPeso.y }} onClick={() => setPinnedPeso(null)}>
-                  <span className="pinned-float-label">{pinnedPeso.key}</span>
-                  <span className="pinned-float-value" style={{ color: "var(--good)" }}>Peso: {p.peso} kg</span>
-                  <span className="pinned-float-close">chiudi ×</span>
-                </div>
-              );
-            })()}
           </div>
         )}
-        {pinnedPeso && (() => {
-          const p = bodyData.find((d) => d.data === pinnedPeso.key);
-          if (!p) return null;
-          return (
-            <div className="pinned-info-box" onClick={() => setPinnedPeso(null)}>
-              <span className="pinned-label">{pinnedPeso.key}</span>
-              <span className="pinned-value" style={{ color: "var(--good)" }}>Peso: {p.peso} kg</span>
-              <span className="pinned-close">tocca per chiudere ×</span>
-            </div>
-          );
-        })()}
       </Section>
     </div>
   );
