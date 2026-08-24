@@ -1621,7 +1621,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
             return (
             <div key={muscle}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
-                <div className="muscle-group-heading" style={{ marginBottom: 0, background: MUSCLE_HEADING_COLORS[muscle] || MUSCLE_HEADING_COLORS.Altro }}>{muscle.toUpperCase()}</div>
+                <div className="muscle-group-heading" style={{ marginBottom: 0, background: MUSCLE_DARK_COLORS[muscle] || MUSCLE_DARK_COLORS.Altro }}>{muscle.toUpperCase()}</div>
                 <select className="input input-sm-w" value={filtro.mese} onChange={(e) => setHistoryFilter(muscle, { mese: Number(e.target.value) })}>
                   {MONTHS_IT.map((m, i) => <option key={m} value={i + 1}>{m}</option>)}
                 </select>
@@ -2593,8 +2593,8 @@ export default function App() {
         .cronologia-allenamenti-dark .history-body .hint{ color:#ffffff; }
         .cronologia-allenamenti-dark .history-body .muted{ color:#ffffff; }
         .cronologia-theme .muscle-group-heading{
-          color:#000000 !important; font-size:24px;
-          border:3px solid #c0392b;
+          color:#ffffff !important; font-size:24px;
+          border:1px solid #4a8f00;
         }
         .history-card-dark{ background:#141414 !important; border-color:#333333 !important; }
         .history-card-dark, .history-card-dark *{ color:#ffffff !important; font-weight:700; }
