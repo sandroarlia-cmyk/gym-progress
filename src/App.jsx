@@ -1622,22 +1622,22 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
             const isOpen = !!expanded[entry.key];
             return (
               <div key={entry.key} className="history-item">
-                <div className="history-head" style={{ background: MUSCLE_HEADING_COLORS[entry.muscle] || MUSCLE_HEADING_COLORS.Altro }} onClick={() => setExpanded({ ...expanded, [entry.key]: !isOpen })}>
-                  <div>
-                    <span className="font-display">{formatDateLong(entry.date)}</span>
-                    <span className="hint" style={{ marginLeft: 8 }}>{dayNameFromDate(entry.date)} — {entry.muscle.toUpperCase()}</span>
+                <div className="history-head-new">
+                  <div className="hist-date-box" onClick={() => setExpanded({ ...expanded, [entry.key]: !isOpen })}>
+                    {formatDateLong(entry.date)} {dayNameFromDate(entry.date).toUpperCase()}
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span className="badge badge-rep">{entry.sets} serie</span>
-                    <span className="badge badge-accent badge-tonn">{round1(entry.volume)} kg</span>
+                  <div className="hist-row">
+                    <div className="hist-muscle-box" style={{ background: MUSCLE_HEADING_COLORS[entry.muscle] || MUSCLE_HEADING_COLORS.Altro }}>
+                      {entry.muscle.toUpperCase()}
+                    </div>
+                    <div className="hist-serie-box">{entry.sets} serie</div>
+                    <div className="hist-volume-box">{round1(entry.volume)} kg</div>
                     {isOpen && (
-                      <button className="btn-icon" title="Chiudi" onClick={(e) => { e.stopPropagation(); setExpanded({ ...expanded, [entry.key]: false }); }}>
+                      <button className="btn-icon" title="Chiudi" onClick={() => setExpanded({ ...expanded, [entry.key]: false })}>
                         <X size={22} />
                       </button>
                     )}
-                    <span onClick={(e) => e.stopPropagation()}>
-                      <DeleteButton onConfirm={() => deleteMuscleDayEntry(entry.date, entry.muscle)} small />
-                    </span>
+                    <DeleteButton onConfirm={() => deleteMuscleDayEntry(entry.date, entry.muscle)} small />
                   </div>
                 </div>
                 {isOpen && (
@@ -2508,6 +2508,12 @@ export default function App() {
         .history-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .muscle-group-heading{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:22px; color:var(--accent); background:var(--accent-dim); padding:8px 14px; border-radius:8px; margin-bottom:10px; width:fit-content; }
         .history-head{ display:flex; justify-content:space-between; align-items:center; padding:11px 14px; cursor:pointer; background:var(--surface-2); }
+        .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:var(--surface-2); border:3px solid #c0392b; border-radius:8px; }
+        .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:18px; border-radius:8px; cursor:pointer; text-align:center; }
+        .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+        .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#000000; font-weight:700; }
+        .hist-serie-box{ padding:8px 14px; border-radius:8px; background:#aef000; color:#000000; font-weight:700; }
+        .hist-volume-box{ padding:8px 14px; border-radius:8px; background:#1f6b3a; color:#ffffff; font-weight:700; }
         .history-body{ padding:11px 14px; display:flex; flex-direction:column; gap:10px; }
         .muscle-history-block{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .muscle-history-head{ display:flex; justify-content:space-between; align-items:center; padding:10px 12px; cursor:pointer; background:var(--surface); }
