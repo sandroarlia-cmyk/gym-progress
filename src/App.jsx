@@ -1854,13 +1854,30 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
     return weeks;
   }, [workouts, exercises, muscle]);
 
+  const [serieGruppo, setSerieGruppo] = useState(MUSCLE_GROUPS[0]);
+  const weeklySeriesData = useMemo(() => {
+    const weeks = [];
+    for (let i = 9; i >= 0; i--) {
+      const ws = addDays(getMonday(todayISO()), -7 * i);
+      const we = addDays(ws, 6);
+      const stats = weeklyMuscleStats(workouts, exercises, isoOf(ws), isoOf(we));
+      const s = stats[serieGruppo] || { sets: 0 };
+      weeks.push({
+        settimana: formatDateShort(isoOf(ws)),
+        periodo: `${formatDateShort(isoOf(ws))} – ${formatDateShort(isoOf(we))}`,
+        serie: s.sets
+      });
+    }
+    return weeks;
+  }, [workouts, exercises, serieGruppo]);
+
   const bodyData = [...bodyLogs].sort((a, b) => (a.date > b.date ? 1 : -1)).map((b) => ({ data: formatDateShort(b.date), peso: Number(b.weight) || 0 }));
 
   return (
     <div className="progressi-dark" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <StatisticheTab workouts={workouts} exercises={exercises} />
 
-      <div className="chart-uniform-wrap">
+      <div className="chart-uniform-wrap chart-wide-mobile">
       <Section title="Progressione forza esercizi annuali" right={
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <select className="input input-sm-w" value={forzaGruppo} onChange={(e) => setForzaGruppo(e.target.value)}>
@@ -1934,6 +1951,30 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             </ResponsiveContainer>
           </div>
         )}
+      </Section>
+      </div>
+
+      <div className="chart-uniform-wrap">
+      <Section title="TOTALE SERIE SETTIMANALI PER MUSCOLO" right={
+        <select className="input input-sm-w" value={serieGruppo} onChange={(e) => setSerieGruppo(e.target.value)}>
+          {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
+        </select>
+      }>
+        <div style={{ height: 260 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={weeklySeriesData}>
+              <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
+              <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
+              <YAxis stroke="var(--text-dim)" fontSize={11} />
+              <Tooltip
+                contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
+                labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
+                formatter={(value) => [value, "Totale serie"]}
+              />
+              <Bar dataKey="serie" fill="#aef000" name="Totale serie" radius={[3, 3, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
       </div>
 
@@ -2590,6 +2631,8 @@ export default function App() {
           .chart-uniform-wrap .section-head > div{ min-width:0 !important; max-width:100% !important; flex-wrap:wrap !important; }
           .chart-uniform-wrap select.input-sm-w{ min-width:0 !important; max-width:100% !important; }
           .chart-uniform-wrap > div[style]{ height:260px !important; }
+          .chart-wide-mobile{ margin-left:-10px !important; margin-right:-10px !important; width:calc(100% + 20px) !important; }
+          .chart-wide-mobile .card{ padding-left:6px !important; padding-right:6px !important; border-radius:6px !important; }
           .dropdown-item{ font-size:15px; padding:9px 12px; }
           .date-it-picker .input{ font-size:14px; padding:8px 4px; }
           .date-it-day{ flex:0 0 54px; }
