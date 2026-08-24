@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   Dumbbell, CalendarDays, BarChart2, TrendingUp, Trophy, Settings,
   Plus, Trash2, Search, Star, X, Save, ChevronLeft, ChevronRight, ChevronDown, Info, Download
@@ -1723,25 +1723,21 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
   );
 }
 
-function PinnedTooltip({ active, payload, label, onClose, labelFormatter, formatter, valueColor }) {
+function PinnedTooltip({ active, payload, label, labelFormatter, formatter, valueColor }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div
-      style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 8, padding: "14px 18px", cursor: "pointer", minWidth: 160 }}
-      onClick={onClose}
-    >
-      <div style={{ color: "var(--text-dim)", fontSize: 14, marginBottom: 6 }}>
+    <div style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 8, padding: "18px 22px", minWidth: 200 }}>
+      <div style={{ color: "var(--text-dim)", fontSize: 15, marginBottom: 8 }}>
         {labelFormatter ? labelFormatter(label, payload) : label}
       </div>
       {payload.map((entry, i) => {
         const [val, name] = formatter ? formatter(entry.value, entry.name, entry) : [entry.value, entry.name];
         return (
-          <div key={i} style={{ color: valueColor || "#ffffff", fontWeight: 700, fontSize: 17, marginBottom: 2 }}>
+          <div key={i} style={{ color: valueColor || "#ffffff", fontWeight: 700, fontSize: 20, marginBottom: 3 }}>
             {name}: {val}
           </div>
         );
       })}
-      <div style={{ color: "var(--text-dim)", fontSize: 12, marginTop: 6 }}>tocca per chiudere ×</div>
     </div>
   );
 }
@@ -1762,10 +1758,30 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
   const [pinnedVolSett, setPinnedVolSett] = useState(null);
   const [pinnedVolAnno, setPinnedVolAnno] = useState(null);
   const [pinnedPeso, setPinnedPeso] = useState(null);
+  const closeAllPinned = useRef(() => {});
+
+  closeAllPinned.current = () => {
+    setPinnedForzaAnno(null);
+    setPinnedE1rm(null);
+    setPinnedSerieSett(null);
+    setPinnedVolSett(null);
+    setPinnedVolAnno(null);
+    setPinnedPeso(null);
+  };
 
   function togglePinned(current, setCurrent, key, x, y) {
     setCurrent((prev) => (prev && prev.key === key ? null : { key, x, y }));
   }
+
+  useEffect(() => {
+    function handleOutsideClick(e) {
+      if (!e.target.closest(".chart-relative-wrap")) {
+        closeAllPinned.current();
+      }
+    }
+    document.addEventListener("click", handleOutsideClick, true);
+    return () => document.removeEventListener("click", handleOutsideClick, true);
+  }, []);
 
   const now = new Date();
   const ANNI_DISPONIBILI = Array.from({ length: 6 }, (_, i) => now.getFullYear() - 4 + i);
