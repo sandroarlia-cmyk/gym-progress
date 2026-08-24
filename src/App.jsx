@@ -2521,7 +2521,7 @@ export default function App() {
         .history-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .muscle-group-heading{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:22px; color:var(--accent); background:var(--accent-dim); padding:8px 14px; border-radius:8px; margin-bottom:10px; width:fit-content; }
         .history-head{ display:flex; justify-content:space-between; align-items:center; padding:11px 14px; cursor:pointer; background:var(--surface-2); }
-        .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:#141414; border:3px solid #c0392b; border-radius:8px; }
+        .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:#141414; border:1px solid #4a8f00; border-radius:0; margin-left:-20px; margin-right:-20px; }
         .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:20px; border-radius:8px; cursor:pointer; text-align:center; }
         .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
         .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#ffffff; font-weight:700; }
@@ -2900,6 +2900,7 @@ export default function App() {
           .stats-row-head span{ white-space:normal; line-height:1.15; word-break:break-word; }
           .week-nav{ gap:8px; }
           .history-head{ padding:9px 10px; flex-wrap:wrap; gap:6px; }
+          .history-head-new{ margin-left:-14px; margin-right:-14px; }
           .history-body{ padding:9px 10px; }
           .muscle-history-head{ padding:8px 10px; font-size:14px; }
           .muscle-history-body{ padding:8px 10px; }
