@@ -2508,8 +2508,8 @@ export default function App() {
         .history-item{ border:1px solid var(--border-c); border-radius:8px; overflow:hidden; }
         .muscle-group-heading{ font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; font-weight:700; font-size:22px; color:var(--accent); background:var(--accent-dim); padding:8px 14px; border-radius:8px; margin-bottom:10px; width:fit-content; }
         .history-head{ display:flex; justify-content:space-between; align-items:center; padding:11px 14px; cursor:pointer; background:var(--surface-2); }
-        .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:var(--surface-2); border:3px solid #c0392b; border-radius:8px; }
-        .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:18px; border-radius:8px; cursor:pointer; text-align:center; }
+        .history-head-new{ display:flex; flex-direction:column; gap:10px; padding:12px 14px; background:#141414; border:3px solid #c0392b; border-radius:8px; }
+        .hist-date-box{ width:100%; box-sizing:border-box; padding:12px 14px; background:#141414; color:#ffffff; font-weight:700; font-size:20px; border-radius:8px; cursor:pointer; text-align:center; }
         .hist-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
         .hist-muscle-box{ padding:8px 14px; border-radius:8px; color:#000000; font-weight:700; }
         .hist-serie-box{ padding:8px 14px; border-radius:8px; background:#aef000; color:#000000; font-weight:700; }
