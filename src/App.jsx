@@ -1979,7 +1979,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
       </div>
 
       <div className="chart-uniform-wrap">
-      <Section title="Volume settimanale per gruppo" right={
+      <Section title="VOLUME SETTIMANALE PER MUSCOLO" right={
         <select className="input input-sm-w" value={muscle} onChange={(e) => setMuscle(e.target.value)}>
           {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
@@ -1989,16 +1989,13 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
             <BarChart data={weeklyVolumeData}>
               <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
               <XAxis dataKey="settimana" stroke="var(--text-dim)" fontSize={11} />
-              <YAxis yAxisId="left" stroke="#c0392b" fontSize={11} />
-              <YAxis yAxisId="right" orientation="right" stroke="#7ea600" fontSize={11} />
+              <YAxis stroke="var(--text-dim)" fontSize={11} />
               <Tooltip
                 contentStyle={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", color: "var(--text)" }}
                 labelFormatter={(label, payload) => (payload && payload[0] ? payload[0].payload.periodo : label)}
-                formatter={(value, name) => name === "RIP. TOT." ? [`${value} Rip.`, "Volume"] : [`${value} kg`, "Volume"]}
+                formatter={(value) => [`${value} kg`, "Volume"]}
               />
-              <Legend wrapperStyle={{ fontSize: 11 }} />
-              <Bar yAxisId="left" dataKey="volume" fill="#c0392b" name="Volume (kg)" radius={[3, 3, 0, 0]} />
-              <Bar yAxisId="right" dataKey="serieTot" fill="#aef000" name="RIP. TOT." radius={[3, 3, 0, 0]} />
+              <Bar dataKey="volume" fill="#1f6b3a" name="Volume (kg)" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
