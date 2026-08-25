@@ -2920,7 +2920,7 @@ export default function App() {
           .history-card{ padding:11px 12px; }
           .log-date-box{ width:85px; font-size:16px; padding:9px 4px; }
           .log-kgmax-label-box{ width:50px; font-size:13px; padding:8px 3px; text-align:center; justify-content:center; }
-          .log-kgmax-value-box{ width:145px; font-size:16px; padding:9px 4px; white-space:nowrap; }
+          .log-kgmax-value-box{ width:155px; font-size:18px; padding:9px 8px 9px 12px; white-space:nowrap; justify-content:flex-start; text-align:left; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
           .log-note-box{ width:70px; }
