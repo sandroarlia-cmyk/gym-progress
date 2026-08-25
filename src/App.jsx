@@ -10,7 +10,7 @@ import {
 import * as XLSX from "xlsx";
 import { loadGymData, saveField } from "./supabaseClient";
 
-const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome", "Altro"];
+const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome"];
 const GROUP_ORDER = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics"];
 const DAYS = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
 const MONTHS_IT = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
@@ -2429,9 +2429,9 @@ export default function App() {
   const tabs = [
     { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "avanzamenti", label: "Avanzamenti", icon: BarChart2 },
-    { key: "cronologia", label: "Cronologia", icon: Search },
-    { key: "split", label: "Split settimanali", icon: CalendarDays },
     { key: "muscoli", label: "Muscoli", icon: Dumbbell, letter: "M" },
+    { key: "split", label: "Split settimanali", icon: CalendarDays },
+    { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
@@ -2485,6 +2485,7 @@ export default function App() {
         @media (max-width: 820px){
           .gt-nav{ display:none; }
           .gt-bottomnav{ display:flex; overflow-x:auto; }
+          .gt-bottomnav-label{ display:none; }
           .gt-main{ padding:14px; padding-bottom:24px; }
         }
         .gt-bottomnav-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:8px 4px; color:var(--text-dim); font-size:24px; min-width:64px; }
@@ -3047,7 +3048,7 @@ export default function App() {
       <div className="gt-bottomnav">
         {tabs.map((t) => (
           <div key={t.key} className={"gt-bottomnav-item" + (tab === t.key ? " active" : "")} onClick={() => setTab(t.key)}>
-            <NavIcon t={t} size={26} /> {t.label.split(" ")[0]}
+            <NavIcon t={t} size={26} /> <span className="gt-bottomnav-label">{t.label.split(" ")[0]}</span>
           </div>
         ))}
       </div>
