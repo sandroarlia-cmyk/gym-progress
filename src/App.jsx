@@ -1215,7 +1215,7 @@ function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
               <ChevronDown size={24} className={"chevron" + (isOpen ? " open" : "")} />
             </div>
             {isOpen && (
-              <div style={{ marginTop: 14, padding: "0 16px 16px" }}>
+              <div className="avanzamenti-content" style={{ marginTop: 14 }}>
                 <MuscleLogTab muscle={m} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} sortBy="peso" />
               </div>
             )}
@@ -2690,7 +2690,7 @@ export default function App() {
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-rir-box{ width:56px; flex-shrink:0; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
         .log-kgmax-label-box{ width:100px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
-        .log-kgmax-value-box{ width:140px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kgmax-value-box{ width:210px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
         .log-kg-title-box{ width:140px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-note-title-box{ width:190px; flex-shrink:0; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-card-body .log-total-box{ padding:7px 10px; }
@@ -2714,6 +2714,7 @@ export default function App() {
         .avanzamenti-muscle-head .chevron{ color:#ffffff; transition:transform 0.2s; }
         .avanzamenti-muscle-head .font-display{ color:#ffffff !important; }
         .avanzamenti-muscle-head .chevron.open{ transform:rotate(180deg); }
+        .avanzamenti-content{ padding:0 16px 16px; }
         .log-edit-table .set-row{ grid-template-columns:30px 1fr 1fr 0.8fr 1.5fr 40px; }
         .log-edit-table .set-idx{ color:#ffffff; }
         .log-edit-table .input:not(.input-kg):not(.input-rip):not(.input-rir){ color:#1a1a1a !important; background:#ffffff !important; }
@@ -2892,9 +2893,9 @@ export default function App() {
           .vertical-ex-title{ font-size:15px; }
           .vertical-total{ font-size:14px; padding:6px 10px; }
           .history-card{ padding:11px 12px; }
-          .log-date-box{ width:100px; font-size:18px; padding:9px 5px; }
+          .log-date-box{ width:85px; font-size:16px; padding:9px 4px; }
           .log-kgmax-label-box{ width:50px; font-size:13px; padding:8px 3px; text-align:center; justify-content:center; }
-          .log-kgmax-value-box{ width:115px; font-size:18px; padding:9px 5px; }
+          .log-kgmax-value-box{ width:145px; font-size:16px; padding:9px 4px; white-space:nowrap; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
           .log-note-box{ width:70px; }
@@ -2925,6 +2926,8 @@ export default function App() {
           .gt-main{ padding:12px; }
           .gt-bottomnav-item{ font-size:11px; min-width:0; padding:7px 2px; gap:1px; }
           .card{ padding:14px; overflow-x:hidden; max-width:100%; box-sizing:border-box; }
+          .avanzamenti-content{ padding:0 4px 4px; }
+          .avanzamenti-content .card{ padding-left:6px !important; padding-right:6px !important; }
           .section-head{ min-width:0; }
           .section-head > div{ min-width:0; max-width:100%; }
           .input-sm-w{ min-width:0; max-width:100%; }
