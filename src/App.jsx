@@ -38,10 +38,10 @@ const REQUIRED_EXERCISES = {
   Petto: [
     "Panca piana",
     "Panca inclinata bilanciere",
+    "Panca inclinata manubri",
     "Croci ai cavi alti verso il basso",
     "Dip alle parallele (petto)",
     "Panca piana manubri",
-    "Panca inclinata manubri",
     "Croci ai cavi bassi verso l'alto (upper chest)",
     "Push up / Piegamenti a corpo libero"
   ],
@@ -1216,7 +1216,7 @@ function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
             </div>
             {isOpen && (
               <div style={{ marginTop: 14, padding: "0 16px 16px" }}>
-                <MuscleLogTab muscle={m} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
+                <MuscleLogTab muscle={m} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} sortBy="peso" />
               </div>
             )}
           </div>
@@ -1226,7 +1226,7 @@ function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
   );
 }
 
-function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
+function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data" }) {
   const [expandedExercises, setExpandedExercises] = useState({});
   const [expandedDates, setExpandedDates] = useState({});
   const [editingKey, setEditingKey] = useState(null);
@@ -1319,9 +1319,16 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
           .filter((w) => w.exercises.some((it) => it.exerciseId === exId))
           .map((w) => {
             const it = w.exercises.find((it) => it.exerciseId === exId);
-            return { workoutId: w.id, date: w.date, sets: it.sets, volume: itemVolume(it) };
+            const kgMax = it.sets.length ? Math.max(...it.sets.map((s) => Number(s.weight) || 0)) : 0;
+            const ripAlKgMax = it.sets
+              .filter((s) => (Number(s.weight) || 0) === kgMax)
+              .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
+            return { workoutId: w.id, date: w.date, sets: it.sets, volume: itemVolume(it), kgMax, ripAlKgMax };
           })
-          .sort((a, b) => (a.date > b.date ? -1 : 1));
+          .sort((a, b) => sortBy === "peso"
+            ? (b.kgMax !== a.kgMax ? b.kgMax - a.kgMax : b.ripAlKgMax - a.ripAlKgMax)
+            : (a.date > b.date ? -1 : 1)
+          );
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
           <div className="card">
@@ -1333,10 +1340,8 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
             <div className="log-date-list">
               {rows.map((r, i) => {
                 const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
-                const kgMax = r.sets.length ? Math.max(...r.sets.map((s) => Number(s.weight) || 0)) : 0;
-                const ripAlKgMax = r.sets
-                  .filter((s) => (Number(s.weight) || 0) === kgMax)
-                  .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
+                const kgMax = r.kgMax;
+                const ripAlKgMax = r.ripAlKgMax;
                 const key = exId + "-" + r.date + "-" + i;
                 const isOpen = !!expandedDates[key];
                 const isEditing = editingKey === key;
@@ -2707,6 +2712,7 @@ export default function App() {
           padding:16px 20px; cursor:pointer; color:#ffffff; font-size:22px;
         }
         .avanzamenti-muscle-head .chevron{ color:#ffffff; transition:transform 0.2s; }
+        .avanzamenti-muscle-head .font-display{ color:#ffffff !important; }
         .avanzamenti-muscle-head .chevron.open{ transform:rotate(180deg); }
         .log-edit-table .set-row{ grid-template-columns:30px 1fr 1fr 0.8fr 1.5fr 40px; }
         .log-edit-table .set-idx{ color:#ffffff; }
