@@ -2927,7 +2927,7 @@ export default function App() {
           .gt-bottomnav-item{ font-size:11px; min-width:0; padding:7px 2px; gap:1px; }
           .card{ padding:14px; overflow-x:hidden; max-width:100%; box-sizing:border-box; }
           .avanzamenti-content{ padding:0 4px 4px; }
-          .avanzamenti-content .card{ padding-left:6px !important; padding-right:6px !important; }
+          .avanzamenti-content .card{ padding-left:6px !important; padding-right:2px !important; margin-right:-8px; }
           .section-head{ min-width:0; }
           .section-head > div{ min-width:0; max-width:100%; }
           .input-sm-w{ min-width:0; max-width:100%; }
