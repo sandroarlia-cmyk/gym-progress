@@ -2398,11 +2398,14 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
         <input className="input" placeholder="es. spalla sinistra affaticata" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
 
         {livePreview ? (
-          <div className="plate-row" style={{ marginTop: 14 }}>
-            <Plate value={livePreview.bmi} label="BMI" unit="" />
-            <Plate value={livePreview.bfPercent} label="massa grassa" unit="%" />
-            <Plate value={livePreview.fatKg} label="massa grassa" unit="kg" />
-            <Plate value={livePreview.leanKg} label="massa magra" unit="kg" />
+          <div className="composizione-risultati" style={{ marginTop: 14 }}>
+            <div className="composizione-risultati-title">Risultati calcolati (formula US Navy)</div>
+            <div className="plate-row">
+              <Plate value={livePreview.bmi} label="BMI" unit="" />
+              <Plate value={livePreview.bfPercent} label="massa grassa" unit="%" />
+              <Plate value={livePreview.fatKg} label="massa grassa" unit="kg" />
+              <Plate value={livePreview.leanKg} label="massa magra" unit="kg" />
+            </div>
           </div>
         ) : (
           <p className="hint" style={{ marginTop: 10 }}>
@@ -2634,6 +2637,8 @@ export default function App() {
         .plate-label{ font-size:24px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.03em; }
         .plate-unit{ text-transform:lowercase; }
         .plate-row{ display:flex; gap:28px; flex-wrap:wrap; }
+        .composizione-risultati{ background:var(--accent-dim); border:2px solid var(--accent); border-radius:10px; padding:14px 18px; }
+        .composizione-risultati-title{ font-weight:700; font-size:15px; color:var(--accent); margin-bottom:10px; text-transform:uppercase; }
         .split-columns-wrap{ overflow-x:auto; padding-bottom:6px; }
         .split-columns{ display:flex; gap:14px; width:max-content; }
         .split-col{ display:flex; flex-direction:column; width:210px; flex-shrink:0; }
