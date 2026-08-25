@@ -2308,15 +2308,40 @@ function RecordTab({ workouts, exercises }) {
   );
 }
 
+function computeBodyComposition({ sesso, weight, height, age, waist, neck, hip }) {
+  const w = Number(weight), h = Number(height), a = Number(age);
+  const waistN = Number(waist), neckN = Number(neck), hipN = Number(hip);
+  const baseValid = w > 0 && h > 0 && a > 0 && waistN > 0 && neckN > 0;
+  const sexValid = sesso === "Uomo" ? true : hipN > 0;
+  if (!baseValid || !sexValid) return null;
+
+  const bmi = w / Math.pow(h / 100, 2);
+  let bfPercent;
+  if (sesso === "Uomo") {
+    bfPercent = 86.010 * Math.log10(waistN - neckN) - 70.041 * Math.log10(h) + 36.76;
+  } else {
+    bfPercent = 163.205 * Math.log10(waistN + hipN - neckN) - 97.684 * Math.log10(h) - 78.387;
+  }
+  if (!isFinite(bfPercent) || !isFinite(bmi) || bfPercent < 0) return null;
+  const fatKg = (w * bfPercent) / 100;
+  const leanKg = w - fatKg;
+  return { bmi: round1(bmi), bfPercent: round1(bfPercent), fatKg: round1(fatKg), leanKg: round1(leanKg) };
+}
+
 function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
-  const [form, setForm] = useState({ date: todayISO(), weight: "", height: "", age: "", notes: "" });
+  const [form, setForm] = useState({
+    date: todayISO(), sesso: "Uomo", weight: "", height: "", age: "",
+    waist: "", neck: "", hip: "", notes: ""
+  });
   const sorted = [...bodyLogs].sort((a, b) => (a.date < b.date ? 1 : -1));
   const latest = sorted[0];
+  const livePreview = computeBodyComposition(form);
 
   function addLog() {
     if (!form.weight) return;
-    setBodyLogs([...bodyLogs, { id: uid(), ...form }]);
-    setForm({ date: todayISO(), weight: "", height: form.height, age: form.age, notes: "" });
+    const composition = computeBodyComposition(form);
+    setBodyLogs([...bodyLogs, { id: uid(), ...form, ...(composition || {}) }]);
+    setForm({ ...form, date: todayISO(), weight: "", notes: "" });
   }
   function remove(id) { setBodyLogs(bodyLogs.filter((b) => b.id !== id)); }
 
@@ -2328,13 +2353,18 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
           <Plate value={latest && latest.height ? latest.height : "—"} label="altezza" unit="cm" />
           <Plate value={latest && latest.age ? latest.age : "—"} label="età" unit="anni" />
         </div>
-      </Section>
 
-      <Section title="Nuova rilevazione">
-        <div className="grid4">
+        <div className="grid4" style={{ marginTop: 14 }}>
           <div>
             <label className="label">Data</label>
             <input type="date" className="input" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+          </div>
+          <div>
+            <label className="label">Sesso</label>
+            <select className="input" value={form.sesso} onChange={(e) => setForm({ ...form, sesso: e.target.value })}>
+              <option value="Uomo">Uomo</option>
+              <option value="Donna">Donna</option>
+            </select>
           </div>
           <div>
             <label className="label">Peso (kg)</label>
@@ -2348,9 +2378,41 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
             <label className="label">Età</label>
             <input type="number" className="input" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
           </div>
+          <div>
+            <label className="label">Circonferenza vita (cm)</label>
+            <input type="number" className="input" value={form.waist} onChange={(e) => setForm({ ...form, waist: e.target.value })} />
+          </div>
+          <div>
+            <label className="label">Circonferenza collo (cm)</label>
+            <input type="number" className="input" value={form.neck} onChange={(e) => setForm({ ...form, neck: e.target.value })} />
+          </div>
+          {form.sesso === "Donna" && (
+            <div>
+              <label className="label">Circonferenza fianchi (cm)</label>
+              <input type="number" className="input" value={form.hip} onChange={(e) => setForm({ ...form, hip: e.target.value })} />
+            </div>
+          )}
         </div>
+
         <label className="label" style={{ marginTop: 10 }}>Note</label>
         <input className="input" placeholder="es. spalla sinistra affaticata" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+
+        {livePreview ? (
+          <div className="plate-row" style={{ marginTop: 14 }}>
+            <Plate value={livePreview.bmi} label="BMI" unit="" />
+            <Plate value={livePreview.bfPercent} label="massa grassa" unit="%" />
+            <Plate value={livePreview.fatKg} label="massa grassa" unit="kg" />
+            <Plate value={livePreview.leanKg} label="massa magra" unit="kg" />
+          </div>
+        ) : (
+          <p className="hint" style={{ marginTop: 10 }}>
+            Compila peso, altezza, età, vita, collo{form.sesso === "Donna" ? " e fianchi" : ""} per calcolare la composizione corporea.
+          </p>
+        )}
+        <p className="hint" style={{ marginTop: 8 }}>
+          Nota: questa è una <strong>stima</strong> della composizione corporea (formula US Navy), non una misurazione clinica diretta.
+        </p>
+
         <button className="btn btn-primary" style={{ marginTop: 10 }} onClick={addLog}><Plus size={24} /> Salva rilevazione</button>
       </Section>
 
@@ -2358,10 +2420,13 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
         {sorted.length === 0 && <p className="muted">Nessuna rilevazione salvata.</p>}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {sorted.map((b) => (
-            <div key={b.id} className="ex-row">
+            <div key={b.id} className="ex-row" style={{ flexWrap: "wrap" }}>
               <span className="font-display" style={{ minWidth: 90 }}>{formatDateShort(b.date)}</span>
               <span>{b.weight} kg</span>
-              <span className="hint">{b.height ? `${b.height} cm` : ""}</span>
+              <span className="hint">{b.bmi !== undefined ? `BMI ${b.bmi}` : ""}</span>
+              <span className="hint">{b.bfPercent !== undefined ? `MG ${b.bfPercent}%` : ""}</span>
+              <span className="hint">{b.fatKg !== undefined ? `${b.fatKg} kg grasso` : ""}</span>
+              <span className="hint">{b.leanKg !== undefined ? `${b.leanKg} kg magra` : ""}</span>
               <span className="hint" style={{ flex: 1 }}>{b.notes}</span>
               <DeleteButton onConfirm={() => remove(b.id)} small />
             </div>
