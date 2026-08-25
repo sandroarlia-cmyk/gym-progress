@@ -1185,6 +1185,47 @@ function firstNote(sets) {
   return found ? found.notes : "";
 }
 
+function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
+  const [expandedMuscle, setExpandedMuscle] = useState(null);
+
+  const musclesConDati = MUSCLE_GROUPS.filter((m) =>
+    workouts.some((w) => w.exercises.some((it) => {
+      const ex = exercises.find((e) => e.id === it.exerciseId);
+      return ex && ex.muscle === m;
+    }))
+  );
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {musclesConDati.length === 0 && (
+        <div className="card">
+          <p className="muted">Nessun allenamento registrato ancora. Man mano che registri allenamenti, i gruppi muscolari compariranno qui.</p>
+        </div>
+      )}
+      {musclesConDati.map((m) => {
+        const isOpen = expandedMuscle === m;
+        return (
+          <div key={m} className="card avanzamenti-muscle-card">
+            <div
+              className="avanzamenti-muscle-head"
+              style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro }}
+              onClick={() => setExpandedMuscle(isOpen ? null : m)}
+            >
+              <span className="font-display">{m.toUpperCase()}</span>
+              <ChevronDown size={24} className={"chevron" + (isOpen ? " open" : "")} />
+            </div>
+            {isOpen && (
+              <div style={{ marginTop: 14, padding: "0 16px 16px" }}>
+                <MuscleLogTab muscle={m} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function MuscleLogTab({ muscle, workouts, exercises, setWorkouts }) {
   const [expandedExercises, setExpandedExercises] = useState({});
   const [expandedDates, setExpandedDates] = useState({});
@@ -2363,6 +2404,7 @@ export default function App() {
 
   const tabs = [
     { key: "progressi", label: "Progressi", icon: TrendingUp },
+    { key: "avanzamenti", label: "Avanzamenti", icon: BarChart2 },
     { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
@@ -2659,6 +2701,13 @@ export default function App() {
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .log-exercise-head{ cursor:pointer; }
+        .avanzamenti-muscle-card{ padding:0; overflow:hidden; }
+        .avanzamenti-muscle-head{
+          display:flex; justify-content:space-between; align-items:center;
+          padding:16px 20px; cursor:pointer; color:#ffffff; font-size:22px;
+        }
+        .avanzamenti-muscle-head .chevron{ color:#ffffff; transition:transform 0.2s; }
+        .avanzamenti-muscle-head .chevron.open{ transform:rotate(180deg); }
         .log-edit-table .set-row{ grid-template-columns:30px 1fr 1fr 0.8fr 1.5fr 40px; }
         .log-edit-table .set-idx{ color:#ffffff; }
         .log-edit-table .input:not(.input-kg):not(.input-rip):not(.input-rir){ color:#1a1a1a !important; background:#ffffff !important; }
@@ -2956,6 +3005,7 @@ export default function App() {
           ))}
           {tab === "cronologia" && <CronologiaTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "progressi" && <ProgressiTab workouts={workouts} exercises={exercises} bodyLogs={bodyLogs} />}
+          {tab === "avanzamenti" && <AvanzamentiTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
           {tab === "impostazioni" && <ImpostazioniTab bodyLogs={bodyLogs} setBodyLogs={setBodyLogs} />}
         </div>
       </div>
