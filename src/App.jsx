@@ -1185,6 +1185,25 @@ function firstNote(sets) {
   return found ? found.notes : "";
 }
 
+function MuscoliTab({ onSelectMuscle }) {
+  return (
+    <div className="card">
+      <div className="muscoli-grid">
+        {MUSCLE_GROUPS.map((m) => (
+          <div
+            key={m}
+            className="muscoli-tile"
+            style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro }}
+            onClick={() => onSelectMuscle(m)}
+          >
+            {m.toUpperCase()}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
   const [expandedMuscle, setExpandedMuscle] = useState(null);
 
@@ -2354,10 +2373,10 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
 }
 
 function NavIcon({ t, size }) {
-  if (t.muscle) {
+  if (t.muscle || t.letter) {
     return (
       <span className="nav-letter" style={{ width: size, height: size, fontSize: Math.round(size * 0.55) }}>
-        {t.muscle.charAt(0).toUpperCase()}
+        {(t.letter || t.muscle).charAt(0).toUpperCase()}
       </span>
     );
   }
@@ -2412,7 +2431,7 @@ export default function App() {
     { key: "avanzamenti", label: "Avanzamenti", icon: BarChart2 },
     { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
-    ...MUSCLE_NAV.map((m) => ({ key: "m-" + m.muscle, label: m.label, icon: Dumbbell, muscle: m.muscle })),
+    { key: "muscoli", label: "Muscoli", icon: Dumbbell, letter: "M" },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
@@ -2707,6 +2726,11 @@ export default function App() {
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .log-exercise-head{ cursor:pointer; }
         .avanzamenti-muscle-card{ padding:0; overflow:hidden; }
+        .muscoli-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
+        .muscoli-tile{
+          padding:26px 16px; border-radius:8px; color:#ffffff; font-weight:700; font-size:20px;
+          text-align:center; cursor:pointer; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif;
+        }
         .avanzamenti-muscle-head{
           display:flex; justify-content:space-between; align-items:center;
           padding:16px 20px; cursor:pointer; color:#ffffff; font-size:22px;
@@ -3006,6 +3030,7 @@ export default function App() {
 
         <div className="gt-main">
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
+          {tab === "muscoli" && <MuscoliTab onSelectMuscle={(m) => setTab("m-" + m)} />}
           {MUSCLE_NAV.map((m) => (
             <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
               <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
