@@ -2451,6 +2451,32 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
           ))}
         </div>
       </Section>
+
+      <Section title="Come leggere il BMI">
+        <div className="bmi-legend">
+          <div className="bmi-legend-row bmi-legend-head">
+            <span>BMI</span><span>Categoria</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>&lt; 18,5</span><span><span className="bmi-dot" style={{ background: "#3b82f6" }}></span> Sottopeso</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>18,5 – 24,9</span><span><span className="bmi-dot" style={{ background: "#22c55e" }}></span> Normopeso</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>25,0 – 29,9</span><span><span className="bmi-dot" style={{ background: "#eab308" }}></span> Sovrappeso</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>30,0 – 34,9</span><span><span className="bmi-dot" style={{ background: "#f97316" }}></span> Obesità di classe I</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>35,0 – 39,9</span><span><span className="bmi-dot" style={{ background: "#dc2626" }}></span> Obesità di classe II</span>
+          </div>
+          <div className="bmi-legend-row">
+            <span>≥ 40</span><span><span className="bmi-dot" style={{ background: "#991b1b" }}></span> Obesità di classe III (grave)</span>
+          </div>
+        </div>
+      </Section>
     </div>
   );
 }
@@ -2669,6 +2695,11 @@ export default function App() {
         .result-box-peso{ background:#eae4ff; color:#5b2c82; }
         .storico-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:14px 16px; }
         .storico-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
+        .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
+        .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
+        .bmi-legend-head{ font-weight:700; color:var(--text-dim); text-transform:uppercase; font-size:13px; background:transparent !important; }
+        .bmi-dot{ display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; vertical-align:middle; }
         .split-columns-wrap{ overflow-x:auto; padding-bottom:6px; }
         .split-columns{ display:flex; gap:14px; width:max-content; }
         .split-col{ display:flex; flex-direction:column; width:210px; flex-shrink:0; }
@@ -3096,6 +3127,7 @@ export default function App() {
           .result-grid2{ gap:8px; }
           .result-box{ padding:9px 10px; }
           .result-box-value{ font-size:20px; }
+          .bmi-legend-row{ grid-template-columns:90px 1fr; gap:8px; padding:8px 10px; font-size:14px; }
           .date-it-picker{ max-width:100%; }
           .date-muscle-row{ gap:12px; }
           .muscle-select-btn{ font-size:15px; min-width:0; flex:1; padding:9px 12px; }
