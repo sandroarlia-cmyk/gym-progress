@@ -2328,6 +2328,15 @@ function computeBodyComposition({ sesso, weight, height, age, waist, neck, hip }
   return { bmi: round1(bmi), bfPercent: round1(bfPercent), fatKg: round1(fatKg), leanKg: round1(leanKg) };
 }
 
+function ResultBox({ label, value, unit, colorKey }) {
+  return (
+    <div className={"result-box result-box-" + colorKey}>
+      <div className="result-box-label">{label}</div>
+      <div className="result-box-value">{value}{unit ? <span className="result-box-unit"> {unit}</span> : null}</div>
+    </div>
+  );
+}
+
 function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
   const [form, setForm] = useState({
     date: todayISO(), sesso: "Uomo", weight: "", height: "", age: "",
@@ -2354,84 +2363,90 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
           <Plate value={latest && latest.age ? latest.age : "—"} label="età" unit="anni" />
         </div>
 
-        <div className="grid4" style={{ marginTop: 14 }}>
-          <div>
+        <div className="anagrafica-section-label">Dati anagrafici</div>
+        <div className="anagrafica-grid2">
+          <div className="anagrafica-field">
             <label className="label">Data</label>
             <input type="date" className="input" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Sesso</label>
             <select className="input" value={form.sesso} onChange={(e) => setForm({ ...form, sesso: e.target.value })}>
               <option value="Uomo">Uomo</option>
               <option value="Donna">Donna</option>
             </select>
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Peso (kg)</label>
             <input type="number" className="input" value={form.weight} onChange={(e) => setForm({ ...form, weight: e.target.value })} />
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Altezza (cm)</label>
             <input type="number" className="input" value={form.height} onChange={(e) => setForm({ ...form, height: e.target.value })} />
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Età</label>
             <input type="number" className="input" value={form.age} onChange={(e) => setForm({ ...form, age: e.target.value })} />
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Circonferenza vita (cm)</label>
             <input type="number" className="input" value={form.waist} onChange={(e) => setForm({ ...form, waist: e.target.value })} />
           </div>
-          <div>
+          <div className="anagrafica-field">
             <label className="label">Circonferenza collo (cm)</label>
             <input type="number" className="input" value={form.neck} onChange={(e) => setForm({ ...form, neck: e.target.value })} />
           </div>
           {form.sesso === "Donna" && (
-            <div>
+            <div className="anagrafica-field">
               <label className="label">Circonferenza fianchi (cm)</label>
               <input type="number" className="input" value={form.hip} onChange={(e) => setForm({ ...form, hip: e.target.value })} />
             </div>
           )}
+          <div className="anagrafica-field" style={{ gridColumn: "1 / -1" }}>
+            <label className="label">Note</label>
+            <input className="input" placeholder="es. spalla sinistra affaticata" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+          </div>
         </div>
 
-        <label className="label" style={{ marginTop: 10 }}>Note</label>
-        <input className="input" placeholder="es. spalla sinistra affaticata" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
-
         {livePreview ? (
-          <div className="composizione-risultati" style={{ marginTop: 14 }}>
-            <div className="composizione-risultati-title">Risultati calcolati (formula US Navy)</div>
-            <div className="plate-row">
-              <Plate value={livePreview.bmi} label="BMI" unit="" />
-              <Plate value={livePreview.bfPercent} label="massa grassa" unit="%" />
-              <Plate value={livePreview.fatKg} label="massa grassa" unit="kg" />
-              <Plate value={livePreview.leanKg} label="massa magra" unit="kg" />
+          <div style={{ marginTop: 18 }}>
+            <div className="anagrafica-section-label">Risultati calcolati (formula US Navy)</div>
+            <div className="result-grid2">
+              <ResultBox label="BMI" value={livePreview.bmi} unit="" colorKey="bmi" />
+              <ResultBox label="Massa grassa" value={livePreview.bfPercent} unit="%" colorKey="bf" />
+              <ResultBox label="Massa grassa" value={livePreview.fatKg} unit="kg" colorKey="fat" />
+              <ResultBox label="Massa magra" value={livePreview.leanKg} unit="kg" colorKey="lean" />
             </div>
           </div>
         ) : (
-          <p className="hint" style={{ marginTop: 10 }}>
+          <p className="hint" style={{ marginTop: 14 }}>
             Compila peso, altezza, età, vita, collo{form.sesso === "Donna" ? " e fianchi" : ""} per calcolare la composizione corporea.
           </p>
         )}
-        <p className="hint" style={{ marginTop: 8 }}>
+        <p className="hint" style={{ marginTop: 10 }}>
           Nota: questa è una <strong>stima</strong> della composizione corporea (formula US Navy), non una misurazione clinica diretta.
         </p>
 
-        <button className="btn btn-primary" style={{ marginTop: 10 }} onClick={addLog}><Plus size={24} /> Salva rilevazione</button>
+        <button className="btn btn-primary" style={{ marginTop: 14 }} onClick={addLog}><Plus size={24} /> Salva rilevazione</button>
       </Section>
 
       <Section title="Storico">
         {sorted.length === 0 && <p className="muted">Nessuna rilevazione salvata.</p>}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {sorted.map((b) => (
-            <div key={b.id} className="ex-row" style={{ flexWrap: "wrap" }}>
-              <span className="font-display" style={{ minWidth: 90 }}>{formatDateShort(b.date)}</span>
-              <span>{b.weight} kg</span>
-              <span className="hint">{b.bmi !== undefined ? `BMI ${b.bmi}` : ""}</span>
-              <span className="hint">{b.bfPercent !== undefined ? `MG ${b.bfPercent}%` : ""}</span>
-              <span className="hint">{b.fatKg !== undefined ? `${b.fatKg} kg grasso` : ""}</span>
-              <span className="hint">{b.leanKg !== undefined ? `${b.leanKg} kg magra` : ""}</span>
-              <span className="hint" style={{ flex: 1 }}>{b.notes}</span>
-              <DeleteButton onConfirm={() => remove(b.id)} small />
+            <div key={b.id} className="storico-card">
+              <div className="storico-card-head">
+                <span className="font-display">{formatDateShort(b.date)}</span>
+                <DeleteButton onConfirm={() => remove(b.id)} small />
+              </div>
+              <div className="result-grid2">
+                <ResultBox label="Peso" value={b.weight} unit="kg" colorKey="peso" />
+                {b.bmi !== undefined && <ResultBox label="BMI" value={b.bmi} unit="" colorKey="bmi" />}
+                {b.bfPercent !== undefined && <ResultBox label="Massa grassa" value={b.bfPercent} unit="%" colorKey="bf" />}
+                {b.fatKg !== undefined && <ResultBox label="Massa grassa" value={b.fatKg} unit="kg" colorKey="fat" />}
+                {b.leanKg !== undefined && <ResultBox label="Massa magra" value={b.leanKg} unit="kg" colorKey="lean" />}
+              </div>
+              {b.notes && <div className="hint" style={{ marginTop: 8 }}>{b.notes}</div>}
             </div>
           ))}
         </div>
@@ -2637,8 +2652,23 @@ export default function App() {
         .plate-label{ font-size:24px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.03em; }
         .plate-unit{ text-transform:lowercase; }
         .plate-row{ display:flex; gap:28px; flex-wrap:wrap; }
-        .composizione-risultati{ background:var(--accent-dim); border:2px solid var(--accent); border-radius:10px; padding:14px 18px; }
-        .composizione-risultati-title{ font-weight:700; font-size:15px; color:var(--accent); margin-bottom:10px; text-transform:uppercase; }
+        .anagrafica-section-label{ font-weight:700; font-size:15px; color:var(--text-dim); text-transform:uppercase; margin:18px 0 10px; letter-spacing:0.3px; }
+        .anagrafica-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .anagrafica-field{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:10px 14px; }
+        .anagrafica-field .label{ margin-bottom:4px; }
+        .anagrafica-field .input{ background:#FFFFFF; }
+        .result-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .result-box{ border-radius:10px; padding:12px 16px; }
+        .result-box-label{ font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.3px; opacity:0.85; margin-bottom:4px; }
+        .result-box-value{ font-weight:700; font-size:26px; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; }
+        .result-box-unit{ font-size:16px; font-weight:600; }
+        .result-box-bmi{ background:#dbe9ff; color:#1a3d7c; }
+        .result-box-bf{ background:#ffe7cf; color:#b35900; }
+        .result-box-fat{ background:#ffd9d3; color:#8b1e1e; }
+        .result-box-lean{ background:#d6f3df; color:#1f6b3a; }
+        .result-box-peso{ background:#eae4ff; color:#5b2c82; }
+        .storico-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:14px 16px; }
+        .storico-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
         .split-columns-wrap{ overflow-x:auto; padding-bottom:6px; }
         .split-columns{ display:flex; gap:14px; width:max-content; }
         .split-col{ display:flex; flex-direction:column; width:210px; flex-shrink:0; }
@@ -3062,6 +3092,10 @@ export default function App() {
           .record-grid{ grid-template-columns:1fr; }
           .record-line{ font-size:13px; }
           .grid4{ grid-template-columns:1fr 1fr; }
+          .anagrafica-grid2{ gap:8px; }
+          .result-grid2{ gap:8px; }
+          .result-box{ padding:9px 10px; }
+          .result-box-value{ font-size:20px; }
           .date-it-picker{ max-width:100%; }
           .date-muscle-row{ gap:12px; }
           .muscle-select-btn{ font-size:15px; min-width:0; flex:1; padding:9px 12px; }
