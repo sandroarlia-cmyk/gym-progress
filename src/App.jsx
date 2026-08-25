@@ -2328,9 +2328,20 @@ function computeBodyComposition({ sesso, weight, height, age, waist, neck, hip }
   return { bmi: round1(bmi), bfPercent: round1(bfPercent), fatKg: round1(fatKg), leanKg: round1(leanKg) };
 }
 
+function bmiRangeStyle(bmi) {
+  const v = Number(bmi);
+  if (v < 18.5) return { background: "#dbeafe", color: "#1e40af" };
+  if (v < 25.0) return { background: "#dcfce7", color: "#15803d" };
+  if (v < 30.0) return { background: "#fef9c3", color: "#854d0e" };
+  if (v < 35.0) return { background: "#ffedd5", color: "#9a3412" };
+  if (v < 40.0) return { background: "#fee2e2", color: "#991b1b" };
+  return { background: "#fecaca", color: "#7f1d1d" };
+}
+
 function ResultBox({ label, value, unit, colorKey }) {
+  const bmiStyle = colorKey === "bmi" ? bmiRangeStyle(value) : null;
   return (
-    <div className={"result-box result-box-" + colorKey}>
+    <div className={"result-box result-box-" + colorKey} style={bmiStyle || undefined}>
       <div className="result-box-label">{label}</div>
       <div className="result-box-value">{value}{unit ? <span className="result-box-unit"> {unit}</span> : null}</div>
     </div>
