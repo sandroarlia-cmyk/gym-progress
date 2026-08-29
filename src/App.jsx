@@ -1204,28 +1204,35 @@ function MuscoliTab({ onSelectMuscle }) {
   );
 }
 
+const DAYS_SUN_FIRST = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"];
+function getSunday(dateStr) {
+  const d = new Date(dateStr + "T00:00:00");
+  d.setDate(d.getDate() - d.getDay());
+  return d;
+}
+
 function AllenamentiTab({ workouts, exercises }) {
   const weeks = useMemo(() => {
     const byWeek = {};
     workouts.forEach((w) => {
-      const monday = isoOf(getMonday(w.date));
-      if (!byWeek[monday]) byWeek[monday] = {};
-      if (!byWeek[monday][w.date]) byWeek[monday][w.date] = new Set();
+      const sunday = isoOf(getSunday(w.date));
+      if (!byWeek[sunday]) byWeek[sunday] = {};
+      if (!byWeek[sunday][w.date]) byWeek[sunday][w.date] = new Set();
       w.exercises.forEach((it) => {
         const ex = exercises.find((e) => e.id === it.exerciseId);
-        if (ex) byWeek[monday][w.date].add(ex.muscle);
+        if (ex) byWeek[sunday][w.date].add(ex.muscle);
       });
     });
     return Object.keys(byWeek)
       .sort((a, b) => (a < b ? 1 : -1))
-      .map((monday) => {
-        const days = DAYS.map((dayName, idx) => {
-          const dateIso = isoOf(addDays(new Date(monday + "T00:00:00"), idx));
-          const muscles = byWeek[monday][dateIso] ? [...byWeek[monday][dateIso]] : [];
+      .map((sunday) => {
+        const days = DAYS_SUN_FIRST.map((dayName, idx) => {
+          const dateIso = isoOf(addDays(new Date(sunday + "T00:00:00"), idx));
+          const muscles = byWeek[sunday][dateIso] ? [...byWeek[sunday][dateIso]] : [];
           return { dayName, dateIso, muscles };
         });
-        const sunday = isoOf(addDays(new Date(monday + "T00:00:00"), 6));
-        return { monday, sunday, days };
+        const saturday = isoOf(addDays(new Date(sunday + "T00:00:00"), 6));
+        return { sunday, saturday, days };
       });
   }, [workouts, exercises]);
 
@@ -1236,8 +1243,8 @@ function AllenamentiTab({ workouts, exercises }) {
         <div className="card"><p className="muted">Nessun allenamento registrato ancora. Man mano che registri allenamenti compariranno qui, organizzati per settimana.</p></div>
       )}
       {weeks.map((week) => (
-        <div key={week.monday} className="card settimana-card">
-          <div className="settimana-range">{formatDateShort(week.monday)} — {formatDateShort(week.sunday)}</div>
+        <div key={week.sunday} className="card settimana-card">
+          <div className="settimana-range">{formatDateShort(week.sunday)} — {formatDateShort(week.saturday)}</div>
           <div className="promemoria-grid">
             {week.days.map((d) => (
               <div key={d.dateIso} className="promemoria-col">
