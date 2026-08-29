@@ -1204,53 +1204,58 @@ function MuscoliTab({ onSelectMuscle }) {
   );
 }
 
-function AllenamentiTab() {
-  const [reminders, setReminders] = useState(() => {
-    const initial = {};
-    DAYS.forEach((d) => (initial[d] = []));
-    return initial;
-  });
-  const [drafts, setDrafts] = useState(() => {
-    const initial = {};
-    DAYS.forEach((d) => (initial[d] = ""));
-    return initial;
-  });
-
-  function addReminder(day) {
-    const text = drafts[day].trim();
-    if (!text) return;
-    setReminders({ ...reminders, [day]: [...reminders[day], { id: uid(), text }] });
-    setDrafts({ ...drafts, [day]: "" });
-  }
-  function removeReminder(day, id) {
-    setReminders({ ...reminders, [day]: reminders[day].filter((r) => r.id !== id) });
-  }
+function AllenamentiTab({ workouts, exercises }) {
+  const weeks = useMemo(() => {
+    const byWeek = {};
+    workouts.forEach((w) => {
+      const monday = isoOf(getMonday(w.date));
+      if (!byWeek[monday]) byWeek[monday] = {};
+      if (!byWeek[monday][w.date]) byWeek[monday][w.date] = new Set();
+      w.exercises.forEach((it) => {
+        const ex = exercises.find((e) => e.id === it.exerciseId);
+        if (ex) byWeek[monday][w.date].add(ex.muscle);
+      });
+    });
+    return Object.keys(byWeek)
+      .sort((a, b) => (a < b ? 1 : -1))
+      .map((monday) => {
+        const days = DAYS.map((dayName, idx) => {
+          const dateIso = isoOf(addDays(new Date(monday + "T00:00:00"), idx));
+          const muscles = byWeek[monday][dateIso] ? [...byWeek[monday][dateIso]] : [];
+          return { dayName, dateIso, muscles };
+        });
+        const sunday = isoOf(addDays(new Date(monday + "T00:00:00"), 6));
+        return { monday, sunday, days };
+      });
+  }, [workouts, exercises]);
 
   return (
-    <div className="card">
-      <h2 className="font-display promemoria-title">PROMEMORIA ALLENAMENTI</h2>
-      <div className="promemoria-grid">
-        {DAYS.map((day) => (
-          <div key={day} className="promemoria-col">
-            <div className="promemoria-col-head">{day.toUpperCase()}</div>
-            <div className="promemoria-list">
-              {reminders[day].map((r) => (
-                <div key={r.id} className="promemoria-item">
-                  <span>{r.text}</span>
-                  <button className="btn-icon" onClick={() => removeReminder(day, r.id)}><X size={16} /></button>
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+      <h2 className="font-display promemoria-title" style={{ marginBottom: 0 }}>PROMEMORIA ALLENAMENTI</h2>
+      {weeks.length === 0 && (
+        <div className="card"><p className="muted">Nessun allenamento registrato ancora. Man mano che registri allenamenti compariranno qui, organizzati per settimana.</p></div>
+      )}
+      {weeks.map((week) => (
+        <div key={week.monday} className="card settimana-card">
+          <div className="settimana-range">{formatDateShort(week.monday)} — {formatDateShort(week.sunday)}</div>
+          <div className="promemoria-grid">
+            {week.days.map((d) => (
+              <div key={d.dateIso} className="promemoria-col">
+                <div className="promemoria-col-head">{d.dayName.toUpperCase()}</div>
+                <div className="promemoria-col-date">{formatDateShort(d.dateIso)}</div>
+                <div className="promemoria-list">
+                  {d.muscles.map((m) => (
+                    <div key={m} className="promemoria-muscle-box" style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro }}>
+                      {m.toUpperCase()}
+                    </div>
+                  ))}
+                  {d.muscles.length === 0 && <div className="promemoria-empty">—</div>}
                 </div>
-              ))}
-            </div>
-            <input
-              className="input input-sm promemoria-input"
-              placeholder="Aggiungi..."
-              value={drafts[day]}
-              onChange={(e) => setDrafts({ ...drafts, [day]: e.target.value })}
-              onKeyDown={(e) => { if (e.key === "Enter") addReminder(day); }}
-            />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -2762,13 +2767,16 @@ export default function App() {
         .result-box-collo{ background:#f0e4d7; color:#7c4a1e; }
         .storico-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:14px 16px; }
         .storico-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
-        .promemoria-title{ font-size:24px; text-align:center; margin-bottom:18px; letter-spacing:0.5px; }
+        .promemoria-title{ font-size:24px; text-align:center; margin-bottom:0; letter-spacing:0.5px; }
+        .settimana-card{ padding:16px; }
+        .settimana-range{ font-weight:700; font-size:15px; color:var(--text-dim); text-align:center; margin-bottom:14px; text-transform:uppercase; letter-spacing:0.4px; }
         .promemoria-grid{ display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; align-items:start; }
-        .promemoria-col{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:8px; min-height:220px; }
-        .promemoria-col-head{ font-weight:700; font-size:13px; text-align:center; color:var(--accent); text-transform:uppercase; padding-bottom:8px; border-bottom:1px solid var(--border-c); }
+        .promemoria-col{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:8px; min-height:120px; }
+        .promemoria-col-head{ font-weight:700; font-size:13px; text-align:center; color:var(--accent); text-transform:uppercase; }
+        .promemoria-col-date{ font-size:12px; text-align:center; color:var(--text-dim); padding-bottom:8px; border-bottom:1px solid var(--border-c); }
         .promemoria-list{ display:flex; flex-direction:column; gap:6px; flex:1; }
-        .promemoria-item{ display:flex; justify-content:space-between; align-items:center; gap:4px; background:#FFFFFF; border-radius:6px; padding:6px 8px; font-size:13px; }
-        .promemoria-input{ width:100%; box-sizing:border-box; font-size:13px; padding:6px 8px; }
+        .promemoria-muscle-box{ border-radius:6px; padding:7px 8px; font-size:12px; font-weight:700; color:#ffffff; text-align:center; }
+        .promemoria-empty{ text-align:center; color:var(--text-dim); font-size:13px; opacity:0.5; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
@@ -3243,7 +3251,7 @@ export default function App() {
 
         <div className="gt-main">
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
-          {tab === "allenamenti" && <AllenamentiTab />}
+          {tab === "allenamenti" && <AllenamentiTab workouts={workouts} exercises={exercises} />}
           {tab === "muscoli" && <MuscoliTab onSelectMuscle={(m) => setTab("m-" + m)} />}
           {MUSCLE_NAV.map((m) => (
             <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
