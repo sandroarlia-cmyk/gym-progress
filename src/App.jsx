@@ -2452,6 +2452,8 @@ function ImpostazioniTab({ bodyLogs, setBodyLogs }) {
               </div>
               <div className="result-grid2">
                 <ResultBox label="Peso" value={b.weight} unit="kg" colorKey="peso" />
+                {b.waist && <ResultBox label="Vita" value={b.waist} unit="cm" colorKey="vita" />}
+                {b.neck && <ResultBox label="Collo" value={b.neck} unit="cm" colorKey="collo" />}
                 {b.bmi !== undefined && <ResultBox label="BMI" value={b.bmi} unit="" colorKey="bmi" />}
                 {b.bfPercent !== undefined && <ResultBox label="Massa grassa" value={b.bfPercent} unit="%" colorKey="bf" />}
                 {b.fatKg !== undefined && <ResultBox label="Massa grassa" value={b.fatKg} unit="kg" colorKey="fat" />}
@@ -2704,6 +2706,8 @@ export default function App() {
         .result-box-fat{ background:#ffd9d3; color:#8b1e1e; }
         .result-box-lean{ background:#d6f3df; color:#1f6b3a; }
         .result-box-peso{ background:#eae4ff; color:#5b2c82; }
+        .result-box-vita{ background:#cffafe; color:#0e7490; }
+        .result-box-collo{ background:#f0e4d7; color:#7c4a1e; }
         .storico-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:14px 16px; }
         .storico-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
