@@ -1204,6 +1204,57 @@ function MuscoliTab({ onSelectMuscle }) {
   );
 }
 
+function AllenamentiTab() {
+  const [reminders, setReminders] = useState(() => {
+    const initial = {};
+    DAYS.forEach((d) => (initial[d] = []));
+    return initial;
+  });
+  const [drafts, setDrafts] = useState(() => {
+    const initial = {};
+    DAYS.forEach((d) => (initial[d] = ""));
+    return initial;
+  });
+
+  function addReminder(day) {
+    const text = drafts[day].trim();
+    if (!text) return;
+    setReminders({ ...reminders, [day]: [...reminders[day], { id: uid(), text }] });
+    setDrafts({ ...drafts, [day]: "" });
+  }
+  function removeReminder(day, id) {
+    setReminders({ ...reminders, [day]: reminders[day].filter((r) => r.id !== id) });
+  }
+
+  return (
+    <div className="card">
+      <h2 className="font-display promemoria-title">PROMEMORIA ALLENAMENTI</h2>
+      <div className="promemoria-grid">
+        {DAYS.map((day) => (
+          <div key={day} className="promemoria-col">
+            <div className="promemoria-col-head">{day.toUpperCase()}</div>
+            <div className="promemoria-list">
+              {reminders[day].map((r) => (
+                <div key={r.id} className="promemoria-item">
+                  <span>{r.text}</span>
+                  <button className="btn-icon" onClick={() => removeReminder(day, r.id)}><X size={16} /></button>
+                </div>
+              ))}
+            </div>
+            <input
+              className="input input-sm promemoria-input"
+              placeholder="Aggiungi..."
+              value={drafts[day]}
+              onChange={(e) => setDrafts({ ...drafts, [day]: e.target.value })}
+              onKeyDown={(e) => { if (e.key === "Enter") addReminder(day); }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AvanzamentiTab({ workouts, exercises, setWorkouts }) {
   const [expandedMuscle, setExpandedMuscle] = useState(null);
 
@@ -2553,6 +2604,7 @@ export default function App() {
     { key: "avanzamenti", label: "Avanzamenti", icon: BarChart2 },
     { key: "muscoli", label: "Muscoli", icon: Dumbbell, letter: "M" },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
+    { key: "allenamenti", label: "Allenamenti", icon: Dumbbell },
     { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
@@ -2710,6 +2762,13 @@ export default function App() {
         .result-box-collo{ background:#f0e4d7; color:#7c4a1e; }
         .storico-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:14px 16px; }
         .storico-card-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        .promemoria-title{ font-size:24px; text-align:center; margin-bottom:18px; letter-spacing:0.5px; }
+        .promemoria-grid{ display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; align-items:start; }
+        .promemoria-col{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:10px; padding:10px; display:flex; flex-direction:column; gap:8px; min-height:220px; }
+        .promemoria-col-head{ font-weight:700; font-size:13px; text-align:center; color:var(--accent); text-transform:uppercase; padding-bottom:8px; border-bottom:1px solid var(--border-c); }
+        .promemoria-list{ display:flex; flex-direction:column; gap:6px; flex:1; }
+        .promemoria-item{ display:flex; justify-content:space-between; align-items:center; gap:4px; background:#FFFFFF; border-radius:6px; padding:6px 8px; font-size:13px; }
+        .promemoria-input{ width:100%; box-sizing:border-box; font-size:13px; padding:6px 8px; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
@@ -3143,6 +3202,8 @@ export default function App() {
           .result-box{ padding:9px 10px; }
           .result-box-value{ font-size:20px; }
           .bmi-legend-row{ grid-template-columns:90px 1fr; gap:8px; padding:8px 10px; font-size:14px; }
+          .promemoria-grid{ grid-template-columns:repeat(7, 140px); overflow-x:auto; padding-bottom:6px; }
+          .promemoria-col{ min-height:180px; }
           .date-it-picker{ max-width:100%; }
           .date-muscle-row{ gap:12px; }
           .muscle-select-btn{ font-size:15px; min-width:0; flex:1; padding:9px 12px; }
@@ -3182,6 +3243,7 @@ export default function App() {
 
         <div className="gt-main">
           {tab === "split" && <SplitTab splits={splits} setSplits={setSplits} />}
+          {tab === "allenamenti" && <AllenamentiTab />}
           {tab === "muscoli" && <MuscoliTab onSelectMuscle={(m) => setTab("m-" + m)} />}
           {MUSCLE_NAV.map((m) => (
             <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
