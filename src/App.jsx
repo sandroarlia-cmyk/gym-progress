@@ -233,7 +233,12 @@ function getMonday(dateStr) {
   return d;
 }
 function addDays(date, n) { const d = new Date(date); d.setDate(d.getDate() + n); return d; }
-function isoOf(date) { return date.toISOString().slice(0, 10); }
+function isoOf(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
 function round1(n) { return Math.round(n * 10) / 10; }
 function setVolume(s) { return (Number(s.weight) || 0) * (Number(s.reps) || 0); }
 function itemVolume(item) { return item.sets.reduce((a, s) => a + setVolume(s), 0); }
