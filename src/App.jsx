@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
-  Dumbbell, CalendarDays, BarChart2, TrendingUp, Trophy, Settings,
+  Dumbbell, CalendarDays, BarChart2, TrendingUp, Trophy, Settings, Scale,
   Plus, Trash2, Search, Star, X, Save, ChevronLeft, ChevronRight, ChevronDown, Info, Download
 } from "lucide-react";
 import {
@@ -2611,7 +2611,7 @@ export default function App() {
     { key: "cronologia", label: "Cronologia", icon: Search },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     { key: "allenamenti", label: "Settimana", icon: Dumbbell, letter: "S" },
-    { key: "impostazioni", label: "Impostazioni", icon: Settings }
+    { key: "impostazioni", label: "BMI Peso", icon: Scale }
   ];
 
   if (!loaded) {
