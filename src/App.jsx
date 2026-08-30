@@ -1878,7 +1878,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
 function PinnedTooltip({ active, payload, label, labelFormatter, formatter, valueColor }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 8, padding: "18px 22px", minWidth: 200 }}>
+    <div className="pinned-tooltip-box" style={{ background: "var(--surface-2)", border: "1px solid var(--border-c)", borderRadius: 8, padding: "18px 22px", minWidth: 200 }}>
       <div style={{ color: "var(--text-dim)", fontSize: 15, marginBottom: 8 }}>
         {labelFormatter ? labelFormatter(label, payload) : label}
       </div>
@@ -3099,7 +3099,9 @@ export default function App() {
             --text:#1a1a1a; --text-dim:#666666;
           }
           .chart-uniform-wrap .card{ background:#ffffff !important; }
-          .chart-wide-mobile{ margin-left:-16px !important; margin-right:-16px !important; width:calc(100% + 32px) !important; }
+          .chart-uniform-wrap .pinned-tooltip-box,
+          .chart-uniform-wrap .pinned-tooltip-box *{ color:#1a1a1a !important; }
+          .chart-wide-mobile{ margin-left:0; margin-right:0; width:100%; }
           .chart-wide-mobile .tonn-line{ display:none; }
           .chart-wide-mobile .tonn-yaxis{ display:none; }
           .chart-wide-mobile .card{ padding-left:6px !important; padding-right:6px !important; border-radius:6px !important; }
