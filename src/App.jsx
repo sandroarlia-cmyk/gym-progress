@@ -1812,7 +1812,6 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                         <X size={22} />
                       </button>
                     )}
-                    <DeleteButton onConfirm={() => deleteMuscleDayEntry(entry.date, entry.muscle)} small />
                   </div>
                 </div>
                 {isOpen && (
@@ -1821,63 +1820,20 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
                       const ex = exercises.find((e) => e.id === it.exerciseId);
                       const exKey = it.__workoutId + ":" + it.id;
                       const exOpen = !!openEx[exKey];
-                      const isEditing = editingEx === exKey;
                       return (
                         <div key={exKey} className="history-ex-block">
                           <div className="history-ex-title-row" onClick={() => setOpenEx({ ...openEx, [exKey]: !exOpen })}>
                             <strong>{ex ? ex.name : "?"}</strong>
                             <ChevronRight size={20} className={"chevron" + (exOpen ? " open" : "")} />
                           </div>
-                          {exOpen && !isEditing && (
-                            <>
-                              <div className="kg-chip-row">
-                                {it.sets.length === 0 && <span className="hint">nessuna serie</span>}
-                                {it.sets.map((s, i) => (
-                                  <span key={i} className="kg-chip">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
-                                ))}
-                                <span className="kg-chip kg-chip-accent">{round1(itemVolume(it))} kg tonn.</span>
-                              </div>
-                              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-                                <button className="btn btn-ghost" onClick={() => setEditingEx(exKey)}>Modifica</button>
-                                <DeleteButton onConfirm={() => deleteHistoryExercise(it.__workoutId, it.id)} small />
-                              </div>
-                            </>
-                          )}
-                          {exOpen && isEditing && (
-                            <>
-                              <div className="set-table">
-                                <div className="set-row set-row-head">
-                                  <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>TIME</span><span>Tonn.</span><span>Note</span><span></span>
-                                </div>
-                                {it.sets.map((s, idx) => (
-                                  <div className="set-row" key={idx}>
-                                    <span className="set-idx">{idx + 1}</span>
-                                    <input className="input input-sm" type="number" value={s.weight}
-                                      onChange={(e) => updateHistorySet(it.__workoutId, it.id, idx, "weight", e.target.value)} />
-                                    <input className="input input-sm" type="number" value={s.reps}
-                                      onChange={(e) => updateHistorySet(it.__workoutId, it.id, idx, "reps", e.target.value)} />
-                                    <input className="input input-sm" type="number" value={s.rir}
-                                      onChange={(e) => updateHistorySet(it.__workoutId, it.id, idx, "rir", e.target.value)} />
-                                    <select className="input input-sm" value={s.recupero}
-                                      onChange={(e) => updateHistorySet(it.__workoutId, it.id, idx, "recupero", e.target.value)}>
-                                      <option value="">—</option>
-                                      {RECUPERO_OPTIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-                                    </select>
-                                    <span className="tonn-cell">{round1(setVolume(s))}</span>
-                                    <input className="input input-sm" value={s.notes}
-                                      onChange={(e) => updateHistorySet(it.__workoutId, it.id, idx, "notes", e.target.value)} />
-                                    <button className="btn-icon" onClick={() => removeHistorySet(it.__workoutId, it.id, idx)}><X size={18} /></button>
-                                  </div>
-                                ))}
-                              </div>
-                              <div style={{ display: "flex", gap: 8, marginTop: 8, flexWrap: "wrap" }}>
-                                <button className="btn btn-ghost" disabled={it.sets.length >= 10}
-                                  onClick={() => addHistorySet(it.__workoutId, it.id)}>
-                                  <Plus size={18} /> Aggiungi serie
-                                </button>
-                                <button className="btn btn-primary" onClick={() => setEditingEx(null)}>Fatto</button>
-                              </div>
-                            </>
+                          {exOpen && (
+                            <div className="kg-chip-col">
+                              {it.sets.length === 0 && <span className="hint">nessuna serie</span>}
+                              {it.sets.map((s, i) => (
+                                <span key={i} className="kg-chip kg-chip-full">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
+                              ))}
+                              <span className="kg-chip kg-chip-full kg-chip-tonn-solo">{round1(itemVolume(it))} kg tonn.</span>
+                            </div>
                           )}
                         </div>
                       );
@@ -2934,6 +2890,9 @@ export default function App() {
         .dates-arrow-box{ display:flex; align-items:center; justify-content:center; width:38px; height:38px; border:1px solid var(--border-c); border-radius:8px; background:#FFFFFF; color:var(--text); transition:transform 0.15s ease; }
         .dates-arrow-box.open{ transform:rotate(180deg); }
         .kg-chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
+        .kg-chip-col{ display:flex; flex-direction:column; gap:8px; }
+        .kg-chip-full{ width:100%; box-sizing:border-box; text-align:center; }
+        .kg-chip-tonn-solo{ background:#1f6b3a; color:#ffffff; border-color:#1f6b3a; font-weight:700; }
         .last-time-block .kg-chip-row{ display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
         .kg-chip{ background:var(--surface); border:1px solid var(--border-c); color:var(--text); padding:6px 12px; border-radius:6px; font-size:26px; font-weight:700; white-space:nowrap; }
         .kg-chip-accent{ background:var(--accent-dim); border-color:var(--accent-dim); color:var(--accent); }
