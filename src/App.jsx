@@ -2892,7 +2892,7 @@ export default function App() {
         .kg-chip-row{ display:flex; flex-wrap:wrap; gap:8px; }
         .kg-chip-col{ display:flex; flex-direction:column; gap:8px; }
         .kg-chip-full{ width:100%; box-sizing:border-box; text-align:center; }
-        .kg-chip-tonn-solo{ background:#1f6b3a; color:#ffffff; border-color:#1f6b3a; font-weight:700; }
+        .kg-chip-tonn-solo{ background:#1f6b3a !important; color:#ffffff !important; border-color:#1f6b3a !important; font-weight:700; }
         .last-time-block .kg-chip-row{ display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
         .kg-chip{ background:var(--surface); border:1px solid var(--border-c); color:var(--text); padding:6px 12px; border-radius:6px; font-size:26px; font-weight:700; white-space:nowrap; }
         .kg-chip-accent{ background:var(--accent-dim); border-color:var(--accent-dim); color:var(--accent); }
