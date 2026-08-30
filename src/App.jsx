@@ -2558,7 +2558,7 @@ function NavIcon({ t, size }) {
       </span>
     );
   }
-  return <t.icon size={size} />;
+  return <t.icon size={size} color={t.key === "impostazioni" ? "#1a1a1a" : undefined} />;
 }
 
 export default function App() {
@@ -2656,7 +2656,7 @@ export default function App() {
         .gt-body{ display:flex; flex:1; min-height:0; }
         .gt-nav{ width:320px; border-right:1px solid var(--border-c); padding:14px 10px; flex-shrink:0; }
         .gt-nav-item{ display:flex; align-items:center; gap:10px; padding:11px 12px; border-radius:6px; cursor:pointer; color:var(--text-dim); font-size:30px; margin-bottom:2px; }
-        .nav-letter{ display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:var(--accent-dim); color:var(--accent); font-weight:700; flex-shrink:0; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; }
+        .nav-letter{ display:inline-flex; align-items:center; justify-content:center; border-radius:50%; background:var(--accent-dim); color:#1a1a1a; font-weight:700; flex-shrink:0; font-family:'Comfortaa','Segoe UI',Candara,Arial,sans-serif; }
         .gt-nav-item:hover{ background:var(--surface-2); }
         .gt-nav-item.active{ background:var(--accent-dim); color:var(--accent); }
         .gt-main{ flex:1; padding:20px; overflow-y:auto; overflow-x:hidden; min-width:0; }
