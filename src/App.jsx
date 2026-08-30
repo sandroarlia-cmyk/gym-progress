@@ -2215,7 +2215,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
       </div>
 
       <div className="chart-uniform-wrap">
-      <Section title="VOLUME SETTIMANALE PER MUSCOLO" right={
+      <Section title="VOLUME TONNELLAGGIO SETTIMANALE" right={
         <select className="input input-sm-w" value={muscle} onChange={(e) => setMuscle(e.target.value)}>
           {MUSCLE_GROUPS.map((m) => <option key={m} value={m}>{m}</option>)}
         </select>
