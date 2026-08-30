@@ -1380,6 +1380,9 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
       };
     }));
   }
+  function updateWorkoutDate(workoutId, newDate) {
+    setWorkouts(workouts.map((w) => (w.id === workoutId ? { ...w, date: newDate } : w)));
+  }
   function deleteEntireEntry(workoutId, exId) {
     const updated = workouts
       .map((w) => (w.id === workoutId ? { ...w, exercises: w.exercises.filter((it) => it.exerciseId !== exId) } : w))
@@ -1435,7 +1438,7 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
                 const totalReps = r.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
                 const kgMax = r.kgMax;
                 const ripAlKgMax = r.ripAlKgMax;
-                const key = exId + "-" + r.date + "-" + i;
+                const key = exId + "-" + r.workoutId;
                 const isOpen = !!expandedDates[key];
                 const isEditing = editingKey === key;
                 return (
@@ -1479,6 +1482,11 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
 
                         {isEditing && (
                           <div className="set-table log-edit-table">
+                            <div className="log-edit-date-field">
+                              <label className="label">Data allenamento</label>
+                              <input type="date" className="input input-sm" value={r.date}
+                                onChange={(e) => updateWorkoutDate(r.workoutId, e.target.value)} />
+                            </div>
                             <div className="set-row set-row-head">
                               <span>#</span><span>Kg</span><span>Rip</span><span>RIR</span><span>Note</span><span></span>
                             </div>
@@ -2977,6 +2985,8 @@ export default function App() {
         .log-edit-table .set-idx{ color:#ffffff; }
         .log-edit-table .input:not(.input-kg):not(.input-rip):not(.input-rir){ color:#1a1a1a !important; background:#ffffff !important; }
         .log-edit-table .set-row-head{ color:#ffffff; }
+        .log-edit-date-field{ margin-bottom: 12px; max-width:220px; }
+        .log-edit-date-field .label{ color:#ffffff; }
         .exercise-log-row-head .log-serie-box{ width:74px; }
         .record-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:14px; }
         .record-card{ background:var(--surface-2); border:1px solid var(--border-c); border-radius:8px; padding:13px 15px; }
