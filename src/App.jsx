@@ -2101,7 +2101,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 <CartesianGrid stroke="var(--border-c)" strokeDasharray="3 3" />
                 <XAxis dataKey="data" stroke="var(--text-dim)" fontSize={11} />
                 <YAxis yAxisId="left" stroke="var(--accent)" fontSize={11} />
-                <YAxis yAxisId="right" orientation="right" stroke="#c0392b" fontSize={11} />
+                <YAxis yAxisId="right" orientation="right" stroke="#c0392b" fontSize={11} className="tonn-yaxis" />
                 <Tooltip
                   active={pinnedForzaAnno ? true : undefined}
                   payload={pinnedForzaAnno ? (() => {
@@ -2123,7 +2123,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line yAxisId="left" type="monotone" dataKey="peso" stroke="var(--accent)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Peso max (kg)" />
-                <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Tonnellaggio (TONN.)" />
+                <Line yAxisId="right" type="monotone" dataKey="tonnMax" stroke="#c0392b" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 7 }} name="Tonnellaggio (TONN.)" className="tonn-line" />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -3092,7 +3092,9 @@ export default function App() {
           .chart-uniform-wrap .section-head > div{ min-width:0 !important; max-width:100% !important; flex-wrap:wrap !important; }
           .chart-uniform-wrap select.input-sm-w{ min-width:0 !important; max-width:100% !important; }
           .chart-uniform-wrap > div[style]{ height:260px !important; }
-          .chart-wide-mobile{ margin-left:-10px !important; margin-right:-10px !important; width:calc(100% + 20px) !important; }
+          .chart-wide-mobile{ margin-left:-16px !important; margin-right:-16px !important; width:calc(100% + 32px) !important; }
+          .chart-wide-mobile .tonn-line{ display:none; }
+          .chart-wide-mobile .tonn-yaxis{ display:none; }
           .chart-wide-mobile .card{ padding-left:6px !important; padding-right:6px !important; border-radius:6px !important; }
           .dropdown-item{ font-size:15px; padding:9px 12px; }
           .date-it-picker .input{ font-size:14px; padding:8px 4px; }
