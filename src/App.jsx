@@ -3098,7 +3098,7 @@ export default function App() {
             --bg:#ffffff; --surface:#ffffff; --surface-2:#f2f2f2; --border-c:#dddddd;
             --text:#1a1a1a; --text-dim:#666666;
           }
-          .chart-uniform-wrap .card{ background:#ffffff !important; }
+          .chart-uniform-wrap .card{ background:#ffffff !important; border-color:#ffffff !important; }
           .chart-uniform-wrap .pinned-tooltip-box,
           .chart-uniform-wrap .pinned-tooltip-box *{ color:#1a1a1a !important; }
           .chart-wide-mobile{ margin-left:0; margin-right:0; width:100%; }
