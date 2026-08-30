@@ -2626,7 +2626,7 @@ export default function App() {
 
   const tabs = [
     { key: "progressi", label: "Progressi", icon: TrendingUp },
-    { key: "avanzamenti", label: "Avanzamenti", icon: BarChart2 },
+    { key: "avanzamenti", label: "Peso Max", icon: BarChart2, letter: "P" },
     { key: "muscoli", label: "Muscoli", icon: Dumbbell, letter: "M" },
     { key: "split", label: "Split settimanali", icon: CalendarDays },
     { key: "allenamenti", label: "Allenamenti", icon: Dumbbell },
