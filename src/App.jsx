@@ -2608,9 +2608,9 @@ export default function App() {
     { key: "progressi", label: "Progressi", icon: TrendingUp },
     { key: "avanzamenti", label: "Peso Max", icon: BarChart2, letter: "P" },
     { key: "muscoli", label: "Muscoli", icon: Dumbbell, letter: "M" },
-    { key: "split", label: "Split settimanali", icon: CalendarDays },
-    { key: "allenamenti", label: "Allenamenti", icon: Dumbbell },
     { key: "cronologia", label: "Cronologia", icon: Search },
+    { key: "split", label: "Split settimanali", icon: CalendarDays },
+    { key: "allenamenti", label: "Settimana", icon: Dumbbell, letter: "S" },
     { key: "impostazioni", label: "Impostazioni", icon: Settings }
   ];
 
