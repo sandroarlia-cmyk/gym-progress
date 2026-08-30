@@ -3216,6 +3216,7 @@ export default function App() {
           .muscle-history-body{ padding:8px 10px; }
           .history-ex{ font-size:12.5px; }
           .kg-chip{ font-size:12.5px; padding:5px 9px; }
+          .kg-chip-full{ font-size:15.5px; }
           .record-grid{ grid-template-columns:1fr; }
           .record-line{ font-size:13px; }
           .grid4{ grid-template-columns:1fr 1fr; }
