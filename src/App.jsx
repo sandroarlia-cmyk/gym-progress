@@ -1592,6 +1592,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
   const weekStartISO = isoOf(weekStart), weekEndISO = isoOf(weekEnd);
 
   const [expanded, setExpanded] = useState({});
+  const [selectedMuscle, setSelectedMuscle] = useState(null);
   const [historyQuery, setHistoryQuery] = useState("");
   const [historyFilters, setHistoryFilters] = useState({});
   const ANNI_CRONOLOGIA = Array.from({ length: 6 }, (_, i) => Number(todayISO().slice(0, 4)) - 4 + i);
@@ -1757,8 +1758,22 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
         </div>
       }>
         {filteredEntries.length === 0 && <p className="muted">Nessun allenamento trovato.</p>}
+        {!selectedMuscle && filteredEntries.length > 0 && (
+          <div className="muscoli-grid">
+            {groupedByMuscle.map(({ muscle }) => (
+              <div key={muscle} className="muscoli-tile" style={{ background: MUSCLE_DARK_COLORS[muscle] || MUSCLE_DARK_COLORS.Altro }}
+                onClick={() => setSelectedMuscle(muscle)}>
+                {muscle.toUpperCase()}
+              </div>
+            ))}
+          </div>
+        )}
+        {selectedMuscle && (
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-          {groupedByMuscle.map(({ muscle, entries }) => {
+          <button className="btn btn-ghost" style={{ width: "fit-content" }} onClick={() => setSelectedMuscle(null)}>
+            <ChevronLeft size={20} /> Torna ai muscoli
+          </button>
+          {groupedByMuscle.filter(({ muscle }) => muscle === selectedMuscle).map(({ muscle, entries }) => {
             const filtro = getHistoryFilter(muscle);
             const entriesDelMese = entries.filter((entry) => {
               const entryMese = Number(entry.date.slice(5, 7));
@@ -1877,6 +1892,7 @@ function CronologiaTab({ workouts, exercises, setWorkouts }) {
             );
           })}
         </div>
+        )}
       </Section>
       </div>
     </div>
