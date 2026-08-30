@@ -2284,6 +2284,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
       </Section>
       </div>
 
+      <div className="chart-uniform-wrap">
       <Section title="Peso corporeo">
         {bodyData.length === 0 ? <p className="muted">Aggiungi il tuo peso in Impostazioni per vedere il grafico.</p> : (
           <div className="chart-relative-wrap" style={{ height: 240 }}>
@@ -2310,6 +2311,7 @@ function ProgressiTab({ workouts, exercises, bodyLogs }) {
           </div>
         )}
       </Section>
+      </div>
     </div>
   );
 }
@@ -3092,6 +3094,11 @@ export default function App() {
           .chart-uniform-wrap .section-head > div{ min-width:0 !important; max-width:100% !important; flex-wrap:wrap !important; }
           .chart-uniform-wrap select.input-sm-w{ min-width:0 !important; max-width:100% !important; }
           .chart-uniform-wrap > div[style]{ height:260px !important; }
+          .chart-uniform-wrap{
+            --bg:#ffffff; --surface:#ffffff; --surface-2:#f2f2f2; --border-c:#dddddd;
+            --text:#1a1a1a; --text-dim:#666666;
+          }
+          .chart-uniform-wrap .card{ background:#ffffff !important; }
           .chart-wide-mobile{ margin-left:-16px !important; margin-right:-16px !important; width:calc(100% + 32px) !important; }
           .chart-wide-mobile .tonn-line{ display:none; }
           .chart-wide-mobile .tonn-yaxis{ display:none; }
