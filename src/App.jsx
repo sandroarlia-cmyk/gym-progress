@@ -1224,6 +1224,7 @@ function getSunday(dateStr) {
 
 function AllenamentiTab({ workouts, exercises }) {
   const [popup, setPopup] = useState(null); // { dateIso, muscle }
+  const [openPopupItem, setOpenPopupItem] = useState(null);
 
   const weeks = useMemo(() => {
     const byWeek = {};
@@ -1260,7 +1261,7 @@ function AllenamentiTab({ workouts, exercises }) {
         const repsAtMax = it.sets
           .filter((s) => (Number(s.weight) || 0) === kgMax)
           .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
-        result.push({ name: ex.name, kgMax, repsAtMax, sets: it.sets.length });
+        result.push({ name: ex.name, kgMax, repsAtMax, setsCount: it.sets.length, sets: it.sets });
       });
     });
     return result;
@@ -1283,7 +1284,7 @@ function AllenamentiTab({ workouts, exercises }) {
                 <div className="promemoria-list">
                   {d.muscles.map((m) => (
                     <div key={m} className="promemoria-muscle-box" style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro, cursor: "pointer" }}
-                      onClick={() => setPopup({ dateIso: d.dateIso, muscle: m })}>
+                      onClick={() => { setPopup({ dateIso: d.dateIso, muscle: m }); setOpenPopupItem(null); }}>
                       {m.toUpperCase()}
                     </div>
                   ))}
@@ -1304,12 +1305,26 @@ function AllenamentiTab({ workouts, exercises }) {
             </div>
             <div className="settimana-popup-list">
               {popupExercises.map((e, i) => (
-                <div key={i} className="settimana-popup-item">
+                <div key={i} className="settimana-popup-item" onClick={() => setOpenPopupItem(openPopupItem === i ? null : i)} style={{ cursor: "pointer" }}>
                   <div className="settimana-popup-item-name">{e.name}</div>
                   <div className="settimana-popup-item-stats">
                     <span className="settimana-popup-badge settimana-popup-badge-kg">{e.kgMax} kg x {e.repsAtMax}</span>
-                    <span className="settimana-popup-badge settimana-popup-badge-serie">{e.sets} serie</span>
+                    <span className="settimana-popup-badge settimana-popup-badge-serie">{e.setsCount} serie</span>
                   </div>
+                  {openPopupItem === i && (
+                    <div className="nuovo-allenamento-dark">
+                      <div className="settimana-popup-sets">
+                        {e.sets.map((s, idx) => (
+                          <div key={idx} className="settimana-popup-set-row" onClick={(ev) => ev.stopPropagation()}>
+                            <div className="log-kg-value-box">{s.weight || 0} kg</div>
+                            <div className="log-total-box">{s.reps || 0}</div>
+                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
+                            <div className="log-note-box"><span>{s.notes || ""}</span></div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
               {popupExercises.length === 0 && <p className="muted">Nessun esercizio trovato.</p>}
@@ -2830,6 +2845,8 @@ export default function App() {
         .settimana-popup-badge{ padding:6px 12px; border-radius:6px; font-weight:700; font-size:14px; }
         .settimana-popup-badge-kg{ background:#c0392b; color:#ffffff; }
         .settimana-popup-badge-serie{ background:#aef000; color:#000000; }
+        .settimana-popup-sets{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
+        .settimana-popup-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
