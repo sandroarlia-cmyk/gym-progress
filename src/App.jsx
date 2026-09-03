@@ -2854,15 +2854,15 @@ export default function App() {
         .settimana-popup-badge-kg{ background:#c0392b; color:#ffffff; }
         .settimana-popup-badge-serie{ background:#aef000; color:#000000; }
         .settimana-popup-sets{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-        .settimana-popup-set-row{ display:flex; gap:6px; align-items:center; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px; }
-        .settimana-popup-idx{ flex-shrink:0; width:16px; font-size:12px; color:#ffffff; text-align:center; }
-        .settimana-popup-mini-box{ flex-shrink:0; min-width:50px; white-space:nowrap; text-align:center; padding:5px 8px; border-radius:5px; font-size:12px; font-weight:700; }
-        .settimana-popup-mini-note{ min-width:70px; max-width:120px; overflow-x:auto; }
+        .settimana-popup-set-row{ display:flex; gap:8px; align-items:center; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+        .settimana-popup-idx{ flex-shrink:0; width:20px; font-size:15px; color:#ffffff; text-align:center; }
+        .settimana-popup-mini-box{ flex-shrink:0; width:80px; box-sizing:border-box; white-space:nowrap; text-align:center; padding:9px 8px; border-radius:6px; font-size:15px; font-weight:700; }
+        .settimana-popup-mini-note{ width:130px; }
         .settimana-popup-mini-kg{ background:#1f6b3a; color:#ffffff; }
         .settimana-popup-mini-rip{ background:#aef000; color:#000000; }
         .settimana-popup-mini-rir{ background:#ffffff; color:#1a1a1a; }
         .settimana-popup-mini-note{ background:#ffffff; color:#1a1a1a; }
-        .settimana-popup-set-titles .settimana-popup-mini-box{ background:transparent !important; color:#ffffff !important; font-size:11px; }
+        .settimana-popup-set-titles .settimana-popup-mini-box{ background:transparent !important; color:#ffffff !important; font-size:13px; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
