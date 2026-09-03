@@ -1223,6 +1223,8 @@ function getSunday(dateStr) {
 }
 
 function AllenamentiTab({ workouts, exercises }) {
+  const [popup, setPopup] = useState(null); // { dateIso, muscle }
+
   const weeks = useMemo(() => {
     const byWeek = {};
     workouts.forEach((w) => {
@@ -1247,6 +1249,23 @@ function AllenamentiTab({ workouts, exercises }) {
       });
   }, [workouts, exercises]);
 
+  const popupExercises = useMemo(() => {
+    if (!popup) return [];
+    const result = [];
+    workouts.filter((w) => w.date === popup.dateIso).forEach((w) => {
+      w.exercises.forEach((it) => {
+        const ex = exercises.find((e) => e.id === it.exerciseId);
+        if (!ex || ex.muscle !== popup.muscle) return;
+        const kgMax = it.sets.length ? Math.max(...it.sets.map((s) => Number(s.weight) || 0)) : 0;
+        const repsAtMax = it.sets
+          .filter((s) => (Number(s.weight) || 0) === kgMax)
+          .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
+        result.push({ name: ex.name, kgMax, repsAtMax, sets: it.sets.length });
+      });
+    });
+    return result;
+  }, [popup, workouts, exercises]);
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
       <h2 className="font-display promemoria-title" style={{ marginBottom: 0 }}>PROMEMORIA ALLENAMENTI</h2>
@@ -1263,7 +1282,8 @@ function AllenamentiTab({ workouts, exercises }) {
                 <div className="promemoria-col-date">{formatDateShort(d.dateIso)}</div>
                 <div className="promemoria-list">
                   {d.muscles.map((m) => (
-                    <div key={m} className="promemoria-muscle-box" style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro }}>
+                    <div key={m} className="promemoria-muscle-box" style={{ background: MUSCLE_DARK_COLORS[m] || MUSCLE_DARK_COLORS.Altro, cursor: "pointer" }}
+                      onClick={() => setPopup({ dateIso: d.dateIso, muscle: m })}>
                       {m.toUpperCase()}
                     </div>
                   ))}
@@ -1274,6 +1294,29 @@ function AllenamentiTab({ workouts, exercises }) {
           </div>
         </div>
       ))}
+
+      {popup && (
+        <div className="settimana-popup-overlay" onClick={() => setPopup(null)}>
+          <div className="settimana-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="settimana-popup-head">
+              <span className="font-display">{popup.muscle.toUpperCase()} — {formatDateShort(popup.dateIso)}</span>
+              <button className="btn-icon" onClick={() => setPopup(null)}><X size={22} /></button>
+            </div>
+            <div className="settimana-popup-list">
+              {popupExercises.map((e, i) => (
+                <div key={i} className="settimana-popup-item">
+                  <div className="settimana-popup-item-name">{e.name}</div>
+                  <div className="settimana-popup-item-stats">
+                    <span className="settimana-popup-badge settimana-popup-badge-kg">{e.kgMax} kg x {e.repsAtMax}</span>
+                    <span className="settimana-popup-badge settimana-popup-badge-serie">{e.sets} serie</span>
+                  </div>
+                </div>
+              ))}
+              {popupExercises.length === 0 && <p className="muted">Nessun esercizio trovato.</p>}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -2777,6 +2820,16 @@ export default function App() {
         .promemoria-list{ display:flex; flex-direction:column; gap:6px; flex:1; }
         .promemoria-muscle-box{ border-radius:6px; padding:7px 8px; font-size:12px; font-weight:700; color:#ffffff; text-align:center; }
         .promemoria-empty{ text-align:center; color:var(--text-dim); font-size:13px; opacity:0.5; }
+        .settimana-popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
+        .settimana-popup{ background:var(--surface); border-radius:12px; padding:20px; max-width:420px; width:100%; max-height:80vh; overflow-y:auto; }
+        .settimana-popup-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; font-size:18px; }
+        .settimana-popup-list{ display:flex; flex-direction:column; gap:12px; }
+        .settimana-popup-item{ background:var(--surface-2); border-radius:8px; padding:12px 14px; }
+        .settimana-popup-item-name{ font-weight:700; margin-bottom:8px; }
+        .settimana-popup-item-stats{ display:flex; gap:10px; flex-wrap:wrap; }
+        .settimana-popup-badge{ padding:6px 12px; border-radius:6px; font-weight:700; font-size:14px; }
+        .settimana-popup-badge-kg{ background:#c0392b; color:#ffffff; }
+        .settimana-popup-badge-serie{ background:#aef000; color:#000000; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
