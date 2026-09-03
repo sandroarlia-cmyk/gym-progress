@@ -1314,12 +1314,20 @@ function AllenamentiTab({ workouts, exercises }) {
                   {openPopupItem === i && (
                     <div className="nuovo-allenamento-dark">
                       <div className="settimana-popup-sets">
+                        <div className="settimana-popup-set-row settimana-popup-set-titles" onClick={(ev) => ev.stopPropagation()}>
+                          <span className="settimana-popup-idx"></span>
+                          <div className="settimana-popup-mini-box settimana-popup-mini-kg">KG</div>
+                          <div className="settimana-popup-mini-box settimana-popup-mini-rip">RIP</div>
+                          <div className="settimana-popup-mini-box settimana-popup-mini-rir">RIR</div>
+                          <div className="settimana-popup-mini-box settimana-popup-mini-note">NOTE</div>
+                        </div>
                         {e.sets.map((s, idx) => (
                           <div key={idx} className="settimana-popup-set-row" onClick={(ev) => ev.stopPropagation()}>
-                            <div className="log-kg-value-box">{s.weight || 0} kg</div>
-                            <div className="log-total-box">{s.reps || 0}</div>
-                            <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
-                            <div className="log-note-box"><span>{s.notes || ""}</span></div>
+                            <span className="settimana-popup-idx">{idx + 1}</span>
+                            <div className="settimana-popup-mini-box settimana-popup-mini-kg">{s.weight || 0} kg</div>
+                            <div className="settimana-popup-mini-box settimana-popup-mini-rip">{s.reps || 0}</div>
+                            <div className="settimana-popup-mini-box settimana-popup-mini-rir">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
+                            <div className="settimana-popup-mini-box settimana-popup-mini-note">{s.notes || ""}</div>
                           </div>
                         ))}
                       </div>
@@ -2846,7 +2854,15 @@ export default function App() {
         .settimana-popup-badge-kg{ background:#c0392b; color:#ffffff; }
         .settimana-popup-badge-serie{ background:#aef000; color:#000000; }
         .settimana-popup-sets{ display:flex; flex-direction:column; gap:8px; margin-top:12px; }
-        .settimana-popup-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
+        .settimana-popup-set-row{ display:flex; gap:6px; align-items:center; flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px; }
+        .settimana-popup-idx{ flex-shrink:0; width:16px; font-size:12px; color:#ffffff; text-align:center; }
+        .settimana-popup-mini-box{ flex-shrink:0; min-width:50px; white-space:nowrap; text-align:center; padding:5px 8px; border-radius:5px; font-size:12px; font-weight:700; }
+        .settimana-popup-mini-note{ min-width:70px; max-width:120px; overflow-x:auto; }
+        .settimana-popup-mini-kg{ background:#1f6b3a; color:#ffffff; }
+        .settimana-popup-mini-rip{ background:#aef000; color:#000000; }
+        .settimana-popup-mini-rir{ background:#ffffff; color:#1a1a1a; }
+        .settimana-popup-mini-note{ background:#ffffff; color:#1a1a1a; }
+        .settimana-popup-set-titles .settimana-popup-mini-box{ background:transparent !important; color:#ffffff !important; font-size:11px; }
         .bmi-legend{ display:flex; flex-direction:column; gap:2px; }
         .bmi-legend-row{ display:grid; grid-template-columns:130px 1fr; gap:12px; padding:9px 12px; border-radius:6px; align-items:center; }
         .bmi-legend-row:nth-child(odd){ background:var(--surface-2); }
