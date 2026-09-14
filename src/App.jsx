@@ -519,7 +519,7 @@ function CompTable({ prevVol, prevReps, vol, totalReps, diffVol, diffReps, mobil
   );
 }
 
-function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeExercise, hideMuscleBadge, workouts, onOpenExercise }) {
+function ExerciseEditor({ item, ex, last, secondLast, addSet, updateSet, removeSet, removeExercise, hideMuscleBadge, workouts, onOpenExercise }) {
   const [datesOpen, setDatesOpen] = useState(false);
   const vol = itemVolume(item);
   const totalReps = item.sets.reduce((a, s) => a + (Number(s.reps) || 0), 0);
@@ -551,6 +551,25 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
                   ))}
                 </div>
               )}
+            </div>
+          )}
+          {secondLast && (
+            <div className="last-time-block">
+              <div className="hint">Volta precedente ({formatDateShort(secondLast.date)}):</div>
+              <div className="ultima-volta-table">
+                <div className="uv-row uv-row-head">
+                  <span>S</span><span>KG</span><span>RIP</span><span>RIR</span><span>NOTE</span>
+                </div>
+                {secondLast.sets.map((s, i) => (
+                  <div className="uv-row" key={i}>
+                    <span className="uv-idx">{i + 1}</span>
+                    <span className="uv-kg-box">{s.weight || 0}</span>
+                    <span className="uv-rip-box">{s.reps || 0}</span>
+                    <span className="uv-rir">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</span>
+                    <span className="uv-note">{s.notes || ""}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
           {last ? (
@@ -757,6 +776,15 @@ function NuovoAllenamento({ exercises, setExercises, workouts, setWorkouts }) {
     if (!it || !it.sets.length) return null;
     return { date: past[0].date, sets: it.sets };
   }
+  function secondLastExecution(exerciseId) {
+    const past = workouts
+      .filter((w) => w.date <= date && w.exercises.some((it) => it.exerciseId === exerciseId))
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
+    if (past.length < 2) return null;
+    const it = past[1].exercises.find((it) => it.exerciseId === exerciseId);
+    if (!it || !it.sets.length) return null;
+    return { date: past[1].date, sets: it.sets };
+  }
 
   const totalVolume = items.reduce((a, it) => a + itemVolume(it), 0);
 
@@ -920,6 +948,15 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
     if (!it || !it.sets.length) return null;
     return { date: past[0].date, sets: it.sets };
   }
+  function secondLastExecution(exerciseId) {
+    const past = workouts
+      .filter((w) => w.date <= date && w.exercises.some((it) => it.exerciseId === exerciseId))
+      .sort((a, b) => (a.date < b.date ? 1 : -1));
+    if (past.length < 2) return null;
+    const it = past[1].exercises.find((it) => it.exerciseId === exerciseId);
+    if (!it || !it.sets.length) return null;
+    return { date: past[1].date, sets: it.sets };
+  }
 
   function save() {
     if (!items.length) return;
@@ -957,7 +994,7 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
             {addedList.map((ex) => {
               const item = items.find((it) => it.exerciseId === ex.id);
               return (
-                <ExerciseEditor key={ex.id} item={item} ex={ex} last={lastExecution(ex.id)} workouts={workouts}
+                <ExerciseEditor key={ex.id} item={item} ex={ex} last={lastExecution(ex.id)} secondLast={secondLastExecution(ex.id)} workouts={workouts}
                   onOpenExercise={openExerciseCard}
                   addSet={addSet} updateSet={updateSet} removeSet={removeSet} removeExercise={removeExercise} hideMuscleBadge />
               );
