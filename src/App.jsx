@@ -556,10 +556,21 @@ function ExerciseEditor({ item, ex, last, addSet, updateSet, removeSet, removeEx
           {last ? (
             <div className="last-time-block">
               <div className="hint">Ultima volta ({formatDateShort(last.date)}):</div>
-              <div className="kg-chip-row">
+              <div className="ultima-volta-table">
+                <div className="uv-row uv-row-head">
+                  <span>S</span><span>KG</span><span>RIP</span><span>RIR</span><span>NOTE</span>
+                </div>
                 {last.sets.map((s, i) => (
-                  <span key={i} className="kg-chip">{s.weight || 0} kg x {s.reps || 0}{s.rir !== undefined && s.rir !== "" ? ` (RIR ${s.rir})` : ""}</span>
+                  <div className="uv-row" key={i}>
+                    <span className="uv-idx">{i + 1}</span>
+                    <span className="uv-kg-box">{s.weight || 0}</span>
+                    <span className="uv-rip-box">{s.reps || 0}</span>
+                    <span className="uv-rir">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</span>
+                    <span className="uv-note">{s.notes || ""}</span>
+                  </div>
                 ))}
+              </div>
+              <div className="kg-chip-row" style={{ marginTop: 10 }}>
                 <span className="kg-chip kg-chip-accent chip-tonn">
                   {prevVol} kg tonn.
                 </span>
@@ -2977,6 +2988,14 @@ export default function App() {
         .history-card-dark .btn-icon svg{ color:#ffffff !important; stroke:#ffffff !important; }
         .vertical-total{ background:var(--surface-2); color:var(--text); font-weight:700; padding:8px 12px; border-radius:6px; margin-top:2px; display:inline-block; align-self:flex-start; }
         .last-time-block{ display:flex; flex-direction:column; gap:6px; margin-top:2px; }
+        .ultima-volta-table{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+        .uv-row{ display:grid; grid-template-columns:24px 64px 56px 42px 1fr; gap:10px; align-items:center; }
+        .uv-row-head{ font-weight:700; color:var(--text-dim); font-size:14px; text-transform:uppercase; }
+        .uv-idx{ color:var(--text); text-align:center; font-weight:700; font-size:20px; }
+        .uv-kg-box{ background:#c0392b; color:#ffffff; font-weight:700; text-align:center; padding:8px 6px; border-radius:6px; font-size:20px; }
+        .uv-rip-box{ background:#aef000; color:#ffffff; font-weight:700; text-align:center; padding:8px 6px; border-radius:6px; font-size:20px; }
+        .uv-rir{ color:var(--text); text-align:center; font-weight:700; font-size:20px; }
+        .uv-note{ color:var(--text); font-size:14px; font-weight:700; text-transform:uppercase; }
         .comp-table-full-row{ margin-top:14px; padding-top:10px; border-top:1px solid var(--border-c); }
         .dates-section{ margin-bottom:22px; }
         .dates-toggle{ display:flex; align-items:center; gap:10px; cursor:pointer; width:fit-content; }
