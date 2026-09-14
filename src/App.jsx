@@ -555,7 +555,7 @@ function ExerciseEditor({ item, ex, last, secondLast, addSet, updateSet, removeS
           )}
           {secondLast && (
             <div className="last-time-block">
-              <div className="hint">Volta precedente ({formatDateShort(secondLast.date)}):</div>
+              <div className="hint last-time-label">Volta precedente ({formatDateShort(secondLast.date)}):</div>
               <div className="ultima-volta-table">
                 <div className="uv-row uv-row-head">
                   <span>S</span><span>KG</span><span>RIP</span><span>RIR</span><span>NOTE</span>
@@ -574,7 +574,7 @@ function ExerciseEditor({ item, ex, last, secondLast, addSet, updateSet, removeS
           )}
           {last ? (
             <div className="last-time-block">
-              <div className="hint">Ultima volta ({formatDateShort(last.date)}):</div>
+              <div className="hint last-time-label">Ultima volta ({formatDateShort(last.date)}):</div>
               <div className="ultima-volta-table">
                 <div className="uv-row uv-row-head">
                   <span>S</span><span>KG</span><span>RIP</span><span>RIR</span><span>NOTE</span>
@@ -3342,6 +3342,7 @@ export default function App() {
           .input{ font-size:16px; padding:8px 9px; }
           .input-sm{ padding:6px 4px; }
           .hint{ font-size:12.5px; }
+          .last-time-label{ font-size:15.5px; }
           .muted{ font-size:13px; }
           .btn{ font-size:14px; padding:8px 12px; }
           .badge{ font-size:11.5px; padding:2px 7px; }
