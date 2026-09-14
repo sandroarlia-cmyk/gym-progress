@@ -573,7 +573,7 @@ function ExerciseEditor({ item, ex, last, secondLast, addSet, updateSet, removeS
             </div>
           )}
           {last ? (
-            <div className="last-time-block">
+            <div className="last-time-block" style={secondLast ? { marginTop: 22 } : undefined}>
               <div className="hint last-time-label">Ultima volta ({formatDateShort(last.date)}):</div>
               <div className="ultima-volta-table">
                 <div className="uv-row uv-row-head">
