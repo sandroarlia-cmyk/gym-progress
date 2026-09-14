@@ -2993,7 +2993,7 @@ export default function App() {
         .uv-row-head{ font-weight:700; color:var(--text-dim); font-size:14px; text-transform:uppercase; }
         .uv-idx{ color:var(--text); text-align:center; font-weight:700; font-size:20px; }
         .uv-kg-box{ background:#c0392b; color:#ffffff; font-weight:700; text-align:center; padding:8px 6px; border-radius:6px; font-size:20px; }
-        .uv-rip-box{ background:#aef000; color:#ffffff; font-weight:700; text-align:center; padding:8px 6px; border-radius:6px; font-size:20px; }
+        .uv-rip-box{ background:#aef000; color:#000000; font-weight:700; text-align:center; padding:8px 6px; border-radius:6px; font-size:20px; }
         .uv-rir{ color:var(--text); text-align:center; font-weight:700; font-size:20px; }
         .uv-note{ color:var(--text); font-size:14px; font-weight:700; text-transform:uppercase; }
         .comp-table-full-row{ margin-top:14px; padding-top:10px; border-top:1px solid var(--border-c); }
