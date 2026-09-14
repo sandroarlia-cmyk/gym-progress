@@ -1226,6 +1226,12 @@ function AllenamentiTab({ workouts, exercises }) {
   const [popup, setPopup] = useState(null); // { dateIso, muscle }
   const [openPopupItem, setOpenPopupItem] = useState(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const mainEl = document.querySelector(".gt-main");
+    if (mainEl) mainEl.scrollTop = 0;
+  }, []);
+
   const weeks = useMemo(() => {
     const byWeek = {};
     workouts.forEach((w) => {
@@ -1237,6 +1243,8 @@ function AllenamentiTab({ workouts, exercises }) {
         if (ex) byWeek[monday][w.date].add(ex.muscle);
       });
     });
+    const currentMonday = isoOf(getMonday(todayISO()));
+    if (!byWeek[currentMonday]) byWeek[currentMonday] = {};
     return Object.keys(byWeek)
       .sort((a, b) => (a < b ? 1 : -1))
       .map((monday) => {
