@@ -3422,8 +3422,8 @@ export default function App() {
           {tab === "muscoli" && <MuscoliTab onSelectMuscle={(m) => setTab("m-" + m)} />}
           {MUSCLE_NAV.map((m) => (
             <div key={m.muscle} style={{ display: tab === "m-" + m.muscle ? "flex" : "none", flexDirection: "column", gap: 16 }}>
-              <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
               <MuscleEntryPanel muscle={m.muscle} exercises={exercises} setExercises={setExercises} workouts={workouts} setWorkouts={setWorkouts} />
+              <MuscleLogTab muscle={m.muscle} workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />
             </div>
           ))}
           {tab === "cronologia" && <CronologiaTab workouts={workouts} exercises={exercises} setWorkouts={setWorkouts} />}
