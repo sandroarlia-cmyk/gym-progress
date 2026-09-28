@@ -8,7 +8,7 @@ import {
   CartesianGrid, Tooltip, Legend
 } from "recharts";
 import * as XLSX from "xlsx";
-import { loadGymData, saveField, getRemoteWorkoutsCount } from "./supabaseClient";
+import { loadGymData, saveField, getRemoteWorkoutIds } from "./supabaseClient";
 
 const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome"];
 const GROUP_ORDER = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics"];
@@ -2701,7 +2701,7 @@ export default function App() {
   const [workouts, setWorkouts] = useState([]);
   const [bodyLogs, setBodyLogs] = useState([]);
   const [staleWarning, setStaleWarning] = useState(false);
-  const knownWorkoutsCount = useRef(0);
+  const knownWorkoutIds = useRef(new Set());
 
   useEffect(() => {
     (async () => {
@@ -2716,7 +2716,7 @@ export default function App() {
       setSplits(data.splits || []);
       setWorkouts(data.workouts || []);
       setBodyLogs(data.body_logs || []);
-      knownWorkoutsCount.current = (data.workouts || []).length;
+      knownWorkoutIds.current = new Set((data.workouts || []).map((w) => w.id));
       setLoaded(true);
     })();
   }, []);
@@ -2726,12 +2726,16 @@ export default function App() {
   useEffect(() => {
     if (!loaded || loadFailed) return;
     (async () => {
-      const remoteCount = await getRemoteWorkoutsCount();
-      if (remoteCount !== null && remoteCount > knownWorkoutsCount.current && remoteCount > workouts.length) {
+      const remoteIds = await getRemoteWorkoutIds();
+      const localIds = new Set(workouts.map((w) => w.id));
+      const missing = remoteIds
+        ? remoteIds.filter((id) => !localIds.has(id) && !knownWorkoutIds.current.has(id))
+        : [];
+      if (missing.length > 0) {
         setStaleWarning(true);
         return;
       }
-      knownWorkoutsCount.current = workouts.length;
+      knownWorkoutIds.current = localIds;
       saveField("workouts", workouts);
     })();
   }, [workouts, loaded, loadFailed]);
