@@ -2701,6 +2701,7 @@ export default function App() {
   const [workouts, setWorkouts] = useState([]);
   const [bodyLogs, setBodyLogs] = useState([]);
   const [staleWarning, setStaleWarning] = useState(false);
+  const [debugInfo, setDebugInfo] = useState(null);
   const knownWorkoutIds = useRef(new Set());
 
   useEffect(() => {
@@ -2731,6 +2732,13 @@ export default function App() {
       const missing = remoteIds
         ? remoteIds.filter((id) => !localIds.has(id) && !knownWorkoutIds.current.has(id))
         : [];
+      setDebugInfo({
+        remoteCount: remoteIds ? remoteIds.length : "ERRORE",
+        localCount: localIds.size,
+        knownCount: knownWorkoutIds.current.size,
+        missing: missing.length,
+        time: new Date().toLocaleTimeString("it-IT")
+      });
       if (missing.length > 0) {
         setStaleWarning(true);
         return;
@@ -3442,6 +3450,22 @@ export default function App() {
           >
             Ricarica la pagina ora
           </button>
+        </div>
+      )}
+
+      {debugInfo && (
+        <div style={{
+          position: "fixed", bottom: 10, right: 10, zIndex: 998, background: "#000000", color: "#aef000",
+          padding: "10px 14px", borderRadius: 8, fontSize: 12, fontFamily: "monospace", lineHeight: 1.6,
+          maxWidth: 220, textTransform: "none"
+        }}>
+          <div>controllo ore {debugInfo.time}</div>
+          <div>database: {debugInfo.remoteCount}</div>
+          <div>questa scheda: {debugInfo.localCount}</div>
+          <div>conosciuti: {debugInfo.knownCount}</div>
+          <div style={{ color: debugInfo.missing > 0 ? "#c0392b" : "#aef000", fontWeight: 700 }}>
+            mancanti: {debugInfo.missing}
+          </div>
         </div>
       )}
 
