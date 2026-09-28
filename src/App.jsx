@@ -8,7 +8,7 @@ import {
   CartesianGrid, Tooltip, Legend
 } from "recharts";
 import * as XLSX from "xlsx";
-import { loadGymData, saveField } from "./supabaseClient";
+import { loadGymData, saveField, getRemoteWorkoutsCount } from "./supabaseClient";
 
 const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome"];
 const GROUP_ORDER = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics"];
@@ -2700,6 +2700,8 @@ export default function App() {
   const [splits, setSplits] = useState([]);
   const [workouts, setWorkouts] = useState([]);
   const [bodyLogs, setBodyLogs] = useState([]);
+  const [staleWarning, setStaleWarning] = useState(false);
+  const knownWorkoutsCount = useRef(0);
 
   useEffect(() => {
     (async () => {
@@ -2714,13 +2716,25 @@ export default function App() {
       setSplits(data.splits || []);
       setWorkouts(data.workouts || []);
       setBodyLogs(data.body_logs || []);
+      knownWorkoutsCount.current = (data.workouts || []).length;
       setLoaded(true);
     })();
   }, []);
 
   useEffect(() => { if (loaded && !loadFailed) saveField("exercises", exercises); }, [exercises, loaded, loadFailed]);
   useEffect(() => { if (loaded && !loadFailed) saveField("splits", splits); }, [splits, loaded, loadFailed]);
-  useEffect(() => { if (loaded && !loadFailed) saveField("workouts", workouts); }, [workouts, loaded, loadFailed]);
+  useEffect(() => {
+    if (!loaded || loadFailed) return;
+    (async () => {
+      const remoteCount = await getRemoteWorkoutsCount();
+      if (remoteCount !== null && remoteCount > knownWorkoutsCount.current && remoteCount > workouts.length) {
+        setStaleWarning(true);
+        return;
+      }
+      knownWorkoutsCount.current = workouts.length;
+      saveField("workouts", workouts);
+    })();
+  }, [workouts, loaded, loadFailed]);
   useEffect(() => { if (loaded && !loadFailed) saveField("body_logs", bodyLogs); }, [bodyLogs, loaded, loadFailed]);
 
   const MUSCLE_NAV = [
@@ -3411,6 +3425,21 @@ export default function App() {
         }
       `}</style>
 
+      {staleWarning && (
+        <div style={{
+          position: "sticky", top: 0, zIndex: 999, background: "#c0392b", color: "#ffffff",
+          padding: "14px 18px", textAlign: "center", fontWeight: 700, fontSize: 16,
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 8
+        }}>
+          <div>⚠️ Il database contiene più allenamenti di quelli che vedi qui. Continuare a salvare rischia di cancellarli.</div>
+          <button
+            style={{ background: "#ffffff", color: "#c0392b", border: "none", borderRadius: 6, padding: "8px 16px", fontWeight: 700, cursor: "pointer" }}
+            onClick={() => window.location.reload()}
+          >
+            Ricarica la pagina ora
+          </button>
+        </div>
+      )}
 
       <div className="gt-header">
         <div className="gt-logo"><Dumbbell size={24} color="var(--accent)" /></div>
