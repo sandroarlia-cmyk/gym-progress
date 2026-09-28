@@ -26,6 +26,12 @@ export async function loadGymData() {
   return data;
 }
 
+export async function getRemoteWorkoutIds() {
+  const data = await loadGymData();
+  if (!data) return null;
+  return Array.isArray(data.workouts) ? data.workouts.map((w) => w.id) : [];
+}
+
 export async function saveField(field, value) {
   const payload = { id: ROW_ID, [field]: value, updated_at: new Date().toISOString() };
   const { error } = await supabase.from("gym_data").upsert(payload);
