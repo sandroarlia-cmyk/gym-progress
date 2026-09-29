@@ -1544,11 +1544,30 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
             return { workoutId: w.id, date: w.date, sets: it.sets, volume: itemVolume(it), kgMax, ripAlKgMax };
           })
           .sort((a, b) => (a.date > b.date ? -1 : 1));
+        const record = rows.reduce((best, r) => {
+          if (!best) return r;
+          if (r.kgMax > best.kgMax) return r;
+          if (r.kgMax === best.kgMax && r.ripAlKgMax > best.ripAlKgMax) return r;
+          return best;
+        }, null);
+        const recordKey = record ? exId + "-" + record.workoutId : null;
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
           <div className="card">
             <div className="section-head log-exercise-head" onClick={() => toggleExercise(exId)}>
               <h2 className="font-display section-title">{ex ? ex.name : "?"}</h2>
+              {sortBy === "peso" && record && (
+                <div className="peso-max-record-row" onClick={(e) => {
+                  e.stopPropagation();
+                  setExpandedExercises((prev) => ({ ...prev, [exId]: true }));
+                  setExpandedDates((prev) => ({ ...prev, [recordKey]: true }));
+                }}>
+                  <div className="peso-max-record-box peso-max-record-label">PESO MAX</div>
+                  <div className="peso-max-record-box peso-max-record-date">{formatDateShort(record.date)}</div>
+                  <div className="peso-max-record-box peso-max-record-kg">{record.kgMax} KG</div>
+                  <div className="peso-max-record-box peso-max-record-rip">{record.ripAlKgMax} Rip</div>
+                </div>
+              )}
               <ChevronRight size={24} className={"chevron" + (expandedExercises[exId] ? " open" : "")} />
             </div>
             {expandedExercises[exId] && (
@@ -3153,6 +3172,12 @@ export default function App() {
         .log-set-row{ display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .log-exercise-head{ cursor:pointer; }
+        .peso-max-record-row{ display:flex; gap:6px; flex-wrap:wrap; cursor:pointer; }
+        .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; }
+        .peso-max-record-label{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
+        .peso-max-record-date{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
+        .peso-max-record-kg{ background:#1f6b3a; color:#ffffff; }
+        .peso-max-record-rip{ background:#aef000; color:#000000; }
         .avanzamenti-muscle-card{ padding:0; overflow:hidden; }
         .muscoli-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
         .muscoli-tile{
