@@ -8,7 +8,7 @@ import {
   CartesianGrid, Tooltip, Legend
 } from "recharts";
 import * as XLSX from "xlsx";
-import { loadGymData, saveField, getRemoteWorkoutIds } from "./supabaseClient";
+import { loadGymData, saveWorkoutDoc, deleteWorkoutDoc, saveBodyLogDoc, deleteBodyLogDoc, saveConfigDoc } from "./firebaseClient";
 
 const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome"];
 const GROUP_ORDER = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics"];
@@ -2700,8 +2700,9 @@ export default function App() {
   const [splits, setSplits] = useState([]);
   const [workouts, setWorkouts] = useState([]);
   const [bodyLogs, setBodyLogs] = useState([]);
-  const [staleWarning, setStaleWarning] = useState(false);
-  const knownWorkoutIds = useRef(new Set());
+  const prevWorkoutsRef = useRef([]);
+  const prevBodyLogsRef = useRef([]);
+  const firstConfigSave = useRef(true);
 
   useEffect(() => {
     (async () => {
@@ -2716,30 +2717,63 @@ export default function App() {
       setSplits(data.splits || []);
       setWorkouts(data.workouts || []);
       setBodyLogs(data.body_logs || []);
-      knownWorkoutIds.current = new Set((data.workouts || []).map((w) => w.id));
+      prevWorkoutsRef.current = data.workouts || [];
+      prevBodyLogsRef.current = data.body_logs || [];
       setLoaded(true);
     })();
   }, []);
 
-  useEffect(() => { if (loaded && !loadFailed) saveField("exercises", exercises); }, [exercises, loaded, loadFailed]);
-  useEffect(() => { if (loaded && !loadFailed) saveField("splits", splits); }, [splits, loaded, loadFailed]);
+  // Esercizi e split: un unico documento di configurazione (liste che si
+  // riordinano nel loro insieme, non un log che cresce nel tempo).
   useEffect(() => {
     if (!loaded || loadFailed) return;
+    if (firstConfigSave.current) { firstConfigSave.current = false; return; }
+    saveConfigDoc(exercises, splits);
+  }, [exercises, splits, loaded, loadFailed]);
+
+  // Allenamenti: ogni voce è un documento a sé. Ad ogni cambiamento,
+  // confrontiamo con l'ultimo stato conosciuto e scriviamo/cancelliamo
+  // SOLO i singoli allenamenti effettivamente aggiunti, modificati o
+  // rimossi — mai l'intero elenco. Così due dispositivi non possono mai
+  // sovrascriversi a vicenda: ognuno tocca solo le proprie righe.
+  useEffect(() => {
+    if (!loaded || loadFailed) return;
+    const prev = prevWorkoutsRef.current;
+    const prevById = new Map(prev.map((w) => [w.id, w]));
+    const currIds = new Set(workouts.map((w) => w.id));
     (async () => {
-      const remoteIds = await getRemoteWorkoutIds();
-      const localIds = new Set(workouts.map((w) => w.id));
-      const missing = remoteIds
-        ? remoteIds.filter((id) => !localIds.has(id) && !knownWorkoutIds.current.has(id))
-        : [];
-      if (missing.length > 0) {
-        setStaleWarning(true);
-        return;
+      for (const w of prev) {
+        if (!currIds.has(w.id)) await deleteWorkoutDoc(w.id);
       }
-      knownWorkoutIds.current = localIds;
-      saveField("workouts", workouts);
+      for (const w of workouts) {
+        const old = prevById.get(w.id);
+        if (!old || JSON.stringify(old) !== JSON.stringify(w)) {
+          await saveWorkoutDoc(w);
+        }
+      }
+      prevWorkoutsRef.current = workouts;
     })();
   }, [workouts, loaded, loadFailed]);
-  useEffect(() => { if (loaded && !loadFailed) saveField("body_logs", bodyLogs); }, [bodyLogs, loaded, loadFailed]);
+
+  // Stesso principio per le rilevazioni corporee (peso, BMI, ecc.).
+  useEffect(() => {
+    if (!loaded || loadFailed) return;
+    const prev = prevBodyLogsRef.current;
+    const prevById = new Map(prev.map((b) => [b.id, b]));
+    const currIds = new Set(bodyLogs.map((b) => b.id));
+    (async () => {
+      for (const b of prev) {
+        if (!currIds.has(b.id)) await deleteBodyLogDoc(b.id);
+      }
+      for (const b of bodyLogs) {
+        const old = prevById.get(b.id);
+        if (!old || JSON.stringify(old) !== JSON.stringify(b)) {
+          await saveBodyLogDoc(b);
+        }
+      }
+      prevBodyLogsRef.current = bodyLogs;
+    })();
+  }, [bodyLogs, loaded, loadFailed]);
 
   const MUSCLE_NAV = [
     { muscle: "Petto", label: "Petto" },
@@ -3428,22 +3462,6 @@ export default function App() {
           .split-cell-input{ padding:6px 8px; }
         }
       `}</style>
-
-      {staleWarning && (
-        <div style={{
-          position: "sticky", top: 0, zIndex: 999, background: "#c0392b", color: "#ffffff",
-          padding: "14px 18px", textAlign: "center", fontWeight: 700, fontSize: 16,
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 8
-        }}>
-          <div>⚠️ Il database contiene più allenamenti di quelli che vedi qui. Continuare a salvare rischia di cancellarli.</div>
-          <button
-            style={{ background: "#ffffff", color: "#c0392b", border: "none", borderRadius: 6, padding: "8px 16px", fontWeight: 700, cursor: "pointer" }}
-            onClick={() => window.location.reload()}
-          >
-            Ricarica la pagina ora
-          </button>
-        </div>
-      )}
 
       <div className="gt-header">
         <div className="gt-logo"><Dumbbell size={24} color="var(--accent)" /></div>
