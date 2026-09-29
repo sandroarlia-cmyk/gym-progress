@@ -10,7 +10,7 @@ import {
 import * as XLSX from "xlsx";
 import { loadGymData, saveWorkoutDoc, deleteWorkoutDoc, saveBodyLogDoc, deleteBodyLogDoc, saveConfigDoc } from "./firebaseClient";
 
-const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Polpacci", "Addome"];
+const MUSCLE_GROUPS = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics", "Addome"];
 const GROUP_ORDER = ["Petto", "Spalle", "Dorso", "Gambe", "Bicipiti", "Tricipiti", "Calisthenics"];
 const DAYS = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"];
 const MONTHS_IT = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
@@ -134,11 +134,7 @@ const REQUIRED_EXERCISES = {
     "Calf Raise Polpacci manubri",
     "Calf Raise polpacci in piedi Multipower"
   ],
-  Polpacci: [
-    "Calf Raise Polpacci seduto macchina",
-    "Calf Raise Polpacci manubri",
-    "Calf Raise polpacci in piedi Multipower"
-  ],
+
   Addome: [
     "Crunch a terra",
     "Crunch ai cavi",
@@ -214,6 +210,10 @@ function renameExercises(list) {
     const match = EXERCISE_RENAMES.find((r) => r.muscle === e.muscle && e.name.trim().toLowerCase() === r.from);
     return match ? { ...e, name: match.to } : e;
   });
+}
+
+function mergePolpacciIntoGambe(list) {
+  return list.map((e) => (e.muscle === "Polpacci" ? { ...e, muscle: "Gambe" } : e));
 }
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
@@ -2734,7 +2734,7 @@ export default function App() {
         return;
       }
       const loadedExercises = data.exercises && data.exercises.length ? data.exercises : DEFAULT_EXERCISES;
-      setExercises(mergeRequiredExercises(renameExercises(cleanExercises(loadedExercises))));
+      setExercises(mergeRequiredExercises(renameExercises(cleanExercises(mergePolpacciIntoGambe(loadedExercises)))));
       setSplits(data.splits || []);
       setWorkouts(data.workouts || []);
       setBodyLogs(data.body_logs || []);
@@ -2801,7 +2801,6 @@ export default function App() {
     { muscle: "Spalle", label: "Spalle" },
     { muscle: "Dorso", label: "Dorso" },
     { muscle: "Gambe", label: "Gambe" },
-    { muscle: "Polpacci", label: "Polpacci" },
     { muscle: "Tricipiti", label: "Tricipiti" },
     { muscle: "Bicipiti", label: "Bicipiti" },
     { muscle: "Addome", label: "Addominali" },
