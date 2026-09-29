@@ -1012,12 +1012,15 @@ function MuscleEntryPanel({ muscle, exercises, setExercises, workouts, setWorkou
         </div>
 
         <div className="group-ex-list">
-          {availableList.map((ex) => (
-            <div key={ex.id} className="group-ex-row" onClick={() => addExerciseToSession(ex)}>
-              <span>{ex.name}</span>
-              <Plus size={24} />
-            </div>
-          ))}
+          {availableList.map((ex) => {
+            const hasHistory = datesForExercise(workouts, ex.id).length > 0;
+            return (
+              <div key={ex.id} className={"group-ex-row" + (hasHistory ? " group-ex-row-done" : "")} onClick={() => addExerciseToSession(ex)}>
+                <span>{ex.name}</span>
+                <Plus size={24} />
+              </div>
+            );
+          })}
           {availableList.length === 0 && <p className="muted" style={{ padding: "4px 0" }}>Nessun esercizio trovato.</p>}
         </div>
 
@@ -3236,6 +3239,7 @@ export default function App() {
         .accordion-body{ padding:14px; display:flex; flex-direction:column; gap:12px; }
         .group-ex-list{ display:flex; flex-direction:column; gap:4px; }
         .group-ex-row{ display:flex; justify-content:space-between; align-items:center; padding:10px 12px; border-radius:6px; cursor:pointer; font-size:32px; background:var(--surface); border:1px solid transparent; }
+        .group-ex-row-done span{ font-weight:700; color:var(--accent); }
         .group-ex-row:hover{ background:var(--accent-dim); border-color:var(--accent-dim); }
         .custom-slots{ border-top:1px solid var(--border-c); padding-top:10px; display:flex; flex-direction:column; gap:6px; }
         .custom-slot-row{ display:flex; gap:8px; }
