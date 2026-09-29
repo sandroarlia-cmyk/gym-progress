@@ -3165,7 +3165,7 @@ export default function App() {
         .log-date-box, .log-set-box, .log-kg-box, .log-rip-box, .log-note-box, .log-volume-box, .log-total-box, .log-serie-box, .log-kgmax-box{
           flex-shrink:0; display:flex; align-items:center; justify-content:center;
           padding:14px 10px; border-radius:6px; font-weight:700; white-space:nowrap;
-          font-size:22px; overflow:hidden;
+          font-size:22px; overflow:hidden; box-sizing:border-box;
         }
         .exercise-log-row-head .log-date-box, .exercise-log-row-head .log-set-box,
         .exercise-log-row-head .log-kg-box, .exercise-log-row-head .log-rip-box,
@@ -3416,7 +3416,7 @@ export default function App() {
           .log-date-box{ width:85px; font-size:16px; padding:9px 4px; }
           .log-kgmax-label-box{ width:50px; font-size:13px; padding:8px 3px; text-align:center; justify-content:center; }
           .log-kgmax-value-box{ width:155px; font-size:18px; padding:9px 8px 9px 12px; white-space:nowrap; justify-content:flex-start; text-align:left; }
-          .log-kgmax-green-box{ width:44px; font-size:16px; padding:9px 3px; }
+          .log-kgmax-green-box{ width:64px; font-size:16px; padding:9px 4px; }
           .log-kgmax-acid-box{ width:70px; font-size:16px; padding:9px 4px; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
@@ -3425,7 +3425,6 @@ export default function App() {
           .log-set-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
           .log-set-row-titles{ margin-top:10px; }
           .log-kg-title-box{ font-size:19px; padding:4px 6px; }
-          .log-total-box{ font-size:19px; }
           .log-date-card-body .log-total-box{ padding:4px 6px; }
           .log-rir-box{ font-size:19px; }
           .log-date-card-body .log-rir-box{ padding:4px 6px; }
@@ -3436,8 +3435,8 @@ export default function App() {
           .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
           .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
-          .log-volume-box{ width:140px; font-size:22px; font-weight:700; padding:12px 10px; }
-          .log-total-box{ width:56px; font-size:22px; padding:12px 8px; }
+          .log-volume-box{ width:100px; font-size:19px; font-weight:700; padding:10px 6px; }
+          .log-total-box{ width:56px; font-size:19px; padding:10px 8px; }
           .log-serie-box{ width:52px; font-size:22px; padding:12px 8px; }
           .exercise-log-row-head .log-serie-box{ width:68px; }
           .gt-root{ font-size:17px; }
