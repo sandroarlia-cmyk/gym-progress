@@ -1590,10 +1590,14 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
                   setExpandedExercises((prev) => ({ ...prev, [exId]: true }));
                   setExpandedDates((prev) => ({ ...prev, [recordKey]: true }));
                 }}>
-                  <div className="peso-max-record-box peso-max-record-label">PESO MAX</div>
-                  <div className="peso-max-record-box peso-max-record-date">{formatDateShort(record.date)}</div>
-                  <div className="peso-max-record-box peso-max-record-kg">{record.kgMax}</div>
-                  <div className="peso-max-record-box peso-max-record-rip">{record.ripAlKgMax} Rip</div>
+                  <div className="peso-max-record-line">
+                    <div className="peso-max-record-box peso-max-record-label">PESO MAX</div>
+                    <div className="peso-max-record-box peso-max-record-date">{formatDateShort(record.date)}</div>
+                  </div>
+                  <div className="peso-max-record-line">
+                    <div className="peso-max-record-box peso-max-record-kg">{record.kgMax}</div>
+                    <div className="peso-max-record-box peso-max-record-rip">{record.ripAlKgMax} Rip</div>
+                  </div>
                 </div>
               )}
               <ChevronRight size={24} className={"chevron" + (expandedExercises[exId] ? " open" : "")} />
@@ -3203,6 +3207,7 @@ export default function App() {
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .log-exercise-head{ cursor:pointer; }
         .peso-max-record-row{ display:flex; gap:6px; flex-wrap:wrap; cursor:pointer; }
+        .peso-max-record-line{ display:flex; gap:6px; }
         .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; display:flex; align-items:center; justify-content:center; }
         .peso-max-record-label{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
         .peso-max-record-date{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
@@ -3339,7 +3344,11 @@ export default function App() {
         }
 
         @media (max-width: 640px) {
-          .peso-max-record-kg, .peso-max-record-rip{ font-size:21px; padding:8px 13px; }
+          .peso-max-record-row{ flex-direction:column; }
+          .peso-max-record-line{ flex-wrap:nowrap; overflow-x:auto; padding-bottom:2px; }
+          .peso-max-record-box{ flex-shrink:0; }
+          .peso-max-record-kg{ font-size:26px; padding:8px 13px; }
+          .peso-max-record-rip{ font-size:26px; padding:8px 13px; }
           .progressi-dark{ padding:10px; border-radius:8px; max-width:100%; box-sizing:border-box; overflow-x:hidden; }
           .chart-uniform-wrap{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; }
           .chart-uniform-wrap .card{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; overflow-x:hidden !important; }
