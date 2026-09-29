@@ -3176,8 +3176,8 @@ export default function App() {
         .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; }
         .peso-max-record-label{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
         .peso-max-record-date{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
-        .peso-max-record-kg{ background:#1f6b3a; color:#ffffff; }
-        .peso-max-record-rip{ background:#aef000; color:#000000; }
+        .peso-max-record-kg{ background:#1f6b3a; color:#ffffff; font-size:32px; padding:12px 20px; }
+        .peso-max-record-rip{ background:#aef000; color:#000000; font-size:32px; padding:12px 20px; }
         .avanzamenti-muscle-card{ padding:0; overflow:hidden; }
         .muscoli-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
         .muscoli-tile{
@@ -3308,6 +3308,7 @@ export default function App() {
         }
 
         @media (max-width: 640px) {
+          .peso-max-record-kg, .peso-max-record-rip{ font-size:16px; padding:6px 10px; }
           .progressi-dark{ padding:10px; border-radius:8px; max-width:100%; box-sizing:border-box; overflow-x:hidden; }
           .chart-uniform-wrap{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; }
           .chart-uniform-wrap .card{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; overflow-x:hidden !important; }
