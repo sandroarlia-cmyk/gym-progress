@@ -3206,7 +3206,7 @@ export default function App() {
         .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; display:flex; align-items:center; justify-content:center; }
         .peso-max-record-label{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
         .peso-max-record-date{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
-        .peso-max-record-kg{ background:#1f6b3a; color:#ffffff; font-size:32px; padding:12px 20px; }
+        .peso-max-record-kg{ background:#ff0000; color:#ffffff; font-size:32px; padding:12px 20px; }
         .peso-max-record-rip{ background:#aef000; color:#000000; font-size:32px; padding:12px 20px; }
         .avanzamenti-muscle-card{ padding:0; overflow:hidden; }
         .muscoli-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; }
