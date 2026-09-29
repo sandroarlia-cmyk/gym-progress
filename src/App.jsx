@@ -216,6 +216,29 @@ function mergePolpacciIntoGambe(list) {
   return list.map((e) => (e.muscle === "Polpacci" ? { ...e, muscle: "Gambe" } : e));
 }
 
+function dedupeExercisesAndRemapWorkouts(exercisesList, workoutsList) {
+  const canonicalByKey = new Map();
+  const idRemap = new Map();
+  const result = [];
+  exercisesList.forEach((e) => {
+    const key = e.muscle + "::" + e.name.trim().toLowerCase();
+    if (canonicalByKey.has(key)) {
+      idRemap.set(e.id, canonicalByKey.get(key));
+    } else {
+      canonicalByKey.set(key, e.id);
+      result.push(e);
+    }
+  });
+  if (idRemap.size === 0) return { exercises: exercisesList, workouts: workoutsList };
+  const remappedWorkouts = workoutsList.map((w) => ({
+    ...w,
+    exercises: w.exercises.map((it) =>
+      idRemap.has(it.exerciseId) ? { ...it, exerciseId: idRemap.get(it.exerciseId) } : it
+    )
+  }));
+  return { exercises: result, workouts: remappedWorkouts };
+}
+
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
 function todayISO() {
   const d = new Date();
@@ -2734,11 +2757,14 @@ export default function App() {
         return;
       }
       const loadedExercises = data.exercises && data.exercises.length ? data.exercises : DEFAULT_EXERCISES;
-      setExercises(mergeRequiredExercises(renameExercises(cleanExercises(mergePolpacciIntoGambe(loadedExercises)))));
+      const reclassified = mergePolpacciIntoGambe(loadedExercises);
+      const { exercises: dedupedExercises, workouts: remappedWorkouts } =
+        dedupeExercisesAndRemapWorkouts(reclassified, data.workouts || []);
+      setExercises(mergeRequiredExercises(renameExercises(cleanExercises(dedupedExercises))));
       setSplits(data.splits || []);
-      setWorkouts(data.workouts || []);
+      setWorkouts(remappedWorkouts);
       setBodyLogs(data.body_logs || []);
-      prevWorkoutsRef.current = data.workouts || [];
+      prevWorkoutsRef.current = remappedWorkouts;
       prevBodyLogsRef.current = data.body_logs || [];
       setLoaded(true);
     })();
