@@ -1646,7 +1646,7 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
                             </div>
                             {r.sets.map((s, idx) => (
                               <div className="log-set-row" key={idx}>
-                                <div className="log-kg-value-box">{s.weight ? `${s.weight} KG` : ""}</div>
+                                <div className="log-kg-value-box">{s.weight || ""}</div>
                                 <div className="log-total-box">{s.reps || ""}</div>
                                 <div className="log-rir-box">{s.rir !== undefined && s.rir !== "" ? s.rir : ""}</div>
                                 <div className="log-note-box"><span>{s.notes || ""}</span></div>
