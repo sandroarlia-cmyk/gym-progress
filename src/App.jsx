@@ -1626,7 +1626,7 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
                     {isOpen && (
                       <div className="log-date-card-body">
                         <div className="log-set-row">
-                          <div className="log-volume-box">{round1(r.volume)} kg</div>
+                          <div className="log-volume-box">{round1(r.volume)}</div>
                           <div className="log-total-box">{totalReps}</div>
                           <button className="btn btn-ghost log-edit-btn" onClick={(e) => { e.stopPropagation(); setEditingKey(isEditing ? null : key); }}>
                             {isEditing ? "Fatto" : "Modifica"}
@@ -3178,16 +3178,16 @@ export default function App() {
         .log-rip-box{ width:90px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-note-box{ width:190px; background:#FFFFFF; border:1px solid var(--border-c); overflow-x:auto; justify-content:flex-start; font-size:22px; }
         .log-note-box span{ white-space:nowrap; }
-        .log-volume-box{ width:140px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
+        .log-volume-box{ width:90px; background:var(--accent-dim); color:#000000; font-size:22px; font-weight:700; }
         .log-total-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-serie-box{ width:56px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-kgmax-box{ width:150px; background:#FFFFFF; border:1px solid var(--border-c); color:var(--text); font-size:22px; }
         .log-rir-box{ width:56px; flex-shrink:0; background:#FFFFFF; border:1px solid var(--border-c); color:#1a1a1a; font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center; padding:14px 10px; border-radius:6px; }
         .log-kgmax-label-box{ width:100px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; }
         .log-kgmax-value-box{ width:210px; flex-shrink:0; background:#c0392b; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
-        .log-kgmax-green-box{ width:60px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 6px; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
+        .log-kgmax-green-box{ width:90px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:14px 6px; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
         .log-kgmax-acid-box{ width:100px; flex-shrink:0; background:#aef000; color:#000000; font-weight:700; font-size:22px; border-radius:6px; padding:14px 10px; display:flex; align-items:center; justify-content:center; white-space:nowrap; }
-        .log-kg-title-box{ width:140px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
+        .log-kg-title-box{ width:90px; flex-shrink:0; background:#1f6b3a; color:#ffffff; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-note-title-box{ width:190px; flex-shrink:0; background:#FFFFFF; color:#1a1a1a; font-weight:700; font-size:22px; border-radius:6px; padding:7px 10px; display:flex; align-items:center; justify-content:center; }
         .log-date-card-body .log-total-box{ padding:7px 10px; }
         .log-date-card-body .log-rir-box{ padding:7px 10px; }
@@ -3416,7 +3416,7 @@ export default function App() {
           .log-date-box{ width:85px; font-size:16px; padding:9px 4px; }
           .log-kgmax-label-box{ width:50px; font-size:13px; padding:8px 3px; text-align:center; justify-content:center; }
           .log-kgmax-value-box{ width:155px; font-size:18px; padding:9px 8px 9px 12px; white-space:nowrap; justify-content:flex-start; text-align:left; }
-          .log-kgmax-green-box{ width:64px; font-size:16px; padding:9px 4px; }
+          .log-kgmax-green-box{ width:72px; font-size:17px; padding:9px 4px; }
           .log-kgmax-acid-box{ width:70px; font-size:16px; padding:9px 4px; }
           .log-date-card-head{ flex-wrap:nowrap; align-items:stretch; }
           .log-date-card-body{ gap:2px; }
@@ -3424,18 +3424,18 @@ export default function App() {
           .log-note-title-box{ width:70px; }
           .log-set-row{ flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
           .log-set-row-titles{ margin-top:10px; }
-          .log-kg-title-box{ font-size:19px; padding:4px 6px; }
+          .log-kg-title-box{ width:72px; font-size:17px; padding:4px 6px; }
           .log-date-card-body .log-total-box{ padding:4px 6px; }
           .log-rir-box{ font-size:19px; }
           .log-date-card-body .log-rir-box{ padding:4px 6px; }
           .log-note-title-box{ font-size:19px; padding:4px 6px; }
           .log-date-card-body .log-note-box{ padding:4px 6px; font-size:19px; }
-          .log-kg-value-box{ width:60px; font-size:22px; padding:6px 4px; justify-content:center; text-align:center; }
+          .log-kg-value-box{ width:72px; font-size:22px; padding:6px 4px; justify-content:center; text-align:center; }
           .log-set-box{ width:140px; font-size:22px; padding:12px 10px; }
           .log-kg-box{ width:130px; font-size:22px; padding:12px 10px; background:var(--accent-dim); border-color:#E8C2BA; }
           .log-rip-box{ width:90px; font-size:22px; padding:12px 10px; }
           .log-note-box{ width:190px; font-size:22px; padding:12px 10px; }
-          .log-volume-box{ width:100px; font-size:19px; font-weight:700; padding:10px 6px; }
+          .log-volume-box{ width:72px; font-size:17px; font-weight:700; padding:10px 4px; }
           .log-total-box{ width:56px; font-size:19px; padding:10px 8px; }
           .log-serie-box{ width:52px; font-size:22px; padding:12px 8px; }
           .exercise-log-row-head .log-serie-box{ width:68px; }
