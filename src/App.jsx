@@ -3173,7 +3173,7 @@ export default function App() {
         .log-edit-btn{ background:#ffffff; border:2px solid #c0392b; color:#c0392b; font-weight:700; border-radius:6px; }
         .log-exercise-head{ cursor:pointer; }
         .peso-max-record-row{ display:flex; gap:6px; flex-wrap:wrap; cursor:pointer; }
-        .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; }
+        .peso-max-record-box{ padding:6px 10px; border-radius:6px; font-weight:700; font-size:16px; white-space:nowrap; display:flex; align-items:center; justify-content:center; }
         .peso-max-record-label{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
         .peso-max-record-date{ background:#000000; color:#ffffff; border:2px solid #c0392b; }
         .peso-max-record-kg{ background:#1f6b3a; color:#ffffff; font-size:32px; padding:12px 20px; }
