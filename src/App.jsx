@@ -3308,7 +3308,7 @@ export default function App() {
         }
 
         @media (max-width: 640px) {
-          .peso-max-record-kg, .peso-max-record-rip{ font-size:16px; padding:6px 10px; }
+          .peso-max-record-kg, .peso-max-record-rip{ font-size:21px; padding:8px 13px; }
           .progressi-dark{ padding:10px; border-radius:8px; max-width:100%; box-sizing:border-box; overflow-x:hidden; }
           .chart-uniform-wrap{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; }
           .chart-uniform-wrap .card{ width:100% !important; max-width:100% !important; box-sizing:border-box !important; overflow-x:hidden !important; }
