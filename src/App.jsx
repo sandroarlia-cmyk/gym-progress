@@ -1543,10 +1543,7 @@ function MuscleLogTab({ muscle, workouts, exercises, setWorkouts, sortBy = "data
               .reduce((max, s) => Math.max(max, Number(s.reps) || 0), 0);
             return { workoutId: w.id, date: w.date, sets: it.sets, volume: itemVolume(it), kgMax, ripAlKgMax };
           })
-          .sort((a, b) => sortBy === "peso"
-            ? (b.kgMax !== a.kgMax ? b.kgMax - a.kgMax : b.ripAlKgMax - a.ripAlKgMax)
-            : (a.date > b.date ? -1 : 1)
-          );
+          .sort((a, b) => (a.date > b.date ? -1 : 1));
         return (
           <div className="nuovo-allenamento-dark" key={exId}>
           <div className="card">
