@@ -122,6 +122,8 @@ const REQUIRED_EXERCISES = {
     "Bulgarian Split Squat",
     "Leg Curl sdraiato",
     "Leg Curl seduto",
+    "Stacco da terra",
+    "Pressa Polpacci",
     "Stacco rumeno bilanciere",
     "Stacco rumeno manubri",
     "Hip Thrust bilanciere",
